@@ -62,8 +62,8 @@ var INK='#14202b',INK2='#43525f',HOT='#cf4a39',COLD='#1a8fb3',ACC='#5a3ea8',AMB=
 var dpr=Math.max(1,Math.min(3,window.devicePixelRatio||1));
 cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
 var ctx=cv.getContext('2d');
-var reduce=false;
-try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+var reduce=false; // gerakan selalu aktif
+
 
 function cap(s){ctx.shadowBlur=0;ctx.font='400 9px '+FONT;ctx.fillStyle=INK2;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(s,W/2,H-8);}
 function line(x1,y1,x2,y2,c,w){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=c;ctx.lineWidth=w||1.5;ctx.lineCap='round';ctx.stroke();}
@@ -146,10 +146,10 @@ function talk(u){
 var scenes=[atom,heat,bend,nerve,talk];
 function frame(ts){
   var tsec=ts/1000,k=Math.floor(tsec/SEC)%scenes.length,u=(tsec%SEC)/SEC;
-  if(reduce)u=0.5;
+  
   ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);ctx.shadowBlur=0;
   var fade=Math.min(1,u*SEC/0.3,(1-u)*SEC/0.3);
-  ctx.globalAlpha=reduce?1:Math.max(0,fade);
+  ctx.globalAlpha=Math.max(0,fade);
   scenes[k](u);
   ctx.globalAlpha=1;
   requestAnimationFrame(frame);
