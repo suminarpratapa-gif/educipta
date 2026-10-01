@@ -1132,13 +1132,13 @@ G.start();
     ' box-shadow:0 8px 26px rgba(0,0,0,.45);pointer-events:auto;',
     ' transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(7px)}',
     '.al-bar.hid{opacity:0;transform:translateY(130%);pointer-events:none}',
-    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%);',
+    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%) scale(.75);transform-origin:right center;',
     ' display:grid;grid-auto-flow:column;grid-auto-rows:30px;grid-auto-columns:max-content;',
     ' justify-items:center;align-items:center;gap:2px;padding:6px;width:max-content;max-width:none;',
     ' border-radius:14px;opacity:.94}',
     '.al-bar.dock .al-sep{display:none}',
     '.al-bar.dock .al-tm{min-width:36px;font-size:10px;padding:0}',
-    '.al-bar.dock.hid{transform:translate(130%,-50%)}',
+    '.al-bar.dock.hid{opacity:0;pointer-events:none;transform:translate(130%,-50%) scale(.75)}',
     '.al-bar.dock .al-b{width:30px;height:30px}',
     '.al-ctl{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;',
     ' gap:3px;row-gap:2px;margin:9px auto 0;padding:4px 7px;width:max-content;max-width:100%;',
@@ -1251,7 +1251,7 @@ G.start();
     root.appendChild(this.fxCv);
 
     var bar = this.bar = document.createElement('div');
-    bar.className = 'al-bar' + (this.dock ? ' dock' : ' hid');
+    bar.className = 'al-bar' + (this.dock ? ' dock hid' : ' hid');
     root.appendChild(bar);
 
     this.toast = document.createElement('div');
@@ -1404,6 +1404,32 @@ G.start();
     on(this.bar, 'mouseenter', function () { clearTimeout(hideT); });
     on(this.bar, 'mouseleave', this._show);
 
+    // mode dock: bilah hanya muncul saat kursor menempel di tepi kanan
+    if (this.dock) {
+      var EDGE = 36, dockT = 0;
+      var nearEdge = function (e) {
+        var r = self.target.getBoundingClientRect();
+        var right = self.page ? document.documentElement.clientWidth : r.right;
+        var inY = self.page || (e.clientY >= r.top && e.clientY <= r.bottom);
+        return inY && e.clientX >= right - EDGE && (self.page || e.clientX <= right + 8);
+      };
+      var dockCheck = function (e) {
+        var over = self.bar.contains(e.target) || self.bar.matches(':hover');
+        if (nearEdge(e) || (over && !self.bar.classList.contains('hid'))) {
+          clearTimeout(dockT);
+          self.bar.classList.remove('hid');
+        } else if (!self.bar.classList.contains('hid') && !dockT) {
+          dockT = setTimeout(function () {
+            dockT = 0;
+            if (!self.bar.matches(':hover')) self.bar.classList.add('hid');
+          }, 500);
+        }
+      };
+      on(window, 'pointermove', dockCheck, { passive: true });
+      on(window, 'pointerdown', dockCheck, { passive: true });
+      on(this.bar, 'mouseenter', function () { clearTimeout(dockT); dockT = 0; });
+    }
+
     // posisi kursor global (canvas fx boleh pointer-events:none)
     on(window, 'pointermove', function (e) {
       var r = self.target.getBoundingClientRect();
@@ -1526,7 +1552,7 @@ G.start();
     var vt = Math.max(0, -r.top), vb = Math.min(this.H, window.innerHeight - r.top);
     if (vb - vt < 120) { vt = 0; vb = this.H; }
     var vis = vb - vt;
-    var rows = Math.max(4, Math.floor((vis - 28) / 32));
+    var rows = Math.max(4, Math.floor((vis / 0.75 - 28) / 32));
     if (rows > n) rows = n;
     this.bar.style.gridTemplateRows = 'repeat(' + rows + ',30px)';
     this.bar.style.top = ((vt + vb) / 2) + 'px';
