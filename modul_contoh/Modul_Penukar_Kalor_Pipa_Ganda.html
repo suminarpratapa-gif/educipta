@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perpindahan Panas pada Penukar Kalor Pipa Ganda</title>
+<style>
+:root{
+  --ink:#14202b; --ink2:#43525f; --line:#b9c5d1; --paper:#eaeff4; --white:#fbfcfd;
+  --accent:#a3411c; --ten:#1a8fb3; --com:#cf4a39; --stage:#07080f; --amber:#8a5a00;
+  --serif:'Cambria Math','STIX Two Math','Cambria','Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans)}
+a{color:var(--accent)}
+.toc{position:fixed;left:0;top:0;bottom:0;width:272px;padding:22px 18px;overflow:auto;background:var(--white);border-right:1.5px solid var(--ink);z-index:20}
+.toc h1{font-size:15px;line-height:1.3;margin:0 0 4px;font-weight:700}
+.toc p{margin:0 0 14px;font-size:13px;color:var(--ink2);line-height:1.4}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 8px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.35;border-left:3px solid transparent}
+.toc li a b{font-variant-numeric:tabular-nums;color:var(--ink2)}
+.toc li a:hover{background:var(--paper)}
+.toc li a.on{border-left-color:var(--accent);background:var(--paper);font-weight:600}
+.toc li a.seen b::after{content:"\2713";color:var(--accent);margin-left:2px}
+main{margin-left:272px;padding:0 40px 80px}
+.wrap{max-width:900px;margin:0 auto}
+.cover{padding:56px 0 34px;border-bottom:1.5px solid var(--ink)}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 18px;font-size:14px;color:var(--ink2)}
+.cover h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;margin:0 0 14px;letter-spacing:-.01em}
+.cover h1 span{display:block;font-size:.5em;font-weight:500;color:var(--ink2);letter-spacing:0;margin-top:10px}
+.cover p{max-width:62ch;margin:0}
+section{padding:46px 0 10px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.tb{display:grid;grid-template-columns:74px 1fr 1fr;border:1.5px solid var(--ink);background:var(--white);margin:0 0 26px}
+.tb>div{padding:10px 14px}
+.tb small{display:block;font-size:12.5px;color:var(--ink2);line-height:1.3;margin-bottom:2px}
+.tb .no{grid-row:1/3;border-right:1.5px solid var(--ink);text-align:center;display:flex;flex-direction:column;justify-content:center}
+.tb .no b{font-size:34px;line-height:1}
+.tb .ttl{grid-column:2/4;border-bottom:1.5px solid var(--ink)}
+.tb h2{margin:0;font-size:clamp(20px,2.6vw,27px);line-height:1.25}
+.tb .c1{border-right:1.5px solid var(--ink)}
+.tb .c1,.tb .c2{font-size:14.5px;line-height:1.45}
+h3{font-size:19px;margin:30px 0 8px;line-height:1.3}
+p,li{max-width:70ch}
+ul,ol{padding-left:1.3em}
+li{margin:.25em 0}
+.eq{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);font:italic 20px/1.9 var(--serif);text-align:center;overflow-x:auto}
+.eq i,p i,li i,td i,dd i{font-family:var(--serif);font-size:1.06em}
+.eq .u,.eq .n{font-style:normal}
+.eq .sp{display:inline-block;width:2em}
+fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .2em;line-height:1.25}
+fr>n{border-bottom:1.3px solid currentColor;padding:0 .3em}
+fr>d{padding:0 .3em}
+sub,sup{line-height:0;font-size:.7em}
+.note{margin:18px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--white);font-size:15.5px}
+.note b{display:block;margin-bottom:2px}
+.warn{border-left-color:#b76e00}
+blockquote{margin:16px 0;padding:10px 18px;border-left:4px solid var(--ink);background:var(--white);font-size:16px}
+blockquote p{margin:0}
+table.dt{border-collapse:collapse;margin:14px 0;font-size:15px;background:var(--white);width:100%;max-width:70ch}
+table.dt th,table.dt td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+table.dt th{background:#e2e9f0}
+.sim{margin:22px 0 26px;border:1.5px solid var(--ink);background:var(--white)}
+.sim .stage{background:var(--stage);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sim canvas{display:block;width:100%;min-width:760px;height:auto;aspect-ratio:16/9}
+.sim canvas.clk{cursor:pointer}
+.sim .tray{padding:14px 16px 12px;border-top:1.5px solid var(--ink)}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 26px}
+.row{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:center;font-size:14.5px}
+.row .lab{grid-column:1;line-height:1.3}
+.row output{grid-column:2;font-variant-numeric:tabular-nums;font-weight:600;font-size:14.5px}
+.row input[type=range]{grid-column:1/3;width:100%;margin:2px 0 0;accent-color:var(--accent);min-height:26px}
+.row select{grid-column:1/3;width:100%;padding:6px 8px;font:inherit;font-size:14.5px;background:#fff;border:1px solid var(--ink2);color:var(--ink);min-height:36px}
+.row.dis{opacity:.4}
+.row button,.bar button,.mapbtn button,.qbtn{font:inherit;font-size:14.5px;padding:7px 14px;background:var(--ink);color:#fff;border:0;cursor:pointer;min-height:36px}
+.row button:hover,.bar button:hover{background:var(--accent)}
+.reads{display:flex;flex-wrap:wrap;gap:8px 26px;margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--line)}
+.reads div{min-width:120px}
+.reads dt{font-size:12.5px;color:var(--ink2);line-height:1.3}
+.reads dd{margin:0;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.reads dd.bad{color:var(--com)}
+.reads dd.ok{color:var(--accent)}
+.bar{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.legend{display:flex;gap:16px;margin:0 0 6px;font-size:14px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.legend .t::before{background:#5aa0ff}.legend .c::before{background:#ff6a4d}
+.mapbtn{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.mapbtn button{background:var(--white);color:var(--ink);border:1.5px solid var(--ink)}
+.mapbtn button.on{background:var(--ink);color:#fff}
+.detail{background:var(--white);border:1px solid var(--line);padding:12px 16px;font-size:15.5px}
+.detail h4{margin:0 0 4px;font-size:17px}
+.detail p{margin:4px 0}
+.chips a{display:inline-block;margin:2px 6px 2px 0;padding:1px 9px;border:1px solid var(--accent);text-decoration:none;font-size:14px}
+.pre .it{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.pre .opt{display:flex;gap:6px;flex-wrap:wrap}
+.pre .opt button{font:inherit;font-size:14px;padding:5px 11px;border:1.5px solid var(--ink);background:var(--white);cursor:pointer;min-height:34px}
+.pre .opt button.on{background:var(--ink);color:#fff}
+.q{background:var(--white);border:1px solid var(--line);padding:14px 18px;margin:14px 0}
+.q h4{margin:0 0 8px;font-size:16.5px;line-height:1.45;font-weight:600}
+.q label{display:block;padding:5px 0;cursor:pointer;line-height:1.45}
+.q input[type=text]{font:inherit;padding:6px 8px;width:9em;border:1px solid var(--ink2)}
+.q .fb{margin-top:8px;padding:8px 12px;font-size:15px;border-left:4px solid var(--line)}
+.q .fb.ok{border-left-color:var(--accent);background:#e4f1f2}
+.q .fb.no{border-left-color:var(--com);background:#f7e6e3}
+.sub2{margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+textarea{width:100%;max-width:70ch;min-height:110px;font:inherit;padding:10px;border:1px solid var(--ink2);background:#fff}
+.score{font-size:19px;font-weight:700;margin:10px 0}
+.closing{margin:34px 0 0;padding:22px 26px;background:var(--ink);color:#f2f6fa;font-size:19px;line-height:1.55}
+footer{margin-top:34px;padding-top:14px;border-top:1.5px solid var(--ink);font-size:13.5px;color:var(--ink2)}
+@media (max-width:980px){
+  .toc{position:sticky;top:0;width:auto;bottom:auto;padding:8px 10px;border-right:0;border-bottom:1.5px solid var(--ink);display:flex;gap:10px;align-items:center;overflow-x:auto}
+  .toc h1,.toc p{display:none}
+  .toc ol{display:flex;gap:2px}
+  .toc li a{grid-template-columns:auto;padding:6px 10px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .toc li a span{display:none}
+  .toc li a.on{border-bottom-color:var(--accent)}
+  main{margin-left:0;padding:0 16px 60px}
+  html{scroll-padding-top:60px}
+  .tb{grid-template-columns:60px 1fr}
+  .tb .ttl{grid-column:2}
+  .tb .c1{grid-column:1/3;border-right:0;border-top:0;border-bottom:1.5px solid var(--ink)}
+  .tb .c2{grid-column:1/3}
+  .tb .no{grid-row:auto}
+  .tb .c1,.tb .c2{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc{display:none}main{margin:0}.sim .tray{display:none}}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Daftar bagian">
+  <h1>Penukar Kalor Pipa Ganda</h1>
+  <p>Modul EduCipta, Teknik Kimia</p>
+  <ol id="toc">
+    <li><a href="#s1"><b>1</b><span>Pengenalan alat</span></a></li>
+    <li><a href="#s2"><b>2</b><span>Aliran searah dan berlawanan</span></a></li>
+    <li><a href="#s3"><b>3</b><span>Neraca energi</span></a></li>
+    <li><a href="#s4"><b>4</b><span>Beda temperatur logaritmik</span></a></li>
+    <li><a href="#s5"><b>5</b><span>Luas dan koefisien U</span></a></li>
+    <li><a href="#s6"><b>6</b><span>Studi kasus industri</span></a></li>
+    <li><a href="#s7"><b>7</b><span>Evaluasi</span></a></li>
+  </ol>
+</nav>
+<main><div class="wrap">
+
+<div class="cover">
+  <div class="meta"><span>Bidang: Teknik Kimia</span><span>Mata kuliah: Perpindahan Panas atau Operasi Teknik Kimia</span><span>Sasaran: mahasiswa semester awal</span></div>
+  <h1>Perpindahan Panas pada Penukar Kalor Pipa Ganda<span>Dari aliran dua fluida sampai luas permukaan yang dibutuhkan</span></h1>
+  <p>Modul ini mengikuti satu alat sederhana: dua pipa sepusat, satu fluida panas dan satu fluida dingin. Lima animasi dan beberapa simulasi akan membantu Anda melihat ke mana panas mengalir, bagaimana temperatur berubah sepanjang pipa, dan apa yang menentukan ukuran alat.</p>
+  <h3>Tujuan pembelajaran</h3>
+  <p>Setelah menggunakan modul, mahasiswa mampu:</p>
+  <ul>
+    <li>menjelaskan aliran panas antara fluida panas dan dingin;</li>
+    <li>membedakan aliran searah dan berlawanan arah;</li>
+    <li>membaca profil temperatur sepanjang penukar kalor;</li>
+    <li>menghitung laju perpindahan panas;</li>
+    <li>menentukan LMTD;</li>
+    <li>menjelaskan pengaruh debit, suhu masuk, dan luas permukaan terhadap kinerja alat.</li>
+  </ul>
+</div>
+
+<section id="s1">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>1</b></div>
+    <div class="ttl"><h2>Pengenalan Alat</h2></div>
+    <div class="c1"><small>Animasi 1</small>Aliran dua fluida</div>
+    <div class="c2"><small>Interaksi</small>Mengubah susunan aliran, debit, dan suhu masuk</div>
+  </header>
+  <p>Penukar kalor pipa ganda memindahkan panas dari fluida panas ke fluida dingin tanpa mencampurkannya. Fluida panas mengalir di dalam pipa dalam, sedangkan fluida dingin mengalir di ruang annulus, yaitu ruang antara dinding luar pipa dalam dan dinding dalam pipa luar. Panas berpindah menembus dinding pipa dalam, sehingga dinding itulah luas permukaan perpindahan panasnya.</p>
+  <ul>
+    <li><b>Pipa dalam:</b> membawa salah satu fluida dan menjadi permukaan perpindahan panas.</li>
+    <li><b>Pipa luar:</b> membentuk annulus untuk fluida kedua.</li>
+    <li><b>Nosel masuk dan keluar:</b> tempat masuk dan keluarnya kedua fluida, sekaligus menentukan susunan aliran.</li>
+  </ul>
+  <p>Alat ini dipakai untuk mendinginkan minyak pelumas atau produk proses dengan air, memanaskan umpan sebelum masuk reaktor, dan pada skala kecil hingga menengah karena sederhana, tahan tekanan tinggi, dan mudah ditambah panjangnya atau disusun seri.</p>
+  <div class="note"><b>Asumsi modul</b>Kondisi tunak, tanpa kehilangan panas ke lingkungan, sifat fluida dan koefisien <i>U</i> konstan, dan tanpa perubahan fase.</div>
+  <div class="legend"><span class="t">Dingin</span><span class="c">Panas</span></div>
+  <div class="sim" id="sim-flow"></div>
+</section>
+
+<section id="s2">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>2</b></div>
+    <div class="ttl"><h2>Aliran Searah dan Berlawanan Arah</h2></div>
+    <div class="c1"><small>Animasi 2 dan 3</small>Parallel flow dan counterflow</div>
+    <div class="c2"><small>Interaksi</small>Membandingkan profil temperatur dan efektivitas</div>
+  </header>
+  <p>Pada <b>aliran searah</b> (<i>parallel flow</i>) kedua fluida masuk dari sisi yang sama. Beda temperatur sangat besar di ujung masuk, lalu cepat mengecil, dan temperatur keluar fluida dingin tidak pernah melebihi temperatur keluar fluida panas.</p>
+  <div class="legend"><span class="t">Dingin</span><span class="c">Panas</span></div>
+  <div class="sim" id="sim-parallel"></div>
+  <p>Pada <b>aliran berlawanan arah</b> (<i>counterflow</i>) kedua fluida masuk dari sisi berlawanan. Beda temperatur lebih merata sepanjang alat, sehingga untuk luas yang sama panas yang berpindah lebih besar, dan fluida dingin bahkan dapat keluar lebih panas daripada fluida panas yang keluar. Garis putus-putus pada animasi kedua menunjukkan aliran searah sebagai pembanding.</p>
+  <div class="sim" id="sim-counter"></div>
+  <div class="note"><b>Efektivitas</b>Efektivitas <i>&epsilon;</i> adalah perbandingan panas yang benar-benar berpindah dengan panas maksimum yang mungkin, <i>&epsilon;</i> = <i>Q</i>/[<i>C</i><sub>min</sub>(<i>T</i><sub>h,i</sub> &minus; <i>T</i><sub>c,i</sub>)], dengan <i>C</i> = <i>m&#775;c</i><sub>p</sub>. Suhu keluar pada animasi dihitung dari <i>UA</i> dengan metode efektivitas-NTU.</div>
+</section>
+
+<section id="s3">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>3</b></div>
+    <div class="ttl"><h2>Neraca Energi</h2></div>
+    <div class="c1"><small>Interaksi 1</small>Pengatur kondisi operasi</div>
+    <div class="c2"><small>Hasil</small><i>Q</i> dan temperatur keluar berubah langsung</div>
+  </header>
+  <div class="eq"><i>Q</i> = <i>m&#775;</i><sub>h</sub> <i>c</i><sub>p,h</sub> (<i>T</i><sub>h,i</sub> &minus; <i>T</i><sub>h,o</sub>)</div>
+  <div class="eq"><i>Q</i> = <i>m&#775;</i><sub>c</sub> <i>c</i><sub>p,c</sub> (<i>T</i><sub>c,o</sub> &minus; <i>T</i><sub>c,i</sub>)</div>
+  <p>Panas yang dilepas fluida panas sama dengan panas yang diterima fluida dingin. Laju alir dan kapasitas panas jenis menentukan seberapa cepat suatu fluida berubah temperatur: fluida dengan <i>m&#775;c</i><sub>p</sub> besar berubah temperatur sedikit, fluida dengan <i>m&#775;c</i><sub>p</sub> kecil berubah banyak.</p>
+  <div class="note"><b>Kondisi tetap</b>Alat berukuran <i>U</i> = 500 W/m&sup2;K, <i>A</i> = 8 m&sup2;, aliran berlawanan arah. Yang Anda ubah hanya kondisi operasi.</div>
+  <div class="sim" id="sim-energy"></div>
+</section>
+
+<section id="s4">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>4</b></div>
+    <div class="ttl"><h2>Beda Temperatur Rata-rata Logaritmik</h2></div>
+    <div class="c1"><small>Animasi 4</small>Pembentukan LMTD</div>
+    <div class="c2"><small>Interaksi 2</small>Membandingkan aliran searah dan berlawanan arah</div>
+  </header>
+  <div class="eq">&Delta;<i>T</i><sub>lm</sub> = <fr><n>&Delta;<i>T</i><sub>1</sub> &minus; &Delta;<i>T</i><sub>2</sub></n><d>ln(&Delta;<i>T</i><sub>1</sub> / &Delta;<i>T</i><sub>2</sub>)</d></fr></div>
+  <p>Beda temperatur antara dua fluida berubah sepanjang alat, sehingga gaya pendorong perpindahan panas tidak konstan. LMTD adalah rata-rata yang tepat bagi profil temperatur eksponensial. &Delta;<i>T</i><sub>1</sub> dan &Delta;<i>T</i><sub>2</sub> adalah beda temperatur di kedua ujung: pada aliran searah &Delta;<i>T</i><sub>1</sub> = <i>T</i><sub>h,i</sub> &minus; <i>T</i><sub>c,i</sub> dan &Delta;<i>T</i><sub>2</sub> = <i>T</i><sub>h,o</sub> &minus; <i>T</i><sub>c,o</sub>. Pada aliran berlawanan arah &Delta;<i>T</i><sub>1</sub> = <i>T</i><sub>h,i</sub> &minus; <i>T</i><sub>c,o</sub> dan &Delta;<i>T</i><sub>2</sub> = <i>T</i><sub>h,o</sub> &minus; <i>T</i><sub>c,i</sub>.</p>
+  <p>Tekan tombol konfigurasi. Area oranye di antara dua kurva menunjukkan beda temperatur, dan batang di sisi kanan membandingkan gaya pendorong kedua konfigurasi pada kondisi masuk dan <i>UA</i> yang sama.</p>
+  <div class="note"><b>Kondisi tetap</b><i>U</i> = 500 W/m&sup2;K. Bila &Delta;<i>T</i><sub>1</sub> = &Delta;<i>T</i><sub>2</sub>, LMTD sama dengan nilai tersebut.</div>
+  <div class="sim" id="sim-lmtd"></div>
+</section>
+
+<section id="s5">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>5</b></div>
+    <div class="ttl"><h2>Pengaruh Luas dan Koefisien Perpindahan Panas</h2></div>
+    <div class="c1"><small>Animasi 5</small>Perubahan luas permukaan</div>
+    <div class="c2"><small>Interaksi 3</small>Eksperimen virtual</div>
+  </header>
+  <div class="eq"><i>Q</i> = <i>UA</i> &Delta;<i>T</i><sub>lm</sub></div>
+  <p>Laju perpindahan panas naik bila koefisien perpindahan panas menyeluruh <i>U</i> atau luas <i>A</i> bertambah. Namun <i>Q</i> tidak bisa melebihi <i>Q</i><sub>maks</sub> = <i>C</i><sub>min</sub>(<i>T</i><sub>h,i</sub> &minus; <i>T</i><sub>c,i</sub>), sehingga penambahan luas memberi tambahan yang makin kecil.</p>
+  <p><b>Animasi 5.</b> Geser luas permukaan untuk memanjang atau memendekkan pipa (diameter luar pipa dalam 50 mm) dan lihat titik operasi bergerak pada kurva <i>Q</i> terhadap <i>A</i>.</p>
+  <div class="sim" id="sim-area"></div>
+  <p><b>Eksperimen virtual.</b> Ubah <i>U</i>, <i>A</i>, debit, dan temperatur masuk. Simulator menampilkan <i>Q</i>, temperatur keluar, LMTD, dan grafik temperatur, serta memberi peringatan bila kombinasi data tidak masuk akal secara fisis.</p>
+  <table class="dt"><tr><th>Pasangan fluida (perkiraan)</th><th><i>U</i> tipikal, W/m&sup2;K</th></tr>
+  <tr><td>Air ke air</td><td>850 sampai 1700</td></tr><tr><td>Minyak ke air</td><td>110 sampai 350</td></tr></table>
+  <div class="sim" id="sim-lab"></div>
+</section>
+
+<section id="s6">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>6</b></div>
+    <div class="ttl"><h2>Studi Kasus Industri</h2></div>
+    <div class="c1"><small>Aktivitas</small>Memasukkan data dan menjalankan simulasi</div>
+    <div class="c2"><small>Luaran</small>Alasan pemilihan konfigurasi</div>
+  </header>
+  <blockquote><p>Minyak panas didinginkan menggunakan air dalam penukar kalor pipa ganda. Tentukan kebutuhan luas perpindahan panas dan pilih konfigurasi aliran yang lebih efektif.</p></blockquote>
+  <p>Minyak (<i>c</i><sub>p</sub> = 2,1 kJ/kg&middot;K) harus didinginkan sampai temperatur target dengan air (<i>c</i><sub>p</sub> = 4,18 kJ/kg&middot;K). Isi data, tekan <b>Jalankan simulasi</b>, lalu bandingkan luas yang dibutuhkan kedua konfigurasi. Luas dihitung dari <i>A</i> = <i>Q</i>/(<i>U</i>&Delta;<i>T</i><sub>lm</sub>). Bila debit air terlalu kecil, aliran searah bisa menjadi mustahil karena temperatur air keluar melebihi temperatur minyak keluar.</p>
+  <div class="legend"><span class="t">Air</span><span class="c">Minyak</span></div>
+  <div class="sim" id="sim-case"></div>
+  <h3>Pilihan dan alasan Anda</h3>
+  <div class="q">
+    <h4>Konfigurasi mana yang Anda pilih?</h4>
+    <label><input type="radio" name="cfgpick" value="par"> Aliran searah</label>
+    <label><input type="radio" name="cfgpick" value="ctr"> Aliran berlawanan arah</label>
+    <h4 style="margin-top:12px">Alasan Anda</h4>
+    <textarea id="casewhy" aria-label="Alasan pemilihan konfigurasi" placeholder="Tuliskan alasan dengan menyebut LMTD, luas, dan kelayakan suhu keluar."></textarea>
+    <button type="button" class="qbtn" id="casebtn" style="margin-top:10px">Periksa pilihan</button>
+    <div id="casefb"></div>
+  </div>
+</section>
+
+<section id="s7">
+  <header class="tb">
+    <div class="no"><small>Bagian</small><b>7</b></div>
+    <div class="ttl"><h2>Evaluasi</h2></div>
+    <div class="c1"><small>Isi</small>3 soal konseptual, 2 soal numerik</div>
+    <div class="c2"><small>Aktivitas</small>Prediksi sebelum simulasi dan umpan balik otomatis</div>
+  </header>
+  <h3>Prediksi sebelum simulasi</h3>
+  <div class="q" id="pred"></div>
+  <h3>Soal</h3>
+  <p>Untuk soal numerik, isikan angka dengan koma atau titik desimal; toleransi jawaban 3%.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score" aria-live="polite"></div>
+</section>
+
+<footer>
+  <p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya. Simulasi memakai model tunak yang disederhanakan dan bukan untuk perancangan alat sesungguhnya.</p>
+</footer>
+</div></main>
+<script>
+(function(){
+'use strict';
+/* ===== Konstanta tipografi (satu tempat) ===== */
+var SCALE=2, F_LABEL=8*SCALE, F_SEC=9*SCALE, F_TITLE=10*SCALE, F_CAP=Math.round(9*SCALE*1.2);
+var FONT="'Segoe UI', system-ui, Arial, sans-serif";
+var W=1280, H=720;
+var ctx=null;
+var reduce=false;
+try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+
+function rgba(r,g,b,a){return 'rgba('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+','+(a==null?1:a)+')';}
+var C={bg:'#07080f',t1:rgba(232,238,248,.94),t2:rgba(232,238,248,.55),t3:rgba(232,238,248,.30),yel:rgba(255,206,84,1),
+ ten:[86,196,230],com:[255,112,96],neu:[58,66,90],org:[255,170,80],grn:[110,220,160]};
+function cc(c,a){return rgba(c[0],c[1],c[2],a);}
+function mixc(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function stressColor(s,a){s=clamp(s,-1,1);var t=Math.abs(s);var c=s>=0?mixc(C.neu,C.ten,t):mixc(C.neu,C.com,t);return cc(c,a==null?1:a);}
+function nf(v,d){if(!isFinite(v))return '-';var s=(Math.abs(v)<Math.pow(10,-d)/2?0:v).toFixed(d);return s.replace('.',',');}
+function ease(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+
+/* ===== Helper gambar ===== */
+function txt(s,x,y,size,col,al,bl,wt){ctx.shadowBlur=0;ctx.font=(wt||400)+' '+size+'px '+FONT;ctx.fillStyle=col;ctx.textAlign=al||'left';ctx.textBaseline=bl||'middle';ctx.fillText(s,x,y);}
+function fitSize(str,size,maxW,wt){var s=size;while(s>6){ctx.font=(wt||400)+' '+s+'px '+FONT;if(ctx.measureText(str).width<=maxW)break;s-=1;}return s;}
+function ftxt(s,x,y,size,col,al,bl,wt,maxW){if(maxW)size=fitSize(s,size,maxW,wt);txt(s,x,y,size,col,al,bl,wt);}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+/* kotak berlabel: tinggi = baris x (font + spasi) + padding; teks dicentrasi vertikal */
+function labelBox(lines,cx,cy,o){o=o||{};var size=o.size||F_LABEL,gap=o.gap==null?5:o.gap,pad=o.pad==null?12:o.pad,maxW=o.maxW||400,wt=o.wt||400,i;
+  for(i=0;i<lines.length;i++){var fs=fitSize(lines[i],size,maxW-2*pad,i===0&&o.head?700:wt);if(fs<size)size=fs;}
+  var w=0;for(i=0;i<lines.length;i++){ctx.font=((i===0&&o.head)?700:wt)+' '+size+'px '+FONT;w=Math.max(w,ctx.measureText(lines[i]).width);}
+  w=Math.max(w+2*pad,o.minW||0);var h=lines.length*(size+gap)+pad;var x=o.left?cx:cx-w/2,y=cy-h/2;
+  ctx.shadowBlur=0;rr(x,y,w,h,6);ctx.fillStyle=o.fill||'rgba(20,26,44,.92)';ctx.fill();ctx.lineWidth=o.lw||1.5;ctx.strokeStyle=o.stroke||C.t3;ctx.stroke();
+  for(i=0;i<lines.length;i++){var ty=y+pad/2+(i+.5)*(size+gap);txt(lines[i],x+w/2,ty,size,(i===0&&o.head)?(o.hcol||C.t1):(o.col||C.t2),'center','middle',(i===0&&o.head)?700:wt);}
+  return {x:x,y:y,w:w,h:h};}
+function arrow(x1,y1,x2,y2,col,lw,head){var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);if(len<3)return;var a=Math.atan2(dy,dx),h=head||13;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw||3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-Math.cos(a)*h*.6,y2-Math.sin(a)*h*.6);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-Math.cos(a-.42)*h,y2-Math.sin(a-.42)*h);ctx.lineTo(x2-Math.cos(a+.42)*h,y2-Math.sin(a+.42)*h);ctx.closePath();ctx.fill();ctx.restore();}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();}
+function bgClear(){ctx.setTransform(ctx.dpr,0,0,ctx.dpr,0,0);ctx.shadowBlur=0;ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(232,238,248,.035)';ctx.lineWidth=1;ctx.beginPath();for(var x=40;x<W;x+=40){ctx.moveTo(x,0);ctx.lineTo(x,H);}for(var y=40;y<H;y+=40){ctx.moveTo(0,y);ctx.lineTo(W,y);}ctx.stroke();}
+function head(title,sub){txt(title,40,34,F_CAP,C.t1,'left','middle',700);if(sub)txt(sub,40,62,F_SEC,C.t1,'left','middle',400);}
+function foot(narr,note){if(note)ftxt(note,40,672,F_SEC,C.t3,'left','middle',400,W-80);ftxt(narr,40,700,F_CAP,C.yel,'left','middle',700,W-80);}
+function legendT(x,y){ctx.fillStyle=cc(C.ten,1);ctx.fillRect(x,y-7,14,14);txt('Tarik',x+22,y,F_SEC,C.t2,'left','middle');ctx.fillStyle=cc(C.com,1);ctx.fillRect(x+90,y-7,14,14);txt('Tekan',x+112,y,F_SEC,C.t2,'left','middle');}
+function hatchWall(x,y1,y2,side){ctx.save();ctx.fillStyle='rgba(150,165,190,.18)';ctx.fillRect(side>0?x:x-34,y1,34,y2-y1);ctx.strokeStyle='rgba(232,238,248,.4)';ctx.lineWidth=1.5;ctx.beginPath();for(var yy=y1;yy<y2;yy+=14){if(side>0){ctx.moveTo(x,yy+14);ctx.lineTo(x+34,yy);}else{ctx.moveTo(x-34,yy+14);ctx.lineTo(x,yy);}}ctx.stroke();line(x,y1,x,y2,C.t1,2);ctx.restore();}
+function tri(x,y,w,h,col){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-w/2,y+h);ctx.lineTo(x+w/2,y+h);ctx.closePath();ctx.fillStyle=col||'rgba(150,165,190,.35)';ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();}
+
+/* ===== Data bersama ===== */
+var MAT={steel:{n:'Baja',E:200,G:79},alu:{n:'Aluminium',E:70,G:27},brass:{n:'Kuningan',E:100,G:39},wood:{n:'Kayu (contoh)',E:12,G:0.75}};
+var SEC={
+ rectV:{n:'Persegi 100 x 200 (tegak)',h:200,w:function(y){return 100;},I:100*Math.pow(200,3)/12,A:20000},
+ rectH:{n:'Persegi 200 x 100 (rebah)',h:100,w:function(y){return 200;},I:200*Math.pow(100,3)/12,A:20000},
+ circ:{n:'Lingkaran d = 160',h:160,w:function(y){return 2*Math.sqrt(Math.max(0,6400-y*y));},I:Math.PI*Math.pow(160,4)/64,A:Math.PI*6400},
+ I:{n:'Profil I (h = 200)',h:200,w:function(y){return Math.abs(y)>80?150:10;},I:(150*Math.pow(200,3)-140*Math.pow(160,3))/12,A:2*150*20+160*10}
+};
+/* tegangan geser pada serat y (mm dari sumbu netral), V dalam kN -> MPa */
+function shearTau(sec,V,y){var yy=Math.abs(y),h2=sec.h/2;if(yy>=h2)return 0;var n=240,dy=(h2-yy)/n,Q=0,i;for(i=0;i<n;i++){var e=yy+(i+.5)*dy;Q+=sec.w(e)*e*dy;}var b=sec.w(yy+1e-6);return V*1000*Q/(sec.I*b);}
+
+/* ===== Mesin simulasi ===== */
+var sims=[];
+function Sim(o){
+  var self=this;this.o=o;this.el=document.getElementById(o.id);if(!this.el)return;
+  this.p={};this.s={};this.st={};this.t=0;this.dt=0.016;this.f=1;this.vis=true;this.inputs={};this.rows={};this.lastRead='';
+  this.play=!o.noCycle&&!reduce;
+  var el=this.el;el.innerHTML='<div class="stage"><canvas width="'+W+'" height="'+H+'" role="img" aria-label="'+(o.label||'Animasi interaktif')+'"></canvas></div><div class="tray"><div class="ctls"></div><dl class="reads"></dl><div class="bar"></div></div>';
+  this.cv=el.querySelector('canvas');this.ctx=this.cv.getContext('2d');
+  var ctls=el.querySelector('.ctls');
+  (o.controls||[]).forEach(function(c){
+    var row=document.createElement('div');row.className='row';
+    if(c.btn){var b=document.createElement('button');b.textContent=c.btn;b.type='button';b.addEventListener('click',function(){c.act(self);});row.appendChild(b);ctls.appendChild(row);return;}
+    var lab=document.createElement('label');lab.className='lab';lab.textContent=c.label;var id=o.id+'-'+c.k;lab.htmlFor=id;row.appendChild(lab);
+    if(c.options){var sel=document.createElement('select');sel.id=id;c.options.forEach(function(op){var oo=document.createElement('option');oo.value=op[0];oo.textContent=op[1];sel.appendChild(oo);});sel.value=c.val;self.p[c.k]=c.val;
+      sel.addEventListener('change',function(){self.p[c.k]=sel.value;self.changed(c.k);});row.appendChild(sel);self.inputs[c.k]=sel;}
+    else{var out=document.createElement('output');out.htmlFor=id;row.appendChild(out);var inp=document.createElement('input');inp.type='range';inp.id=id;inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.val;self.p[c.k]=+c.val;self.s[c.k]=+c.val;
+      var dec=c.dec!=null?c.dec:(c.step<1?1:0);
+      var upd=function(){out.textContent=nf(+inp.value,dec)+(c.unit?' '+c.unit:'');};upd();
+      inp.addEventListener('input',function(){self.p[c.k]=+inp.value;upd();self.changed(c.k);});row.appendChild(inp);self.inputs[c.k]=inp;inp._upd=upd;}
+    self.rows[c.k]=row;ctls.appendChild(row);});
+  var bar=el.querySelector('.bar');
+  if(!o.noCycle){var pb=document.createElement('button');pb.type='button';var pl=o.pl||'animasi';pb.textContent=this.play?'Jeda '+pl:'Putar '+pl;pb.addEventListener('click',function(){self.play=!self.play;pb.textContent=self.play?'Jeda '+pl:'Putar '+pl;});bar.appendChild(pb);
+    var nt=document.createElement('span');nt.textContent=o.note||'Angka di bawah adalah nilai pada kondisi penuh.';bar.appendChild(nt);}
+  if(o.init)o.init(this);
+  this.applyDis();
+  if(o.click){this.cv.classList.add('clk');this.cv.addEventListener('click',function(ev){var r=self.cv.getBoundingClientRect();o.click((ev.clientX-r.left)/r.width*W,(ev.clientY-r.top)/r.height*H,self);});}
+  this.resize();
+  if('IntersectionObserver' in window){new IntersectionObserver(function(en){self.vis=en[0].isIntersecting;},{rootMargin:'120px'}).observe(el);}
+  sims.push(this);
+}
+Sim.prototype.resize=function(){var dpr=window.devicePixelRatio||1;this.ctx.dpr=dpr;this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);};
+Sim.prototype.applyDis=function(){if(!this.o.dis)return;var d=this.o.dis(this.p),k;for(k in this.rows){this.rows[k].classList.toggle('dis',!!d[k]);if(this.inputs[k])this.inputs[k].disabled=!!d[k];}};
+Sim.prototype.changed=function(k){if(this.o.onChange)this.o.onChange(k,this);this.applyDis();};
+Sim.prototype.setVal=function(k,v){this.p[k]=v;this.s[k]=v;var i=this.inputs[k];if(i){i.value=v;if(i._upd)i._upd();}};
+Sim.prototype.tick=function(dt){
+  var self=this;this.dt=dt;this.t+=dt;
+  var k;for(k in this.p){if(typeof this.p[k]==='number'){var d=this.p[k]-this.s[k];this.s[k]+=Math.abs(d)<1e-6?d:d*(1-Math.exp(-dt*9));}else this.s[k]=this.p[k];}
+  if(this.o.noCycle||!this.play){this.f=1;}else{var T=5.5,c=(this.t%T)/T;this.f=c<.38?ease(c/.38):c<.6?1:c<.92?1-ease((c-.6)/.32):0;}
+  ctx=this.ctx;bgClear();this.o.draw(this.s,this.t,this.f,this);
+  if(this.o.reads){var r=this.o.reads(this.p,this),key=JSON.stringify(r);if(key!==this.lastRead){this.lastRead=key;this.el.querySelector('.reads').innerHTML=r.map(function(x){return '<div><dt>'+x[0]+'</dt><dd'+(x[2]?' class="'+x[2]+'"':'')+'>'+x[1]+'</dd></div>';}).join('');}}
+};
+var last=0;
+function loop(ts){var dt=Math.min(.05,(ts-last)/1000||.016);last=ts;for(var i=0;i<sims.length;i++){if(sims[i].vis||!sims[i].drawn){sims[i].tick(dt);sims[i].drawn=true;}}requestAnimationFrame(loop);}
+window.__sims=sims;
+window.addEventListener('resize',function(){sims.forEach(function(s){s.resize();});});
+
+var G={Sim:Sim,rgba:rgba,C:C,cc:cc,mixc:mixc,clamp:clamp,stressColor:stressColor,nf:nf,ease:ease,txt:txt,fitSize:fitSize,ftxt:ftxt,rr:rr,labelBox:labelBox,arrow:arrow,line:line,head:head,foot:foot,legendT:legendT,hatchWall:hatchWall,tri:tri,
+  MAT:MAT,SEC:SEC,shearTau:shearTau,W:W,H:H,F:{LABEL:F_LABEL,SEC:F_SEC,TITLE:F_TITLE,CAP:F_CAP},setCtx:function(c){ctx=c;},start:function(){requestAnimationFrame(loop);}};
+window.__G=G;
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,mixc=G.mixc,ease=G.ease,F=G.F,W=G.W,H=G.H,rr=G.rr;
+var ctx=null;
+
+/* ===== Model penukar kalor (efektivitas-NTU, konsisten dengan LMTD) ===== */
+function hx(p,cfg){
+  var Ch=p.mh*p.cph,Cc=p.mc*p.cpc,Cmin=Math.min(Ch,Cc),Cmax=Math.max(Ch,Cc),Cr=Cmin/Cmax,UA=p.UA,NTU=UA/Cmin,par=cfg==='par',eps;
+  if(par)eps=(1-Math.exp(-NTU*(1+Cr)))/(1+Cr);
+  else if(Math.abs(1-Cr)<1e-9)eps=NTU/(1+NTU);
+  else{var e=Math.exp(-NTU*(1-Cr));eps=(1-e)/(1-Cr*e);}
+  var Q=eps*Cmin*(p.Thi-p.Tci),Tho=p.Thi-Q/Ch,Tco=p.Tci+Q/Cc;
+  var d1=par?p.Thi-p.Tci:p.Thi-Tco,d2=par?Tho-Tco:Tho-p.Tci;
+  var lm=Math.abs(d1-d2)<1e-7?d1:((d1>0&&d2>0)?(d1-d2)/Math.log(d1/d2):0);
+  var a=UA*(1/Ch+(par?1:-1)/Cc);
+  function g(u){return Math.abs(a)<1e-9?u:(1-Math.exp(-a*u))/(1-Math.exp(-a));}
+  var m={Ch:Ch,Cc:Cc,Cmin:Cmin,Cr:Cr,NTU:NTU,eps:eps,Q:Q,Tho:Tho,Tco:Tco,d1:d1,d2:d2,lm:lm,Thi:p.Thi,Tci:p.Tci,cfg:cfg,Qmax:Cmin*(p.Thi-p.Tci)};
+  m.Th=function(u){return p.Thi+(Tho-p.Thi)*g(u);};
+  m.Tc=function(u){return m.Th(u)-d1*Math.exp(-a*u);};
+  return m;
+}
+window.__HX=hx;
+function tcol(T,lo,hi,a){var u=clamp((T-lo)/(hi-lo),0,1),c=u<.5?mixc([60,140,255],[255,190,80],u*2):mixc([255,190,80],[255,70,50],(u-.5)*2);return cc(c,a==null?1:a);}
+var CB=[90,160,255],CR=[255,106,77];
+
+/* ===== Gambar penukar kalor ===== */
+function pipeView(m,o){
+  var x0=o.x0,x1=o.x1,w=x1-x0,yc=o.yc,ho=o.ho,hi=o.hi,lo=o.lo,hT=o.hT,par=m.cfg==='par',fr=o.front==null?1:o.front,i,k,gc=ctx.createLinearGradient(x0,0,x1,0),gh=ctx.createLinearGradient(x0,0,x1,0);
+  for(k=0;k<=14;k++){var u=k/14;gc.addColorStop(u,tcol(m.Tc(u),lo,hT,.95));gh.addColorStop(u,tcol(m.Th(u),lo,hT,.95));}
+  ctx.fillStyle='rgba(150,165,190,.2)';ctx.fillRect(x0,yc-ho-8,w,2*ho+16);
+  ctx.fillStyle=gc;ctx.fillRect(x0,yc-ho,w,ho-hi);ctx.fillRect(x0,yc+hi,w,ho-hi);
+  ctx.fillStyle=gh;ctx.fillRect(x0-40,yc-hi,w+80,2*hi);
+  if(fr<.999){ctx.fillStyle='rgba(7,8,15,.82)';ctx.fillRect(x0+fr*w,yc-hi,x1+40-(x0+fr*w),2*hi);
+    if(par)ctx.fillRect(x0+fr*w,yc-ho,x1-(x0+fr*w),ho-hi),ctx.fillRect(x0+fr*w,yc+hi,x1-(x0+fr*w),ho-hi);
+    else ctx.fillRect(x0,yc-ho,(x1-fr*w)-x0,ho-hi),ctx.fillRect(x0,yc+hi,(x1-fr*w)-x0,ho-hi);}
+  ctx.strokeStyle=C.t1;ctx.lineWidth=2.5;ctx.strokeRect(x0,yc-ho,w,2*ho);line(x0-40,yc-hi,x1+40,yc-hi,C.t1,2.5);line(x0-40,yc+hi,x1+40,yc+hi,C.t1,2.5);
+  ctx.fillStyle=C.bg;ctx.fillRect(x0-2,yc-hi+1,4,2*hi-2);ctx.fillRect(x1-2,yc-hi+1,4,2*hi-2);
+  var sw=o.sw||34;ctx.strokeStyle=C.t1;ctx.lineWidth=2.5;
+  [[x0+30,tcol(m.Tc(0),lo,hT,1)],[x1-30,tcol(m.Tc(1),lo,hT,1)]].forEach(function(s2){ctx.fillStyle=s2[1];ctx.fillRect(s2[0]-sw/2,yc-ho-26,sw,26);ctx.strokeRect(s2[0]-sw/2,yc-ho-26,sw,26);});
+  if(o.parts){var n=16,t=o.t;
+    [-hi*.45,hi*.45].forEach(function(dy,r){for(i=0;i<n;i++){var uu=(t*.1+(i+r*.5)/n)%1;if(uu>fr)continue;ctx.beginPath();ctx.arc(x0+uu*w,yc+dy,4.5,0,7);ctx.fillStyle='rgba(255,255,255,.85)';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=tcol(m.Th(uu),lo,hT,1);ctx.stroke();}});
+    [yc-(ho+hi)/2,yc+(ho+hi)/2].forEach(function(cy,r){for(i=0;i<n;i++){var u2=(t*.1+(i+r*.5)/n)%1;if(u2>fr)continue;var xx=par?u2:1-u2;ctx.beginPath();ctx.arc(x0+xx*w,cy,4.5,0,7);ctx.fillStyle='rgba(255,255,255,.85)';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=tcol(m.Tc(xx),lo,hT,1);ctx.stroke();}});}
+  if(o.heat){var dm=Math.max(m.Thi-m.Tci,1e-6);for(k=0;k<8;k++){var uh=(k+.5)/8;if(par?uh>fr:(uh<1-fr||uh>fr))continue;var len=clamp((m.Th(uh)-m.Tc(uh))/dm,0,1)*(ho-hi-8);if(len>4){arrow(x0+uh*w,yc-hi-3,x0+uh*w,yc-hi-3-len,cc(C.org,.95),3,10);arrow(x0+uh*w,yc+hi+3,x0+uh*w,yc+hi+3+len,cc(C.org,.95),3,10);}}}
+  if(o.labels){var lf=F.SEC;
+    ftxt('Th,i = '+nf(m.Thi,0)+' \u00B0C',x0-40,yc+ho+30,lf,C.t1,'left','middle',700,170);ftxt('Th,o = '+nf(m.Tho,1)+' \u00B0C',x1+40,yc+ho+30,lf,C.t1,'right','middle',700,170);
+    var li=par?x0+30:x1-30,lo2=par?x1-30:x0+30;
+    ftxt('Tc,i = '+nf(m.Tci,0)+' \u00B0C',li,yc-ho-42,lf,C.t1,'center','middle',700,150);ftxt('Tc,o = '+nf(m.Tco,1)+' \u00B0C',lo2,yc-ho-42,lf,C.t1,'center','middle',700,150);}
+}
+function tbar(x,y,w,lo,hi){var g=ctx.createLinearGradient(x,0,x+w,0),k;for(k=0;k<=8;k++)g.addColorStop(k/8,tcol(lo+(hi-lo)*k/8,lo,hi,1));ctx.fillStyle=g;ctx.fillRect(x,y,w,12);txt(nf(lo,0)+' \u00B0C',x,y+26,F.SEC,C.t2,'left');txt(nf(hi,0)+' \u00B0C',x+w,y+26,F.SEC,C.t2,'right');}
+function axes(g,lo,hi,xl,yl,xt){var st=(hi-lo)>100?20:10,v;ctx.save();
+  for(v=Math.ceil(lo/st)*st;v<=hi;v+=st){var yy=g.y+g.h-(v-lo)/(hi-lo)*g.h;line(g.x,yy,g.x+g.w,yy,'rgba(232,238,248,.08)',1);txt(nf(v,0),g.x-10,yy,F.SEC,C.t2,'right');}
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);ctx.restore();
+  txt(yl,g.x-10,g.y-20,F.SEC,C.t2,'left');txt(xl,g.x+g.w,g.y+g.h+30,F.SEC,C.t2,'right');if(xt){txt('0',g.x,g.y+g.h+16,F.SEC,C.t3,'center');txt('1',g.x+g.w,g.y+g.h+16,F.SEC,C.t3,'center');}}
+function curve(fn,g,lo,hi,u0,u1,col,lw,dash){if(u1-u0<=0.001)return;ctx.save();ctx.beginPath();for(var i=0;i<=90;i++){var u=u0+(u1-u0)*i/90,x=g.x+u*g.w,y=g.y+g.h-(fn(u)-lo)/(hi-lo)*g.h;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.strokeStyle=col;ctx.lineWidth=lw||4;if(dash)ctx.setLineDash(dash);ctx.lineJoin='round';ctx.stroke();ctx.restore();}
+function yOf(g,lo,hi,T){return g.y+g.h-(T-lo)/(hi-lo)*g.h;}
+function range(m){return [Math.floor((m.Tci-5)/10)*10,Math.ceil((m.Thi+5)/10)*10];}
+var CSTOP=[C.t1];
+function mk(o){return {mh:o.mh,cph:o.cph==null?2.1:o.cph,mc:o.mc,cpc:o.cpc==null?4.18:o.cpc,Thi:o.Thi,Tci:o.Tci,UA:o.UA};}
+
+/* ---------- Animasi 1 ---------- */
+new Sim({id:'sim-flow',label:'Aliran dua fluida pada penukar kalor pipa ganda',noCycle:true,
+ controls:[{k:'cfg',label:'Susunan aliran',options:[['ctr','Berlawanan arah'],['par','Searah']],val:'ctr'},
+  {k:'Thi',label:'Temperatur masuk fluida panas',unit:'\u00B0C',min:60,max:130,step:5,val:100,dec:0},
+  {k:'Tci',label:'Temperatur masuk fluida dingin',unit:'\u00B0C',min:5,max:40,step:5,val:20,dec:0},
+  {k:'mc',label:'Laju alir fluida dingin',unit:'kg/s',min:.5,max:8,step:.5,val:3}],
+ reads:function(p){var m=hx(mk({mh:2,mc:p.mc,Thi:p.Thi,Tci:p.Tci,UA:4}),p.cfg);return [['Th,o',nf(m.Tho,1)+' \u00B0C'],['Tc,o',nf(m.Tco,1)+' \u00B0C'],['Q',nf(m.Q,0)+' kW']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,m=hx(mk({mh:2,mc:s.mc,Thi:s.Thi,Tci:s.Tci,UA:4}),p.cfg),lo=0,hT=140;
+  head('Aliran dua fluida','Minyak panas di pipa dalam, air dingin di annulus; laju alir minyak 2 kg/s, UA = 4 kW/K');
+  var x0=140,x1=1140,yc=290,ho=100,hi=42;pipeView(m,{x0:x0,x1:x1,yc:yc,ho:ho,hi:hi,lo:lo,hT:hT,t:t,parts:true,heat:true,labels:true});
+  var hy=yc+ho+72;arrow(x0+30,hy,x0+150,hy,cc([255,120,90],1),4,14);txt('fluida panas (pipa dalam)',x0+164,hy,F.SEC,C.t1,'left','middle',700);
+  var cx=x1-30,cdir=p.cfg==='par'?1:-1;arrow(cdir>0?x1-330:x1-210,hy,cdir>0?x1-210:x1-330,hy,cc([100,165,255],1),4,14);txt('fluida dingin (annulus)',x1-345,hy,F.SEC,C.t1,'right','middle',700);
+  labelBox(['Panah oranye','arah perpindahan panas: dari fluida panas ke dingin'],420,540,{head:true,maxW:380});
+  labelBox(['Warna fluida','mengikuti temperatur lokalnya'],860,540,{head:true,maxW:380});
+  tbar(x0,610,260,lo,hT);
+  foot(p.cfg==='par'?'Kedua fluida masuk dari kiri: beda temperatur cepat mengecil ke arah kanan.':'Fluida panas masuk dari kiri, fluida dingin dari kanan: keduanya bertukar panas di sepanjang pipa.');}
+});
+
+/* ---------- Animasi 2 dan 3 ---------- */
+function flowSim(id,cfg){
+ var isC=cfg==='ctr';
+ new Sim({id:id,label:isC?'Aliran berlawanan arah':'Aliran searah',pl:'animasi aliran',note:'Angka di bawah adalah nilai pada seluruh panjang alat.',
+  controls:[{k:'mc',label:'Laju alir fluida dingin',unit:'kg/s',min:.5,max:8,step:.5,val:3},
+   {k:'A',label:'Luas permukaan A (U = 500 W/m\u00B2K)',unit:'m\u00B2',min:2,max:20,step:1,val:8,dec:0}].concat(isC?[{k:'cmp',label:'Garis pembanding aliran searah',options:[['1','Tampilkan'],['0','Sembunyikan']],val:'1'}]:[]),
+  reads:function(p){var b={mh:2,mc:p.mc,Thi:100,Tci:20,UA:500*p.A/1000},m=hx(mk(b),cfg),o=[['Th,o',nf(m.Tho,1)+' \u00B0C'],['Tc,o',nf(m.Tco,1)+' \u00B0C',m.Tco>m.Tho?'ok':''],['Q',nf(m.Q,0)+' kW'],['Efektivitas \u03B5',nf(m.eps,3)]];if(isC)o.push(['\u03B5 aliran searah',nf(hx(mk(b),'par').eps,3)]);return o;},
+  draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var b={mh:2,mc:s.mc,Thi:100,Tci:20,UA:500*s.A/1000},m=hx(mk(b),cfg),mp=hx(mk(b),'par'),lo=0,hT=140,fr=f;
+   head(isC?'Counterflow: aliran berlawanan arah':'Parallel flow: aliran searah','Minyak 2 kg/s pada 100 \u00B0C, air pada 20 \u00B0C; grafik tumbuh mengikuti posisi fluida');
+   var x0=120,x1=1160,w=x1-x0,yc=200,ho=55,hi=24;pipeView(m,{x0:x0,x1:x1,yc:yc,ho:ho,hi:hi,lo:lo,hT:hT,t:t,parts:true,heat:false,labels:true,front:fr,sw:28});
+   var g={x:x0,y:345,w:w,h:255},r=[0,140];axes(g,r[0],r[1],'posisi sepanjang alat (0 = ujung masuk fluida panas)','temperatur (\u00B0C)',true);
+   if(isC&&sim.p.cmp==='1'){curve(mp.Th,g,r[0],r[1],0,1,cc(CR,.45),2.5,[8,6]);curve(mp.Tc,g,r[0],r[1],0,1,cc(CB,.45),2.5,[8,6]);txt('putus-putus: aliran searah',x0+10,g.y+16,F.SEC,C.t2,'left','middle',700);}
+   curve(m.Th,g,r[0],r[1],0,fr,cc(CR,1),5);
+   if(isC)curve(m.Tc,g,r[0],r[1],1-fr,1,cc(CB,1),5);else curve(m.Tc,g,r[0],r[1],0,fr,cc(CB,1),5);
+   var hx_=x0+fr*w;line(hx_,g.y,hx_,g.y+g.h,'rgba(255,255,255,.35)',1.5,[5,5]);
+   ctx.beginPath();ctx.arc(hx_,yOf(g,r[0],r[1],m.Th(fr)),7,0,7);ctx.fillStyle=cc(CR,1);ctx.fill();
+   var cu=isC?1-fr:fr;ctx.beginPath();ctx.arc(x0+cu*w,yOf(g,r[0],r[1],m.Tc(cu)),7,0,7);ctx.fillStyle=cc(CB,1);ctx.fill();
+   txt('fluida panas',x0+w*.5,yOf(g,r[0],r[1],m.Th(.5))-18,F.SEC,cc(CR,1),'center','middle',700);txt('fluida dingin',x0+w*.5,yOf(g,r[0],r[1],m.Tc(.5))+20,F.SEC,cc(CB,1),'center','middle',700);
+   if(fr>.97){labelBox(['\u03B5 = '+nf(m.eps,3),isC?'\u03B5 searah = '+nf(mp.eps,3):'Tc,o \u2264 Th,o'],x1-130,g.y+64,{head:true,maxW:230});}
+   foot(isC?(m.Tco>m.Tho?'Fluida dingin keluar ('+nf(m.Tco,1)+' \u00B0C) lebih panas daripada fluida panas keluar ('+nf(m.Tho,1)+' \u00B0C): mustahil pada aliran searah.':'Beda temperatur lebih merata dan efektivitas ('+nf(m.eps,3)+') lebih tinggi daripada aliran searah ('+nf(mp.eps,3)+').'):'Beda temperatur terbesar di ujung masuk dan mengecil cepat; suhu keluar dingin tetap di bawah suhu keluar panas.');}
+ });
+}
+flowSim('sim-parallel','par');flowSim('sim-counter','ctr');
+
+/* ---------- Interaksi 1: neraca energi ---------- */
+function thermo(x,g,Ta,Tb,col,name){var lo=0,hi=160,yy=function(T){return g.y+g.h-(T-lo)/(hi-lo)*g.h;},v;
+  ctx.fillStyle='rgba(150,165,190,.15)';rr(x-22,g.y,44,g.h,10);ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=2;ctx.stroke();
+  for(v=0;v<=hi;v+=20){line(x+22,yy(v),x+30,yy(v),C.t3,1.5);txt(nf(v,0),x+36,yy(v),F.SEC,C.t3,'left');}
+  var gr=ctx.createLinearGradient(0,yy(Math.max(Ta,Tb)),0,yy(Math.min(Ta,Tb)));gr.addColorStop(0,tcol(Math.max(Ta,Tb),lo,hi,1));gr.addColorStop(1,tcol(Math.min(Ta,Tb),lo,hi,1));ctx.fillStyle=gr;ctx.fillRect(x-14,yy(Math.max(Ta,Tb)),28,yy(Math.min(Ta,Tb))-yy(Math.max(Ta,Tb)));
+  ctx.fillStyle=tcol(Math.min(Ta,Tb),lo,hi,1);ctx.fillRect(x-14,yy(Math.min(Ta,Tb)),28,g.y+g.h-yy(Math.min(Ta,Tb))-4);
+  [[Ta,'i'],[Tb,'o']].forEach(function(e){line(x-30,yy(e[0]),x+22,yy(e[0]),C.t1,2.5);});
+  txt(name,x,g.y-22,F.TITLE,C.t1,'center','middle',700);}
+new Sim({id:'sim-energy',label:'Neraca energi penukar kalor',noCycle:true,
+ controls:[{k:'mh',label:'Laju alir fluida panas',unit:'kg/s',min:.2,max:5,step:.1,val:2},
+  {k:'cph',label:'Kapasitas panas jenis fluida panas',unit:'kJ/kg\u00B7K',min:1.5,max:4.5,step:.1,val:2.1},
+  {k:'Thi',label:'Temperatur masuk fluida panas',unit:'\u00B0C',min:60,max:150,step:5,val:100,dec:0},
+  {k:'mc',label:'Laju alir fluida dingin',unit:'kg/s',min:.2,max:8,step:.1,val:3},
+  {k:'cpc',label:'Kapasitas panas jenis fluida dingin',unit:'kJ/kg\u00B7K',min:1.5,max:4.5,step:.1,val:4.18,dec:2},
+  {k:'Tci',label:'Temperatur masuk fluida dingin',unit:'\u00B0C',min:5,max:40,step:5,val:20,dec:0}],
+ reads:function(p){var m=hx(mk({mh:p.mh,cph:p.cph,mc:p.mc,cpc:p.cpc,Thi:p.Thi,Tci:p.Tci,UA:4}),'ctr');return [['Q',nf(m.Q,1)+' kW'],['Th,o',nf(m.Tho,1)+' \u00B0C'],['Tc,o',nf(m.Tco,1)+' \u00B0C'],['Ch = m\u0307 cp,h',nf(m.Ch,2)+' kW/K'],['Cc = m\u0307 cp,c',nf(m.Cc,2)+' kW/K']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var m=hx(mk({mh:s.mh,cph:s.cph,mc:s.mc,cpc:s.cpc,Thi:s.Thi,Tci:s.Tci,UA:4}),'ctr');
+  head('Neraca energi','Panas yang dilepas fluida panas sama dengan panas yang diterima fluida dingin');
+  var gh={x:0,y:140,w:0,h:400};thermo(150,gh,m.Thi,m.Tho,0,'Fluida panas');thermo(1130,gh,m.Tci,m.Tco,0,'Fluida dingin');
+  var yy=function(T){return gh.y+gh.h-T/160*gh.h;};
+  txt('Th,i = '+nf(m.Thi,0)+' \u00B0C',262,yy(m.Thi),F.SEC,C.t1,'left','middle',700);txt('Th,o = '+nf(m.Tho,1)+' \u00B0C',262,yy(m.Tho),F.SEC,C.t1,'left','middle',700);
+  txt('Tc,i = '+nf(m.Tci,0)+' \u00B0C',1070,yy(m.Tci),F.SEC,C.t1,'right','middle',700);txt('Tc,o = '+nf(m.Tco,1)+' \u00B0C',1070,yy(m.Tco),F.SEC,C.t1,'right','middle',700);
+  var al=100+160*clamp(m.Q/900,0,1);for(var i=0;i<3;i++){var ph=((t*.6)+i/3)%1;var ax=520+ph*(240-60);ctx.globalAlpha=Math.sin(ph*Math.PI);arrow(ax,300,ax+70,300,cc(C.org,1),8,24);ctx.globalAlpha=1;}
+  labelBox(['Laju perpindahan panas','Q = '+nf(m.Q,1)+' kW'],640,230,{head:true,size:F.LABEL+2,minW:260,stroke:cc(C.org,1)});
+  labelBox(['Sisi panas','Q = m\u0307h cp,h (Th,i \u2212 Th,o)','= '+nf(m.Ch,2)+' \u00D7 '+nf(m.Thi-m.Tho,1)+' = '+nf(m.Q,1)+' kW'],440,430,{head:true,maxW:330,size:F.LABEL+1});
+  labelBox(['Sisi dingin','Q = m\u0307c cp,c (Tc,o \u2212 Tc,i)','= '+nf(m.Cc,2)+' \u00D7 '+nf(m.Tco-m.Tci,1)+' = '+nf(m.Q,1)+' kW'],840,430,{head:true,maxW:330,size:F.LABEL+1});
+  labelBox(['Kedua sisi sama besar'],640,540,{head:true,minW:280,stroke:cc(C.grn,1),hcol:cc(C.grn,1)});
+  var hotBig=m.Ch>m.Cc;
+  foot(hotBig?'Fluida panas punya kapasitas panas lebih besar: temperaturnya berubah sedikit, fluida dingin berubah banyak.':'Fluida dingin punya kapasitas panas lebih besar: temperaturnya berubah sedikit, fluida panas berubah banyak.','Alat tetap: U = 500 W/m\u00B2K, A = 8 m\u00B2, berlawanan arah');}
+});
+
+/* ---------- Animasi 4 dan Interaksi 2: LMTD ---------- */
+new Sim({id:'sim-lmtd',label:'Pembentukan LMTD',noCycle:true,
+ controls:[{btn:'Aliran searah',act:function(sim){sim.st.cfg='par';}},{btn:'Aliran berlawanan arah',act:function(sim){sim.st.cfg='ctr';}},
+  {k:'mh',label:'Laju alir fluida panas',unit:'kg/s',min:.5,max:5,step:.1,val:2},
+  {k:'mc',label:'Laju alir fluida dingin',unit:'kg/s',min:.5,max:8,step:.1,val:3},
+  {k:'Thi',label:'Temperatur masuk fluida panas',unit:'\u00B0C',min:60,max:150,step:5,val:100,dec:0},
+  {k:'Tci',label:'Temperatur masuk fluida dingin',unit:'\u00B0C',min:5,max:40,step:5,val:20,dec:0},
+  {k:'A',label:'Luas permukaan A',unit:'m\u00B2',min:2,max:20,step:1,val:8,dec:0}],
+ init:function(sim){sim.st.cfg='ctr';},
+ reads:function(p,sim){var b=mk({mh:p.mh,mc:p.mc,Thi:p.Thi,Tci:p.Tci,UA:500*p.A/1000}),m=hx(b,sim.st.cfg),mp=hx(b,'par'),mc=hx(b,'ctr');return [['Konfigurasi',sim.st.cfg==='par'?'Searah':'Berlawanan'],['\u0394T1 dan \u0394T2',nf(m.d1,1)+' dan '+nf(m.d2,1)+' \u00B0C'],['LMTD',nf(m.lm,2)+' \u00B0C'],['UA \u00D7 LMTD',nf(500*p.A/1000*m.lm,1)+' kW'],['LMTD searah',nf(mp.lm,2)+' \u00B0C'],['LMTD berlawanan',nf(mc.lm,2)+' \u00B0C']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var cfg=sim.st.cfg,b=mk({mh:s.mh,mc:s.mc,Thi:s.Thi,Tci:s.Tci,UA:500*s.A/1000}),m=hx(b,cfg),mp=hx(b,'par'),mc=hx(b,'ctr'),r=range(m);
+  head('Pembentukan LMTD','Konfigurasi: '+(cfg==='par'?'aliran searah':'aliran berlawanan arah')+'. Area oranye adalah beda temperatur antara dua fluida');
+  var g={x:110,y:130,w:520,h:300};axes(g,r[0],r[1],'posisi sepanjang alat','temperatur (\u00B0C)',true);
+  ctx.beginPath();var i,n=80;for(i=0;i<=n;i++){var u=i/n;ctx.lineTo(g.x+u*g.w,yOf(g,r[0],r[1],m.Th(u)));}for(i=n;i>=0;i--){var u2=i/n;ctx.lineTo(g.x+u2*g.w,yOf(g,r[0],r[1],m.Tc(u2)));}ctx.closePath();ctx.fillStyle=cc(C.org,.22);ctx.fill();
+  curve(m.Th,g,r[0],r[1],0,1,cc(CR,1),5);curve(m.Tc,g,r[0],r[1],0,1,cc(CB,1),5);
+  [[0,'\u0394T1',m.Th(0),m.Tc(0)],[1,'\u0394T2',m.Th(1),m.Tc(1)]].forEach(function(e){var x=g.x+e[0]*g.w,ya=yOf(g,r[0],r[1],e[2]),yb=yOf(g,r[0],r[1],e[3]);line(x,ya,x,yb,'#fff',2.5);arrow(x,(ya+yb)/2,x,ya+(ya<yb?4:-4),'#fff',2.5,9);arrow(x,(ya+yb)/2,x,yb+(ya<yb?-4:4),'#fff',2.5,9);
+    ftxt(e[1]+' = '+nf(e[2]-e[3],1),x+(e[0]===0?12:-12),(ya+yb)/2,F.SEC,'#fff',e[0]===0?'left':'right','middle',700,200);});
+  txt('fluida panas',g.x+g.w/2,yOf(g,r[0],r[1],m.Th(.5))-18,F.SEC,cc(CR,1),'center','middle',700);txt('fluida dingin',g.x+g.w/2,yOf(g,r[0],r[1],m.Tc(.5))+20,F.SEC,cc(CB,1),'center','middle',700);
+  /* batang perbandingan */
+  var px=720,pw=440,mx=Math.max(mp.lm,mc.lm,1e-6)*1.15;txt('Gaya pendorong: LMTD kedua konfigurasi',px,110,F.TITLE,C.t1,'left','middle',700);
+  [['Searah',mp,cfg==='par'],['Berlawanan arah',mc,cfg==='ctr']].forEach(function(e,k){var y=150+k*70;txt(e[0],px,y-6,F.SEC,e[2]?C.yel:C.t2,'left','middle',e[2]?700:400);ctx.fillStyle='rgba(150,165,190,.18)';ctx.fillRect(px,y+8,pw,26);ctx.fillStyle=e[2]?cc(C.org,1):'rgba(255,170,80,.45)';ctx.fillRect(px,y+8,pw*e[1].lm/mx,26);txt(nf(e[1].lm,2)+' \u00B0C',px+pw*e[1].lm/mx+10,y+21,F.SEC,C.t1,'left','middle',700);});
+  var bigC=mc.lm>=mp.lm,pct=Math.abs(mc.lm-mp.lm)/Math.min(mc.lm,mp.lm||1)*100;
+  labelBox([Math.abs(mc.lm-mp.lm)<.005?'Kedua konfigurasi sama':'Lebih besar: '+(bigC?'berlawanan arah':'searah'),Math.abs(mc.lm-mp.lm)<.005?'':'selisih '+nf(pct,0)+' %'].filter(Boolean),px+pw/2,318,{head:true,maxW:440,stroke:cc(C.grn,1),hcol:cc(C.grn,1)});
+  /* rata-rata aritmetik vs LMTD */
+  var am=(m.d1+m.d2)/2;labelBox(['Konfigurasi terpilih','\u0394T1 = '+nf(m.d1,1)+', \u0394T2 = '+nf(m.d2,1)+' \u00B0C','Rata-rata aritmetik = '+nf(am,2)+' \u00B0C','LMTD = '+nf(m.lm,2)+' \u00B0C'],px+pw/2,440,{head:true,maxW:440,size:F.LABEL+1});
+  labelBox(['Q = UA \u0394Tlm = '+nf(500*s.A/1000,2)+' kW/K \u00D7 '+nf(m.lm,2)+' \u00B0C = '+nf(500*s.A/1000*m.lm,1)+' kW'],640,560,{maxW:760,size:F.LABEL+2,col:C.t1});
+  foot('LMTD selalu lebih kecil atau sama dengan rata-rata aritmetik; makin besar LMTD, makin besar gaya pendorong.','Pada UA yang sama, konfigurasi dengan LMTD lebih besar memindahkan lebih banyak panas.');}
+});
+
+/* ---------- Animasi 5: luas permukaan ---------- */
+var DPIPE=.05;
+new Sim({id:'sim-area',label:'Pengaruh luas permukaan',noCycle:true,
+ controls:[{k:'A',label:'Luas permukaan A',unit:'m\u00B2',min:1,max:20,step:.5,val:6},
+  {k:'U',label:'Koefisien perpindahan panas U',unit:'W/m\u00B2K',min:100,max:1000,step:50,val:500,dec:0},
+  {k:'cfg',label:'Susunan aliran',options:[['ctr','Berlawanan arah'],['par','Searah']],val:'ctr'},
+  {k:'mh',label:'Laju alir fluida panas',unit:'kg/s',min:.5,max:5,step:.1,val:2},
+  {k:'mc',label:'Laju alir fluida dingin',unit:'kg/s',min:.5,max:8,step:.1,val:3}],
+ reads:function(p){var m=hx(mk({mh:p.mh,mc:p.mc,Thi:100,Tci:20,UA:p.U*p.A/1000}),p.cfg);return [['Panjang pipa L',nf(p.A/(Math.PI*DPIPE),1)+' m'],['Q',nf(m.Q,1)+' kW'],['Q / Qmaks',nf(m.Q/m.Qmax*100,0)+' %'],['Tho dan Tco',nf(m.Tho,1)+' dan '+nf(m.Tco,1)+' \u00B0C']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var cfg=sim.p.cfg,b=function(A,U){return mk({mh:s.mh,mc:s.mc,Thi:100,Tci:20,UA:U*A/1000});},m=hx(b(s.A,s.U),cfg);
+  head('Perubahan luas permukaan','Pipa memanjang atau memendek sesuai luas; oli 100 \u00B0C dan air 20 \u00B0C');
+  var x0=120,x1=x0+240+800*(s.A/20),yc=195,ho=55,hi=24;pipeView(m,{x0:x0,x1:x1,yc:yc,ho:ho,hi:hi,lo:0,hT:140,t:t,parts:true,heat:true,labels:false,sw:26});
+  txt('L = '+nf(s.A/(Math.PI*DPIPE),1)+' m  (A = \u03C0 D L, D = 50 mm)',x0,yc+ho+34,F.SEC,C.t1,'left','middle',700);
+  var g={x:120,y:315,w:1040,h:265},Qm=m.Qmax,i,pc={ctr:cc(C.org,1),par:cc([200,200,255],1)};
+  var stq=Qm>400?100:50,ymax=Math.ceil(Qm*1.08/stq)*stq;function yq(Q){return g.y+g.h-Q/ymax*g.h;}
+  for(i=0;i*stq<=ymax;i++){var v=i*stq;line(g.x,yq(v),g.x+g.w,yq(v),'rgba(232,238,248,.08)',1);txt(nf(v,0),g.x-10,yq(v),F.SEC,C.t2,'right');}
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('Q (kW)',g.x-10,g.y-20,F.SEC,C.t2,'left');txt('luas permukaan A (m\u00B2)',g.x+g.w,g.y+g.h+30,F.SEC,C.t2,'right');
+  for(i=0;i<=20;i+=5){txt(nf(i,0),g.x+i/20*g.w,g.y+g.h+16,F.SEC,C.t3,'center');}
+  line(g.x,yq(Qm),g.x+g.w,yq(Qm),C.t2,1.5,[8,6]);ftxt('Qmaks = Cmin (Th,i \u2212 Tc,i) = '+nf(Qm,0)+' kW',g.x+g.w-6,yq(Qm)-14,F.SEC,C.t1,'right','middle',700,420);
+  [['par',[6,5],2.5],['ctr',null,4.5]].forEach(function(e){ctx.save();ctx.beginPath();for(i=0;i<=80;i++){var A=.2+i/80*19.8,Q=hx(b(A,s.U),e[0]).Q,x=g.x+A/20*g.w,y=yq(Q);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.strokeStyle=pc[e[0]];ctx.lineWidth=e[2];if(e[1])ctx.setLineDash(e[1]);ctx.stroke();ctx.restore();});
+  txt('berlawanan arah',g.x+g.w-6,yq(hx(b(19.5,s.U),'ctr').Q)+22,F.SEC,pc.ctr,'right','middle',700);txt('searah',g.x+g.w-6,yq(hx(b(19.5,s.U),'par').Q)+22,F.SEC,pc.par,'right','middle',700);
+  var mx=g.x+s.A/20*g.w,my=yq(m.Q);line(mx,my,mx,g.y+g.h,C.yel,1.5,[4,4]);ctx.beginPath();ctx.arc(mx,my,9,0,7);ctx.fillStyle=C.yel;ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
+  labelBox(['Q = '+nf(m.Q,1)+' kW ('+nf(m.Q/Qm*100,0)+' % Qmaks)'],clamp(mx,260,1040),clamp(my+44,g.y+30,g.y+g.h-24),{maxW:300,col:C.t1,stroke:C.yel});
+  foot('Menambah luas menaikkan Q, tetapi tambahan yang didapat makin kecil ketika Q mendekati Qmaks.');}
+});
+
+/* ---------- Eksperimen virtual ---------- */
+var FLU={oil:{n:'Minyak',cp:2.1,U:[55,700]},water:{n:'Air',cp:4.18,U:[425,3400]}};
+function labCalc(p){var cph=FLU[p.hot].cp,m=hx({mh:p.mh,cph:cph,mc:p.mc,cpc:4.18,Thi:p.Thi,Tci:p.Tci,UA:p.U*p.A/1000},p.cfg),w=[],ur=FLU[p.hot].U;
+  if(p.Thi<=p.Tci+1)w.push('Fluida panas harus lebih panas daripada fluida dingin; perpindahan panas tidak terjadi.');
+  else{ if(m.Tco>100)w.push('Air dingin keluar di atas 100 \u00B0C: pada tekanan atmosfer akan mendidih, model tanpa perubahan fase tidak berlaku.');
+   if(p.hot==='water'&&p.Thi>100)w.push('Air panas masuk di atas 100 \u00B0C pada tekanan atmosfer akan menjadi uap.');
+   if(p.U<ur[0]||p.U>ur[1])w.push('U = '+nf(p.U,0)+' W/m\u00B2K di luar kisaran wajar untuk '+FLU[p.hot].n.toLowerCase()+' ke air ('+nf(ur[0],0)+' sampai '+nf(ur[1],0)+').');
+   var ap=p.cfg==='ctr'?m.Tho-p.Tci:Math.min(m.Tho-m.Tco,999);if(ap<1)w.push('Selisih temperatur di ujung terkecil kurang dari 1 \u00B0C: mendekati batas termodinamika dan butuh luas sangat besar.');
+   if(m.NTU>8)w.push('NTU = '+nf(m.NTU,1)+': penambahan luas hampir tidak menambah Q lagi.');}
+  return {m:m,w:w};}
+new Sim({id:'sim-lab',label:'Eksperimen virtual penukar kalor',noCycle:true,
+ controls:[{k:'hot',label:'Fluida panas',options:[['oil','Minyak (cp = 2,1 kJ/kg\u00B7K)'],['water','Air (cp = 4,18 kJ/kg\u00B7K)']],val:'oil'},
+  {k:'cfg',label:'Susunan aliran',options:[['ctr','Berlawanan arah'],['par','Searah']],val:'ctr'},
+  {k:'U',label:'Koefisien perpindahan panas U',unit:'W/m\u00B2K',min:50,max:4000,step:50,val:350,dec:0},
+  {k:'A',label:'Luas permukaan A',unit:'m\u00B2',min:1,max:40,step:1,val:8,dec:0},
+  {k:'mh',label:'Laju alir fluida panas',unit:'kg/s',min:.2,max:6,step:.1,val:2},
+  {k:'mc',label:'Laju alir air dingin',unit:'kg/s',min:.2,max:8,step:.1,val:3},
+  {k:'Thi',label:'Temperatur masuk fluida panas',unit:'\u00B0C',min:20,max:150,step:5,val:100,dec:0},
+  {k:'Tci',label:'Temperatur masuk air dingin',unit:'\u00B0C',min:5,max:80,step:5,val:20,dec:0}],
+ reads:function(p){var c=labCalc(p),m=c.m,ok=p.Thi>p.Tci+1;return [['Q',ok?nf(m.Q,1)+' kW':'-'],['Th,o',ok?nf(m.Tho,1)+' \u00B0C':'-'],['Tc,o',ok?nf(m.Tco,1)+' \u00B0C':'-'],['LMTD',ok?nf(m.lm,2)+' \u00B0C':'-'],['Efektivitas \u03B5',ok?nf(m.eps,3):'-'],['Peringatan',c.w.length?c.w.length+' peringatan':'Tidak ada',c.w.length?'bad':'ok']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,c=labCalc({hot:p.hot,cfg:p.cfg,U:s.U,A:s.A,mh:s.mh,mc:s.mc,Thi:s.Thi,Tci:s.Tci}),m=c.m,ok=s.Thi>s.Tci+1;
+  head('Eksperimen virtual','Ubah data lalu amati Q, temperatur keluar, LMTD, dan peringatan fisis');
+  if(ok){var lo=Math.min(0,Math.floor((s.Tci-5)/10)*10),hi=Math.max(120,Math.ceil((s.Thi+5)/10)*10);
+   pipeView(m,{x0:100,x1:700,yc:190,ho:50,hi:22,lo:lo,hT:hi,t:t,parts:true,heat:false,labels:true,sw:24});
+   var g={x:100,y:340,w:600,h:250};axes(g,lo,hi,'posisi sepanjang alat','temperatur (\u00B0C)',true);
+   curve(m.Th,g,lo,hi,0,1,cc(CR,1),5);curve(m.Tc,g,lo,hi,0,1,cc(CB,1),5);
+   txt('panas',g.x+g.w+8,yOf(g,lo,hi,m.Th(1))-12,F.SEC,cc(CR,1),'left','middle',700);txt('dingin',g.x+g.w+8,yOf(g,lo,hi,m.Tc(1))+14,F.SEC,cc(CB,1),'left','middle',700);}
+  else{labelBox(['Data tidak masuk akal','Fluida panas tidak lebih panas daripada fluida dingin'],400,300,{head:true,maxW:520,stroke:cc(C.com,1),hcol:cc(C.com,1)});}
+  var px=820;labelBox(['Laju perpindahan panas',ok?'Q = '+nf(m.Q,1)+' kW':'Q = -'],px+180,140,{head:true,minW:360,size:F.LABEL+1});
+  labelBox(['Temperatur keluar',ok?'Th,o = '+nf(m.Tho,1)+' \u00B0C, Tc,o = '+nf(m.Tco,1)+' \u00B0C':'-'],px+180,232,{head:true,minW:360,maxW:400,size:F.LABEL+1});
+  labelBox(['LMTD dan NTU',ok?nf(m.lm,2)+' \u00B0C, NTU = '+nf(m.NTU,2):'-'],px+180,324,{head:true,minW:360,size:F.LABEL+1});
+  if(c.w.length){var wy=420;c.w.slice(0,3).forEach(function(w2){var words=w2.split(' '),ln=[],cur='';words.forEach(function(wd){var tst=cur?cur+' '+wd:wd;ctx.font='400 '+F.LABEL+'px '+'Segoe UI, Arial, sans-serif';if(ctx.measureText(tst).width>330&&cur){ln.push(cur);cur=wd;}else cur=tst;});ln.push(cur);var b=labelBox(ln.slice(0,3),px+180,wy+(ln.slice(0,3).length*21+12)/2,{maxW:380,minW:360,stroke:cc(C.com,1),col:C.t1,gap:5,pad:12});wy+=b.h+10;});}
+  foot(c.w.length?'Peringatan aktif: kombinasi data ini perlu ditinjau ulang sebelum dipercaya.':'Kombinasi data masuk akal secara fisis. Coba naikkan U atau A sampai muncul peringatan.');}
+});
+
+/* ---------- Studi kasus ---------- */
+function caseCalc(p){var Q=p.mh*2.1*(p.Thi-p.Tho),Cc=p.mc*4.18,Tco=p.Tci+Q/Cc,out={Q:Q,Tco:Tco,ok:Q>0&&p.Thi>p.Tci};
+  ['par','ctr'].forEach(function(cf){var d1=cf==='par'?p.Thi-p.Tci:p.Thi-Tco,d2=cf==='par'?p.Tho-Tco:p.Tho-p.Tci,r={feas:out.ok&&d1>0&&d2>0};if(r.feas){r.d1=d1;r.d2=d2;r.lm=Math.abs(d1-d2)<1e-7?d1:(d1-d2)/Math.log(d1/d2);r.A=Q*1000/(p.U*r.lm);r.UA=Q/r.lm;}out[cf]=r;});return out;}
+window.__CASE=caseCalc;
+new Sim({id:'sim-case',label:'Studi kasus pendinginan minyak',noCycle:true,
+ controls:[{k:'mh',label:'Laju alir minyak',unit:'kg/s',min:.5,max:5,step:.1,val:2},
+  {k:'Thi',label:'Temperatur minyak masuk',unit:'\u00B0C',min:80,max:160,step:5,val:120,dec:0},
+  {k:'Tho',label:'Temperatur minyak keluar (target)',unit:'\u00B0C',min:40,max:100,step:5,val:60,dec:0},
+  {k:'Tci',label:'Temperatur air masuk',unit:'\u00B0C',min:10,max:35,step:5,val:25,dec:0},
+  {k:'mc',label:'Laju alir air',unit:'kg/s',min:.5,max:6,step:.1,val:2.5},
+  {k:'U',label:'Koefisien perpindahan panas U',unit:'W/m\u00B2K',min:100,max:600,step:10,val:300,dec:0},
+  {btn:'Jalankan simulasi',act:function(sim){sim.st.t0=sim.t;}}],
+ init:function(sim){sim.st.t0=-100;},
+ reads:function(p){var c=caseCalc(p),f=function(r){return r.feas?nf(r.A,1)+' m\u00B2':'tidak mungkin';};return [['Q yang dilepas minyak',nf(c.Q,0)+' kW'],['Tc,o air',nf(c.Tco,1)+' \u00B0C'],['Luas, searah',f(c.par),c.par.feas?'':'bad'],['Luas, berlawanan',f(c.ctr),c.ctr.feas?'':'bad']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var c=caseCalc({mh:s.mh,Thi:s.Thi,Tho:s.Tho,Tci:s.Tci,mc:s.mc,U:s.U}),fr=clamp((t-sim.st.t0)/5,0,1);fr=ease(fr);
+  head('Pendinginan minyak dengan air','Minyak (merah) didinginkan sampai target; air (biru) memanaskan diri');
+  var r=[Math.floor((s.Tci-10)/10)*10,Math.ceil((s.Thi+10)/10)*10];
+  [['par','Aliran searah',60],['ctr','Aliran berlawanan arah',680]].forEach(function(e){var cf=e[0],x=e[2],res=c[cf],g={x:x,y:170,w:500,h:300};txt(e[1],x,120,F.TITLE,C.t1,'left','middle',700);axes(g,r[0],r[1],'posisi','\u00B0C',false);
+   if(res.feas){var m=hx({mh:s.mh,cph:2.1,mc:s.mc,cpc:4.18,Thi:s.Thi,Tci:s.Tci,UA:res.UA},cf);curve(m.Th,g,r[0],r[1],0,fr,cc(CR,1),5);if(cf==='ctr')curve(m.Tc,g,r[0],r[1],1-fr,1,cc(CB,1),5);else curve(m.Tc,g,r[0],r[1],0,fr,cc(CB,1),5);
+    labelBox(['LMTD = '+nf(res.lm,1)+' \u00B0C','A = '+nf(res.A,1)+' m\u00B2','L = '+nf(res.A/(Math.PI*DPIPE),0)+' m'],x+250,540,{head:true,maxW:300,size:F.LABEL+1});}
+   else{labelBox(['Konfigurasi tidak mungkin',c.ok?'suhu air keluar ('+nf(c.Tco,1)+' \u00B0C) melebihi suhu minyak keluar':'data tidak wajar'],x+250,320,{head:true,maxW:460,stroke:cc(C.com,1),hcol:cc(C.com,1)});}});
+  var best=null;if(c.par.feas&&c.ctr.feas)best=c.ctr.A<=c.par.A?'ctr':'par';else if(c.ctr.feas)best='ctr';else if(c.par.feas)best='par';
+  foot(best?('Konfigurasi lebih efektif: '+(best==='ctr'?'berlawanan arah':'searah')+(c.par.feas&&c.ctr.feas?', luas '+nf(Math.abs(1-c[best==='ctr'?'ctr':'par'].A/c[best==='ctr'?'par':'ctr'].A)*100,0)+' % lebih kecil.':', satu-satunya yang layak.')):'Tidak ada konfigurasi yang layak untuk data ini. Naikkan laju alir air atau ubah target.','Tekan Jalankan simulasi untuk menggambar ulang profil temperatur. Luas dihitung dari A = Q / (U \u00D7 LMTD).');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G,doc=document;
+(function(){var links=[].slice.call(doc.querySelectorAll('#toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});var a=map[e.target.id];if(a){a.classList.add('on');a.classList.add('seen');}}});},{rootMargin:'-20% 0px -70% 0px'});
+  [].forEach.call(doc.querySelectorAll('main section'),function(s){io.observe(s);});})();
+function nf(v,d){return G.nf(v,d);}
+
+/* ---- studi kasus: pilihan dan alasan ---- */
+(function(){var btn=doc.getElementById('casebtn');if(!btn)return;
+  btn.addEventListener('click',function(){var fb=doc.getElementById('casefb'),pick=doc.querySelector('input[name=cfgpick]:checked'),why=doc.getElementById('casewhy').value.trim();
+    var sim=window.__sims.filter(function(s){return s.o.id==='sim-case';})[0],c=window.__CASE(sim.p),h='',cls='fb';
+    if(!pick){fb.className='fb';fb.textContent='Pilih salah satu konfigurasi terlebih dahulu.';return;}
+    var best=null;if(c.par.feas&&c.ctr.feas)best=c.ctr.A<=c.par.A?'ctr':'par';else if(c.ctr.feas)best='ctr';else if(c.par.feas)best='par';
+    var nm={par:'aliran searah',ctr:'aliran berlawanan arah'};
+    if(!best){h='Untuk data yang sedang diatur, tidak ada konfigurasi yang layak. Ubah data pada simulasi lebih dulu.';cls='fb no';}
+    else if(pick.value===best){cls='fb ok';h='Pilihan Anda ('+nm[best]+') tepat untuk data ini. ';
+      if(c.par.feas&&c.ctr.feas)h+='Luas yang dibutuhkan '+nf(c[best].A,1)+' m\u00B2 dibanding '+nf(c[best==='ctr'?'par':'ctr'].A,1)+' m\u00B2 pada konfigurasi lainnya, karena LMTD '+nf(c[best].lm,1)+' \u00B0C lebih besar daripada '+nf(c[best==='ctr'?'par':'ctr'].lm,1)+' \u00B0C.';
+      else h+='Konfigurasi lainnya tidak layak karena suhu air keluar melebihi suhu minyak keluar (temperatur silang).';}
+    else{cls='fb no';h='Untuk data ini konfigurasi yang lebih efektif adalah '+nm[best]+'. ';
+      if(c.par.feas&&c.ctr.feas)h+='Luasnya '+nf(c[best].A,1)+' m\u00B2 dibanding '+nf(c[pick.value].A,1)+' m\u00B2 pada pilihan Anda, karena LMTD-nya lebih besar.';else h+='Pilihan Anda tidak layak karena suhu air keluar melebihi suhu minyak keluar.';}
+    if(why.length<20)h+=' Lengkapi alasan Anda dengan menyebut LMTD, luas, dan kelayakan suhu keluar.';
+    fb.className=cls;fb.style.marginTop='10px';fb.textContent=h;});})();
+
+/* ---- prediksi sebelum simulasi ---- */
+(function(){var box=doc.getElementById('pred');if(!box)return;
+  box.innerHTML='<h4>Skenario: aliran berlawanan arah, minyak 2 kg/s (cp = 2,1 kJ/kg\u00B7K) masuk 120 \u00B0C, air 2,5 kg/s masuk 25 \u00B0C, U = 300 W/m\u00B2K. Luas awal 10 m\u00B2. Bila luas digandakan menjadi 20 m\u00B2, laju perpindahan panas Q akan</h4>'+
+   ['kurang dari dua kali semula','tepat dua kali semula','lebih dari dua kali semula','tidak berubah'].map(function(o,i){return '<label><input type="radio" name="pred" value="'+i+'"> '+o+'</label>';}).join('')+
+   '<button type="button" class="qbtn" id="predbtn" style="margin-top:10px">Jalankan simulasi</button><div id="predfb"></div>';
+  doc.getElementById('predbtn').addEventListener('click',function(){var pk=box.querySelector('input:checked'),fb=doc.getElementById('predfb');if(!pk){fb.className='fb';fb.textContent='Buat prediksi terlebih dahulu, baru jalankan simulasi.';return;}
+    var b=function(A){return window.__HX({mh:2,cph:2.1,mc:2.5,cpc:4.18,Thi:120,Tci:25,UA:300*A/1000},'ctr');},m1=b(10),m2=b(20),r=m2.Q/m1.Q;
+    var ok=+pk.value===0;fb.className='fb '+(ok?'ok':'no');fb.style.marginTop='10px';
+    fb.textContent=(ok?'Prediksi tepat. ':'Prediksi belum tepat. ')+'Hasil simulasi: Q = '+nf(m1.Q,0)+' kW pada 10 m\u00B2 dan '+nf(m2.Q,0)+' kW pada 20 m\u00B2, atau '+nf(r,2)+' kali. Luas dua kali tidak membuat Q dua kali, karena beda temperatur rata-rata mengecil ketika fluida keluar makin mendekati temperatur masuk lawannya, dan Q dibatasi oleh Qmaks = '+nf(m1.Qmax,0)+' kW.';});})();
+
+/* ---- kuis ---- */
+(function(){var host=doc.getElementById('quiz'),sc=doc.getElementById('score');if(!host)return;
+var Q=[
+{t:'mc',q:'Suhu masuk, laju alir, dan UA sama. Dibandingkan aliran searah, LMTD aliran berlawanan arah adalah',o:['selalu lebih kecil','lebih besar atau sama; sama bila salah satu fluida temperaturnya tetap','selalu sama','hanya bergantung pada luas'],a:1,x:'Aliran berlawanan arah menjaga beda temperatur lebih merata, sehingga LMTD-nya lebih besar. Keduanya sama hanya bila salah satu fluida temperaturnya tetap (misalnya kondensasi atau pendidihan).'},
+{t:'mc',q:'Laju alir air pendingin dinaikkan, sedangkan data lain tetap. Temperatur air keluar akan',o:['naik','turun','tidak berubah','tidak dapat ditentukan'],a:1,x:'Q naik sedikit, tetapi kapasitas panas air (m\u0307 cp) naik lebih besar. Karena Tc,o = Tc,i + Q/(m\u0307 cp), temperatur air keluar turun.'},
+{t:'mc',q:'Pernyataan yang benar tentang aliran searah adalah',o:['temperatur fluida dingin keluar dapat melebihi temperatur fluida panas keluar','temperatur fluida dingin keluar tidak dapat melebihi temperatur fluida panas keluar','beda temperatur terkecil terjadi di ujung masuk','Q tidak bergantung pada luas permukaan'],a:1,x:'Pada aliran searah kedua fluida menuju temperatur yang sama, sehingga Tc,o tidak dapat melewati Th,o. Pada aliran berlawanan arah hal itu dimungkinkan.'},
+{t:'num',q:'Air panas 2 kg/s (cp = 4,18 kJ/kg\u00B7K) didinginkan dari 90 \u00B0C menjadi 60 \u00B0C. Hitung laju perpindahan panas.',u:'kW',v:250.8,x:'Q = m\u0307 cp (Th,i \u2212 Th,o) = 2 \u00D7 4,18 \u00D7 (90 \u2212 60) = 250,8 kW.'},
+{t:'num',q:'Aliran berlawanan arah: Th,i = 100 \u00B0C, Th,o = 60 \u00B0C, Tc,i = 20 \u00B0C, Tc,o = 50 \u00B0C. Hitung LMTD.',u:'\u00B0C',v:44.81,x:'\u0394T1 = Th,i \u2212 Tc,o = 50 \u00B0C dan \u0394T2 = Th,o \u2212 Tc,i = 40 \u00B0C. LMTD = (50 \u2212 40)/ln(50/40) = 10/0,2231 = 44,8 \u00B0C.'}
+];
+var st=[];function parse(s){var v=parseFloat(String(s).replace(',','.'));return isNaN(v)?null:v;}
+Q.forEach(function(q,qi){var box=doc.createElement('div');box.className='q';var h=doc.createElement('h4');h.textContent='Soal '+(qi+1)+'. '+q.q;box.appendChild(h);var get;
+  if(q.t==='mc'){q.o.forEach(function(o,i){var l=doc.createElement('label'),r=doc.createElement('input');r.type='radio';r.name='q'+qi;r.value=i;l.appendChild(r);l.appendChild(doc.createTextNode(' '+o));box.appendChild(l);});get=function(){var c=box.querySelector('input:checked');return c?(+c.value===q.a?1:0):-1;};}
+  else{var inp=doc.createElement('input');inp.type='text';inp.inputMode='decimal';inp.setAttribute('aria-label','Jawaban');box.appendChild(inp);box.appendChild(doc.createTextNode(' '+q.u));get=function(){var v=parse(inp.value);return v===null?-1:(Math.abs(v-q.v)<=Math.abs(q.v)*.03?1:0);};}
+  var btn=doc.createElement('button');btn.type='button';btn.className='qbtn';btn.textContent='Periksa jawaban';btn.style.marginTop='10px';box.appendChild(btn);var fb=doc.createElement('div');box.appendChild(fb);st[qi]=null;
+  btn.addEventListener('click',function(){var g=get();if(g<0){fb.className='fb';fb.textContent='Isi atau pilih jawaban terlebih dahulu.';st[qi]=null;}else{fb.className='fb '+(g?'ok':'no');fb.textContent=(g?'Benar. ':'Belum tepat. ')+q.x;st[qi]=g;}score();});host.appendChild(box);});
+function score(){var s=0,n=0;st.forEach(function(v){if(v!==null){n++;s+=v;}});sc.textContent=n?'Skor sementara: '+Math.round(s/Q.length*100)+'% ('+n+' dari '+Q.length+' soal sudah diperiksa)':'';}
+})();
+G.start();
+})();
+</script>
+<div id="anno-screen" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9000;pointer-events:none"></div>
+<script>/* ============================================================================
+   annotation-layer.js  —  lapisan anotasi & alat presenter untuk modul ajar
+   Tanpa dependensi. Satu file. Tempel ke modul HTML mana pun.
+
+   PEMAKAIAN MINIMAL
+   -----------------
+     <div id="stage" style="position:relative"> ...canvas modul kamu... </div>
+     <script src="annotation-layer.js"><\/script>
+     <script> const anno = new AnnotationLayer({ target: '#stage' }); <\/script>
+
+   PEMAKAIAN DENGAN KONTROL ANIMASI (opsional — tombol muncul hanya jika di-isi)
+   ----------------------------------------------------------------------------
+   Kendali animasi (tahap, play/pause, ulang, kecepatan, label) TIDAK diletakkan
+   di toolbar anotasi. Ia dirender sebagai baris tersendiri tepat di bawah
+   elemen target, selalu terlihat, tidak ikut auto-hide.
+
+     const anno = new AnnotationLayer({
+       target: '#stage',
+       steps: 4,                          // jumlah tahap; anotasi disimpan per tahap
+       onStep:   (i) => showStep(i),      // dipanggil saat tahap berubah
+       onPlay:   (playing) => {...},      // tombol play/pause muncul jika ada
+       onSpeed:  (x) => {...},            // 0.5 / 1 / 2
+       onReplay: () => {...},             // ulangi tahap ini
+       onLabels: (hidden) => {...}        // sembunyikan/tampilkan label
+     });
+
+   API
+   ---
+     anno.setStep(i)      anno.step
+     anno.clear()         anno.undo()
+     anno.exportPNG()     anno.destroy()
+     anno.setTool('pen'|'hl'|'rect'|'ellipse'|'arrow'|'line'|'dline'|'text'
+                  |'laser'|'spot'|'shutter'|'lens'|null)
+
+   SHORTCUT
+   --------
+     Spasi / →  tahap berikut        ←  tahap sebelumnya
+     L laser   P pen   H stabilo   T teks
+     R kotak   O bulat   A panah   G garis   D garis putus
+     S spotlight   K kerai (shutter)   B papan kosong   Z lensa zoom
+     1-4 warna   X ganti ketebalan   U undo   C bersihkan
+     N sembunyikan label   E ekspor PNG   F fullscreen   ? bantuan   Esc lepas alat
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var FONT = "'Segoe UI', system-ui, -apple-system, Arial, sans-serif";
+
+  var COLORS = [
+    { name: 'merah',  ink: '#ff3b30', hl: 'rgba(255,59,48,0.30)' },
+    { name: 'kuning', ink: '#ffcc00', hl: 'rgba(255,204,0,0.35)' },
+    { name: 'biru',   ink: '#3aa0ff', hl: 'rgba(58,160,255,0.28)' },
+    { name: 'putih',  ink: '#ffffff', hl: 'rgba(255,255,255,0.25)' }
+  ];
+
+  var WIDTHS = [2.5, 5.5];          // tipis, tebal
+  var TEXT_SIZES = [18, 26];        // mengikuti indeks ketebalan
+
+  // ---------------------------------------------------------------- ikon SVG
+  function svg(d, extra) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+      d + (extra || '') + '</svg>';
+  }
+  var ICON = {
+    laser:  svg('<circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 3.5v2.6M12 17.9v2.6M3.5 12h2.6M17.9 12h2.6"/>'),
+    pen:    svg('<path d="M4 20l3.2-.8L19 7.4a2 2 0 0 0-2.8-2.8L4.4 16.3 4 20z"/>'),
+    hl:     svg('<path d="M5 19h14"/><path d="M8.5 15.5l-1.8.4.5-1.9L15.6 5.6a1.7 1.7 0 0 1 2.4 2.4L8.5 15.5z"/>'),
+    text:   svg('<path d="M5 6.5h14M12 6.5V19M9 19h6"/>'),
+    rect:   svg('<rect x="4.5" y="6.5" width="15" height="11" rx="1.4"/>'),
+    ell:    svg('<ellipse cx="12" cy="12" rx="7.6" ry="5.6"/>'),
+    arrow:  svg('<path d="M4.5 19L19 5.5M19 5.5h-6M19 5.5v6"/>'),
+    line:   svg('<path d="M4.5 19L19.5 5"/>'),
+    dline:  svg('<path d="M4.5 19l3-3M10 13.5l3-3M15.5 8l3-3" />'),
+    spot:   svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>'),
+    shut:   svg('<rect x="3.5" y="4" width="17" height="16" rx="1.6"/><path d="M3.5 12.5h17"/><path d="M10 15.6h4"/>'),
+    board:  svg('<rect x="3" y="5" width="18" height="12.5" rx="1.6"/><path d="M12 17.5V21M8.5 21h7"/>'),
+    lens:   svg('<circle cx="10.8" cy="10.8" r="6.2"/><path d="M15.4 15.4L20.5 20.5M8.4 10.8h4.8M10.8 8.4v4.8"/>'),
+    undo:   svg('<path d="M9 7.5H16a4.5 4.5 0 0 1 0 9H7"/><path d="M11.5 4.5L8.6 7.5l2.9 3"/>'),
+    clear:  svg('<path d="M7 8.5h10l-.9 10a1.6 1.6 0 0 1-1.6 1.5H9.5a1.6 1.6 0 0 1-1.6-1.5L7 8.5z"/><path d="M5.5 8.5h13M10 5.5h4"/>'),
+    png:    svg('<path d="M12 4v10"/><path d="M8.4 10.6L12 14.2l3.6-3.6"/><path d="M5 17.5v1.2A1.3 1.3 0 0 0 6.3 20h11.4a1.3 1.3 0 0 0 1.3-1.3v-1.2"/>'),
+    prev:   svg('<path d="M14.5 6l-6 6 6 6"/>'),
+    next:   svg('<path d="M9.5 6l6 6-6 6"/>'),
+    play:   svg('<path d="M8 5.5l10 6.5-10 6.5V5.5z" fill="currentColor" stroke="none"/>'),
+    pause:  svg('<path d="M9 5.5v13M15 5.5v13" stroke-width="2.6"/>'),
+    replay: svg('<path d="M4.5 12a7.5 7.5 0 1 0 2.6-5.7"/><path d="M4.2 5.2v3.6h3.6"/>'),
+    eye:    svg('<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.4"/>'),
+    eyeoff: svg('<path d="M4 4l16 16"/><path d="M9.6 6.9A9.6 9.6 0 0 1 12 6.5c6 0 9.5 5.5 9.5 5.5a17 17 0 0 1-2.7 3.2M6.2 8.4A17 17 0 0 0 2.5 12S6 17.5 12 17.5c.9 0 1.7-.1 2.5-.3"/>'),
+    full:   svg('<path d="M4 9V4.5h5M20 9V4.5h-5M4 15v4.5h5M20 15v4.5h-5"/>'),
+    help:   svg('<circle cx="12" cy="12" r="8.4"/><path d="M9.8 9.6a2.2 2.2 0 1 1 3 2.1c-.5.3-.8.8-.8 1.4v.4"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>'),
+    grip:   svg('<path d="M7 10h10M7 14h10"/>')
+  };
+
+  // -------------------------------------------------------------------- CSS
+  var CSS = [
+    '.al-root{position:absolute;inset:0;pointer-events:none;z-index:40;font-family:' + FONT + '}',
+    '.al-cv{position:absolute;inset:0;width:100%;height:100%}',
+    '.al-cv.draw{pointer-events:auto;cursor:crosshair;touch-action:none}',
+    
+    '.al-bar{position:absolute;left:9px;right:9px;bottom:12px;margin:0 auto;',
+    ' width:max-content;max-width:calc(100% - 18px);flex-wrap:wrap;justify-content:center;row-gap:2px;',
+    ' display:flex;align-items:center;gap:3px;padding:5px 7px;border-radius:12px;',
+    ' background:rgba(16,20,28,.93);border:1px solid rgba(255,255,255,.13);',
+    ' box-shadow:0 8px 26px rgba(0,0,0,.45);pointer-events:auto;',
+    ' transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(7px)}',
+    '.al-bar.hid{opacity:0;transform:translateY(130%);pointer-events:none}',
+    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%);',
+    ' display:grid;grid-auto-flow:column;grid-auto-rows:30px;grid-auto-columns:max-content;',
+    ' justify-items:center;align-items:center;gap:2px;padding:6px;width:max-content;max-width:none;',
+    ' border-radius:14px;opacity:.94}',
+    '.al-bar.dock .al-sep{display:none}',
+    '.al-bar.dock .al-tm{min-width:36px;font-size:10px;padding:0}',
+    '.al-bar.dock.hid{transform:translate(130%,-50%)}',
+    '.al-bar.dock .al-b{width:30px;height:30px}',
+    '.al-ctl{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;',
+    ' gap:3px;row-gap:2px;margin:9px auto 0;padding:4px 7px;width:max-content;max-width:100%;',
+    ' border-radius:11px;background:rgba(16,20,28,.55);border:1px solid rgba(255,255,255,.10);',
+    ' font-family:' + FONT + '}',
+    '.al-ctl.fs{position:absolute;left:9px;right:9px;bottom:56px;margin:0 auto;z-index:45;',
+    ' background:rgba(16,20,28,.93);pointer-events:auto}',
+    '.al-b{width:29px;height:29px;display:grid;place-items:center;border:0;border-radius:8px;',
+    ' background:transparent;color:#dfe6f2;cursor:pointer;padding:0;transition:background .12s,color .12s}',
+    '.al-b svg{width:18px;height:18px}',
+    '.al-b:hover{background:rgba(255,255,255,.13);color:#fff}',
+    '.al-b.on{background:#2f6df6;color:#fff}',
+    '.al-sep{width:1px;height:20px;background:rgba(255,255,255,.16);margin:0 4px}',
+    '.al-sw{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.32);cursor:pointer;padding:0;margin:0 1px}',
+    '.al-sw.on{border-color:#fff;transform:scale(1.16)}',
+    '.al-w{width:26px;height:29px;display:grid;place-items:center;border:0;background:transparent;cursor:pointer;border-radius:8px;color:#dfe6f2}',
+    '.al-w:hover{background:rgba(255,255,255,.13)}',
+    '.al-w i{display:block;width:15px;border-radius:9px;background:currentColor}',
+    '.al-sp{min-width:31px;height:29px;border:0;background:transparent;color:#dfe6f2;',
+    ' font:600 11px/1 ' + FONT + ';border-radius:8px;cursor:pointer}',
+    '.al-sp:hover{background:rgba(255,255,255,.13)}',
+    '.al-tm{min-width:44px;text-align:center;color:#9fb0c8;font:600 11px/1 ' + FONT + ';',
+    ' letter-spacing:.4px;cursor:pointer;user-select:none;padding:0 2px}',
+    '.al-tm.run{color:#4ade80}',
+    '.al-st{color:#9fb0c8;font:600 11px/1 ' + FONT + ';min-width:34px;text-align:center;user-select:none}',
+    '.al-in{position:absolute;z-index:60;background:rgba(10,14,20,.9);color:#fff;border:1px solid #2f6df6;',
+    ' border-radius:6px;padding:3px 6px;outline:none;font-family:' + FONT + ';pointer-events:auto}',
+    '.al-help{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:70;',
+    ' width:min(430px,86%);padding:16px 18px;border-radius:14px;pointer-events:auto;',
+    ' background:rgba(14,18,26,.97);border:1px solid rgba(255,255,255,.14);color:#dfe6f2;',
+    ' box-shadow:0 18px 50px rgba(0,0,0,.6);font-size:12px;line-height:1.65}',
+    '.al-help h4{margin:0 0 9px;font-size:12.5px;letter-spacing:.3px;color:#fff}',
+    '.al-help table{width:100%;border-collapse:collapse}',
+    '.al-help td{padding:1.5px 0;vertical-align:top}',
+    '.al-help td:first-child{width:96px;color:#8fa6c4;font-weight:600}',
+    '.al-help .x{position:absolute;right:9px;top:7px;border:0;background:transparent;color:#8fa6c4;',
+    ' font-size:17px;cursor:pointer;line-height:1}',
+    '.al-toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:65;',
+    ' background:rgba(14,18,26,.92);color:#dfe6f2;border:1px solid rgba(255,255,255,.13);',
+    ' padding:5px 11px;border-radius:8px;font:600 11px/1 ' + FONT + ';letter-spacing:.3px;',
+    ' opacity:0;transition:opacity .2s ease;pointer-events:none}',
+    '.al-toast.on{opacity:1}'
+  ].join('');
+
+  function injectCSS() {
+    if (document.getElementById('al-css')) return;
+    var s = document.createElement('style');
+    s.id = 'al-css';
+    s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  // =========================================================== kelas utama
+  function AnnotationLayer(opts) {
+    opts = opts || {};
+    var t = opts.target || document.body;
+    this.target = (typeof t === 'string') ? document.querySelector(t) : t;
+    if (!this.target) throw new Error('AnnotationLayer: target tidak ditemukan');
+
+    this.o = opts;
+    this.dock = opts.dock || null;
+    this.page = !!opts.page;
+    this.steps = Math.max(1, opts.steps || 1);
+    this.step = 0;
+    this.pages = {};                 // tahap -> array objek anotasi
+    this.tool = null;
+    this.ci = 0;                     // indeks warna
+    this.wi = 0;                     // indeks ketebalan
+    this.board = false;
+    this.labelsHidden = false;
+    this.playing = false;
+    this.speedIdx = 1;
+    this.speeds = [0.5, 1, 2];
+    this.trail = [];                 // jejak laser
+    this.spotR = 130;
+    this.shutterY = 0.55;            // fraksi tinggi
+    this.shutterDrag = false;
+    this.lens = { x: 0, y: 0, on: false, r: 110, m: 2 };
+    this.cur = null;                 // objek yang sedang digambar
+    this.mouse = { x: -1e4, y: -1e4 };
+    this.timer = { t0: 0, acc: 0, run: false };
+    this.raf = 0;
+
+    injectCSS();
+    this._build();
+    this._bind();
+    this._resize();
+    this._loop();
+  }
+
+  var P = AnnotationLayer.prototype;
+
+  // ------------------------------------------------------------------ build
+  P._build = function () {
+    var self = this;
+    if (getComputedStyle(this.target).position === 'static') {
+      this.target.style.position = 'relative';
+    }
+
+    var root = this.root = document.createElement('div');
+    root.className = 'al-root';
+
+    this.annoCv = document.createElement('canvas');
+    this.annoCv.className = 'al-cv';
+    this.fxCv = document.createElement('canvas');
+    this.fxCv.className = 'al-cv';
+    this.actx = this.annoCv.getContext('2d');
+    this.fctx = this.fxCv.getContext('2d');
+    root.appendChild(this.annoCv);
+    root.appendChild(this.fxCv);
+
+    var bar = this.bar = document.createElement('div');
+    bar.className = 'al-bar' + (this.dock ? ' dock' : ' hid');
+    root.appendChild(bar);
+
+    this.toast = document.createElement('div');
+    this.toast.className = 'al-toast';
+    root.appendChild(this.toast);
+
+    this.target.appendChild(root);
+
+    // ---- tombol (host = bar anotasi, atau baris kendali animasi)
+    function btn(icon, title, fn, key, host) {
+      var b = document.createElement('button');
+      b.className = 'al-b';
+      b.innerHTML = icon;
+      b.title = title + (key ? '  (' + key + ')' : '');
+      b.addEventListener('click', function (e) { e.preventDefault(); fn(b); });
+      (host || bar).appendChild(b);
+      return b;
+    }
+    function sep(host) {
+      var d = document.createElement('div');
+      d.className = 'al-sep';
+      (host || bar).appendChild(d);
+      return d;
+    }
+    this.tb = {};
+    var toolBtn = function (name, icon, title, key) {
+      self.tb[name] = btn(icon, title, function () { self.setTool(self.tool === name ? null : name); }, key);
+    };
+
+    // --- baris kendali animasi: DI LUAR overlay, tepat di bawah animasi.
+    // Kendali animasi milik modul, bukan alat anotasi — jadi ia tetap terlihat,
+    // tidak ikut auto-hide, dan tidak menutupi gambar.
+    var hasStep = this.steps > 1 || !!this.o.onStep;
+    var needCtl = hasStep || this.o.onPlay || this.o.onReplay || this.o.onSpeed || this.o.onLabels;
+    if (needCtl) {
+      var ctl = this.ctl = document.createElement('div');
+      ctl.className = 'al-ctl';
+      if (this.target.parentNode) {
+        this.target.parentNode.insertBefore(ctl, this.target.nextSibling);
+      } else {
+        this.target.appendChild(ctl);
+      }
+      if (hasStep) {
+        btn(ICON.prev, 'Tahap sebelumnya', function () { self.setStep(self.step - 1); }, '←', ctl);
+        this.stLbl = document.createElement('div');
+        this.stLbl.className = 'al-st';
+        ctl.appendChild(this.stLbl);
+        btn(ICON.next, 'Tahap berikut', function () { self.setStep(self.step + 1); }, 'spasi', ctl);
+      }
+      if (this.o.onPlay || this.o.onReplay || this.o.onSpeed) {
+        if (hasStep) sep(ctl);
+        if (this.o.onPlay) {
+          this.tb.play = btn(ICON.play, 'Play / pause', function () { self.togglePlay(); }, '', ctl);
+        }
+        if (this.o.onReplay) {
+          btn(ICON.replay, 'Ulangi tahap ini', function () { self.o.onReplay(); }, '', ctl);
+        }
+        if (this.o.onSpeed) {
+          this.spBtn = document.createElement('button');
+          this.spBtn.className = 'al-sp';
+          this.spBtn.title = 'Kecepatan';
+          this.spBtn.textContent = '1×';
+          this.spBtn.addEventListener('click', function () { self.cycleSpeed(); });
+          ctl.appendChild(this.spBtn);
+        }
+      }
+    }
+    if (this.o.onLabels) {
+      if (needCtl && this.ctl.childNodes.length) sep(this.ctl);
+      this.tb.labels = btn(ICON.eye, 'Sembunyikan / tampilkan label',
+        function () { self.toggleLabels(); }, 'N', this.ctl);
+    }
+
+    // --- alat tunjuk & gambar
+    toolBtn('laser', ICON.laser, 'Laser pointer (memudar)', 'L');
+    toolBtn('pen', ICON.pen, 'Pen', 'P');
+    toolBtn('hl', ICON.hl, 'Stabilo', 'H');
+    this.shapeName = 'rect';
+    this.tb.shape = btn(ICON.rect, 'Bentuk — klik untuk ganti: kotak/bulat/panah/garis/putus', function (b) {
+      var order = ['rect', 'ellipse', 'arrow', 'line', 'dline'];
+      if (self.tool === self.shapeName) {
+        self.shapeName = order[(order.indexOf(self.shapeName) + 1) % order.length];
+      }
+      b.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[self.shapeName];
+      self.setTool(self.shapeName);
+      self._flash({ rect: 'kotak', ellipse: 'bulat', arrow: 'panah', line: 'garis', dline: 'garis putus' }[self.shapeName]);
+    }, 'R/O/A/G/D');
+    toolBtn('text', ICON.text, 'Teks', 'T');
+    sep();
+
+    // --- warna & ketebalan
+    this.swatches = COLORS.map(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'al-sw' + (i === 0 ? ' on' : '');
+      b.style.background = c.ink;
+      b.title = 'Warna ' + c.name + '  (' + (i + 1) + ')';
+      b.addEventListener('click', function () { self.setColor(i); });
+      bar.appendChild(b);
+      return b;
+    });
+    this.wBtn = document.createElement('button');
+    this.wBtn.className = 'al-w';
+    this.wBtn.title = 'Ketebalan  (X)';
+    this.wBtn.innerHTML = '<i></i>';
+    this.wBtn.addEventListener('click', function () { self.setWidth(1 - self.wi); });
+    bar.appendChild(this.wBtn);
+    this._paintWidth();
+    sep();
+
+    // --- fokus perhatian
+    toolBtn('spot', ICON.spot, 'Spotlight (roda mouse = ubah radius)', 'S');
+    toolBtn('shutter', ICON.shut, 'Kerai — tarik tepinya', 'K');
+    this.tb.board = btn(ICON.board, 'Papan kosong', function () { self.toggleBoard(); }, 'B');
+    toolBtn('lens', ICON.lens, 'Lensa zoom 2×', 'Z');
+    sep();
+
+    // --- utilitas
+    btn(ICON.undo, 'Undo', function () { self.undo(); }, 'U');
+    btn(ICON.clear, 'Bersihkan tahap ini', function () { self.clear(); }, 'C');
+    btn(ICON.png, 'Simpan layar + coretan (PNG)', function () { self.exportPNG(); }, 'E');
+    this.tmEl = document.createElement('div');
+    this.tmEl.className = 'al-tm';
+    this.tmEl.textContent = '00:00';
+    this.tmEl.title = 'Timer — klik: mulai/pause, klik ganda: reset';
+    this.tmEl.addEventListener('click', function () { self.toggleTimer(); });
+    this.tmEl.addEventListener('dblclick', function () { self.resetTimer(); });
+    bar.appendChild(this.tmEl);
+    btn(ICON.full, 'Fullscreen', function () { self.fullscreen(); }, 'F');
+    btn(ICON.help, 'Bantuan shortcut', function () { self.help(); }, '?');
+
+    this._paintStep();
+  };
+
+  // ------------------------------------------------------------------- bind
+  P._bind = function () {
+    var self = this;
+    this._on = [];
+    function on(el, ev, fn, o) { el.addEventListener(ev, fn, o); self._on.push([el, ev, fn, o]); }
+
+    // toolbar auto-hide
+    var hideT = 0;
+    this._show = function () {
+      if (self.dock) return;
+      self.bar.classList.remove('hid');
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        if (!self.bar.matches(':hover')) self.bar.classList.add('hid');
+      }, 2600);
+    };
+    on(this.bar, 'mouseenter', function () { clearTimeout(hideT); });
+    on(this.bar, 'mouseleave', this._show);
+
+    // posisi kursor global (canvas fx boleh pointer-events:none)
+    on(window, 'pointermove', function (e) {
+      var r = self.target.getBoundingClientRect();
+      self.mouse.x = e.clientX - r.left;
+      self.mouse.y = e.clientY - r.top;
+      if (self.tool === 'laser') self.trail.push({ x: self.mouse.x, y: self.mouse.y, t: performance.now() });
+      if (self.shutterDrag) self.shutterY = Math.min(0.99, Math.max(0.01, self.mouse.y / r.height));
+      // toolbar muncul saat kursor mendekati tepi bawah (tanpa elemen penghalang)
+      if (self.mouse.x > 0 && self.mouse.x < self.W &&
+          self.mouse.y > self.H - 78 && self.mouse.y < self.H + 30 && !self.cur) self._show();
+    }, { passive: true });
+
+    on(window, 'wheel', function (e) {
+      if (self.tool === 'spot') { self.spotR = Math.min(420, Math.max(50, self.spotR - e.deltaY * 0.3)); }
+      else if (self.tool === 'lens') { self.lens.r = Math.min(260, Math.max(60, self.lens.r - e.deltaY * 0.2)); }
+    }, { passive: true });
+
+    // gambar
+    on(this.annoCv, 'pointerdown', function (e) { self._down(e); });
+    on(window, 'pointermove', function (e) { self._move(e); });
+    on(window, 'pointerup', function (e) { self._up(e); });
+
+    // shutter: tarik tepi (canvas fx tidak menangkap pointer, jadi pakai target)
+    on(this.target, 'pointerdown', function (e) {
+      if (self.tool !== 'shutter') return;
+      var r = self.target.getBoundingClientRect();
+      var y = e.clientY - r.top;
+      if (Math.abs(y - self.shutterY * r.height) < 34) { self.shutterDrag = true; }
+    });
+    on(window, 'pointerup', function () { self.shutterDrag = false; });
+
+    // resize
+    this._ro = (typeof ResizeObserver !== 'undefined')
+      ? new ResizeObserver(function () { self._resize(); })
+      : null;
+    if (this._ro) this._ro.observe(this.target);
+    on(window, 'resize', function () { self._resize(); });
+    if (this.dock && !this.page) on(window, 'scroll', function () { self._fitDock(); }, { passive: true });
+
+    // keyboard
+    on(window, 'keydown', function (e) { self._key(e); });
+
+    // fullscreen: baris kendali ikut masuk ke dalam target agar tetap terlihat
+    on(document, 'fullscreenchange', function () {
+      if (!self.ctl) return;
+      if (document.fullscreenElement === self.target) {
+        self.ctl.classList.add('fs');
+        self.root.appendChild(self.ctl);
+      } else {
+        self.ctl.classList.remove('fs');
+        if (self.target.parentNode) self.target.parentNode.insertBefore(self.ctl, self.target.nextSibling);
+      }
+      self._resize();
+    });
+  };
+
+  P._key = function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key, kl = k.toLowerCase(), self = this, hit = true;
+
+    if (!this.page && (k === ' ' || k === 'ArrowRight')) this.setStep(this.step + 1);
+    else if (!this.page && k === 'ArrowLeft') this.setStep(this.step - 1);
+    else if (kl === 'l') this.setTool(this.tool === 'laser' ? null : 'laser');
+    else if (kl === 'p') this.setTool(this.tool === 'pen' ? null : 'pen');
+    else if (kl === 'h') this.setTool(this.tool === 'hl' ? null : 'hl');
+    else if (kl === 't') this.setTool(this.tool === 'text' ? null : 'text');
+    else if (kl === 'r') this._shape('rect');
+    else if (kl === 'o') this._shape('ellipse');
+    else if (kl === 'a') this._shape('arrow');
+    else if (kl === 'g') this._shape('line');
+    else if (kl === 'd') this._shape('dline');
+    else if (kl === 's') this.setTool(this.tool === 'spot' ? null : 'spot');
+    else if (kl === 'k') this.setTool(this.tool === 'shutter' ? null : 'shutter');
+    else if (kl === 'z') this.setTool(this.tool === 'lens' ? null : 'lens');
+    else if (kl === 'b') this.toggleBoard();
+    else if (kl === 'u') this.undo();
+    else if (kl === 'c') this.clear();
+    else if (kl === 'n') this.toggleLabels();
+    else if (kl === 'e') this.exportPNG();
+    else if (kl === 'f') this.fullscreen();
+    else if (k === '?' || k === '/') this.help();
+    else if (k >= '1' && k <= '4') this.setColor(+k - 1);
+    else if (kl === 'x') this.setWidth(1 - this.wi);
+    else if (k === 'Escape') { this.setTool(null); this._closeHelp(); }
+    else hit = false;
+
+    if (hit) { e.preventDefault(); this._show(); }
+  };
+
+  P._shape = function (name) {
+    this.shapeName = name;
+    this.tb.shape.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[name];
+    this.setTool(name);
+  };
+
+  // ----------------------------------------------------------------- resize
+  P._resize = function () {
+    var r = this.target.getBoundingClientRect();
+    this.W = Math.max(1, Math.round(r.width));
+    this.H = Math.max(1, Math.round(r.height));
+    var dpr = this.dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    [this.annoCv, this.fxCv].forEach(function (c) {
+      c.width = Math.round(r.width * dpr);
+      c.height = Math.round(r.height * dpr);
+    });
+    this.actx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this._fitDock();
+    this._redraw();
+  };
+
+  // bilah vertikal: bagi tombol ke beberapa kolom bila layar pendek
+  P._fitDock = function () {
+    if (!this.dock) return;
+    var kids = [].filter.call(this.bar.children, function (n) { return !n.classList.contains('al-sep'); });
+    var n = kids.length, r = this.target.getBoundingClientRect();
+    // bagian target yang sedang terlihat di layar (bilah berada di tengahnya)
+    var vt = Math.max(0, -r.top), vb = Math.min(this.H, window.innerHeight - r.top);
+    if (vb - vt < 120) { vt = 0; vb = this.H; }
+    var vis = vb - vt;
+    var rows = Math.max(4, Math.floor((vis - 28) / 32));
+    if (rows > n) rows = n;
+    this.bar.style.gridTemplateRows = 'repeat(' + rows + ',30px)';
+    this.bar.style.top = ((vt + vb) / 2) + 'px';
+  };
+
+  // ------------------------------------------------------------ model & I/O
+  P._page = function () {
+    if (!this.pages[this.step]) this.pages[this.step] = [];
+    return this.pages[this.step];
+  };
+
+  P.setTool = function (name) {
+    this.tool = name || null;
+    var drawing = ['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(this.tool) >= 0;
+    this.annoCv.classList.toggle('draw', drawing);
+    for (var k in this.tb) {
+      if (this.tb[k] && ['play', 'labels', 'board', 'shape'].indexOf(k) < 0) {
+        this.tb[k].classList.toggle('on', k === this.tool);
+      }
+    }
+    if (this.tb.shape) {
+      this.tb.shape.classList.toggle('on', ['rect', 'ellipse', 'arrow', 'line', 'dline'].indexOf(this.tool) >= 0);
+    }
+    if (this.tool !== 'laser') this.trail.length = 0;
+    this._show();
+    return this;
+  };
+
+  P.setColor = function (i) {
+    this.ci = i % COLORS.length;
+    var self = this;
+    this.swatches.forEach(function (b, j) { b.classList.toggle('on', j === self.ci); });
+    this._paintWidth();
+    return this;
+  };
+
+  P.setWidth = function (i) {
+    this.wi = i ? 1 : 0;
+    this._paintWidth();
+    return this;
+  };
+
+  P._paintWidth = function () {
+    var h = this.wi ? 6 : 3;
+    this.wBtn.firstChild.style.height = h + 'px';
+    this.wBtn.style.color = COLORS[this.ci].ink;
+  };
+
+  P.setStep = function (i) {
+    var n = this.steps;
+    i = Math.max(0, Math.min(n - 1, i));
+    if (i === this.step) return this;
+    this.step = i;
+    this._paintStep();
+    this._redraw();
+    if (this.o.onStep) this.o.onStep(i);
+    return this;
+  };
+
+  P._paintStep = function () {
+    if (this.stLbl) this.stLbl.textContent = (this.step + 1) + '/' + this.steps;
+  };
+
+  P.togglePlay = function () {
+    this.playing = !this.playing;
+    if (this.tb.play) {
+      this.tb.play.innerHTML = this.playing ? ICON.pause : ICON.play;
+      this.tb.play.classList.toggle('on', this.playing);
+    }
+    if (this.o.onPlay) this.o.onPlay(this.playing);
+    return this;
+  };
+
+  P.cycleSpeed = function () {
+    this.speedIdx = (this.speedIdx + 1) % this.speeds.length;
+    var s = this.speeds[this.speedIdx];
+    if (this.spBtn) this.spBtn.textContent = (s === 0.5 ? '0,5' : s) + '×';
+    if (this.o.onSpeed) this.o.onSpeed(s);
+    return this;
+  };
+
+  P.toggleLabels = function () {
+    if (!this.o.onLabels) return this;
+    this.labelsHidden = !this.labelsHidden;
+    if (this.tb.labels) {
+      this.tb.labels.innerHTML = this.labelsHidden ? ICON.eyeoff : ICON.eye;
+      this.tb.labels.classList.toggle('on', this.labelsHidden);
+    }
+    this.o.onLabels(this.labelsHidden);
+    this._flash(this.labelsHidden ? 'label disembunyikan' : 'label ditampilkan');
+    return this;
+  };
+
+  P.toggleBoard = function () {
+    this.board = !this.board;
+    if (this.tb.board) this.tb.board.classList.toggle('on', this.board);
+    if (this.board && !this.tool) this.setTool('pen');
+    this._redraw();
+    return this;
+  };
+
+  P.undo = function () {
+    this._page().pop();
+    this._redraw();
+    return this;
+  };
+
+  P.clear = function () {
+    this.pages[this.step] = [];
+    this._redraw();
+    return this;
+  };
+
+  P.clearAll = function () {
+    this.pages = {};
+    this._redraw();
+    return this;
+  };
+
+  // ------------------------------------------------------------ input gambar
+  P._pt = function (e) {
+    var r = this.target.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+
+  P._down = function (e) {
+    var t = this.tool;
+    if (['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(t) < 0) return;
+    e.preventDefault();
+    var p = this._pt(e);
+    if (t === 'text') { this._textInput(p); return; }
+    var o = { type: t, ci: this.ci, w: WIDTHS[this.wi] };
+    if (t === 'pen' || t === 'hl') { o.pts = [p]; if (t === 'hl') o.w = WIDTHS[this.wi] * 3.6; }
+    else { o.x1 = p.x; o.y1 = p.y; o.x2 = p.x; o.y2 = p.y; }
+    this.cur = o;
+    try { this.annoCv.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+
+  P._move = function (e) {
+    if (!this.cur) return;
+    var p = this._pt(e);
+    if (this.cur.pts) {
+      var last = this.cur.pts[this.cur.pts.length - 1];
+      if ((p.x - last.x) * (p.x - last.x) + (p.y - last.y) * (p.y - last.y) > 2.2) this.cur.pts.push(p);
+    } else { this.cur.x2 = p.x; this.cur.y2 = p.y; }
+  };
+
+  P._up = function () {
+    if (!this.cur) return;
+    var o = this.cur;
+    this.cur = null;
+    var tiny = o.pts ? o.pts.length < 2
+      : (Math.abs(o.x2 - o.x1) < 4 && Math.abs(o.y2 - o.y1) < 4);
+    if (!tiny) { this._page().push(o); this._redraw(); }
+  };
+
+  P._textInput = function (p) {
+    var self = this, size = TEXT_SIZES[this.wi];
+    var inp = document.createElement('input');
+    inp.className = 'al-in';
+    inp.style.left = p.x + 'px';
+    inp.style.top = (p.y - size * 0.9) + 'px';
+    inp.style.font = '600 ' + size + 'px ' + FONT;
+    inp.style.color = COLORS[this.ci].ink;
+    inp.style.minWidth = '120px';
+    this.root.appendChild(inp);
+    inp.focus();
+    var done = false;
+    function commit() {
+      if (done) return;
+      done = true;
+      var v = inp.value.trim();
+      if (v) {
+        self._page().push({ type: 'text', x: p.x, y: p.y, str: v, size: size, ci: self.ci });
+        self._redraw();
+      }
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+    }
+    inp.addEventListener('keydown', function (e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { commit(); self.annoCv.focus(); }
+      else if (e.key === 'Escape') { done = true; if (inp.parentNode) inp.parentNode.removeChild(inp); }
+    });
+    inp.addEventListener('blur', commit);
+  };
+
+  // -------------------------------------------------------------- menggambar
+  P._redraw = function () {
+    var c = this.actx;
+    c.clearRect(0, 0, this.W, this.H);
+    if (this.board) {
+      c.fillStyle = '#0d1420';
+      c.fillRect(0, 0, this.W, this.H);
+      c.strokeStyle = 'rgba(255,255,255,.055)';
+      c.lineWidth = 1;
+      for (var gy = 34; gy < this.H; gy += 34) {
+        c.beginPath(); c.moveTo(0, gy); c.lineTo(this.W, gy); c.stroke();
+      }
+    }
+    var page = this.pages[this.step] || [];
+    for (var i = 0; i < page.length; i++) this._drawObj(c, page[i]);
+  };
+
+  P._drawObj = function (c, o) {
+    var col = COLORS[o.ci] || COLORS[0];
+    c.save();
+    c.lineCap = 'round';
+    c.lineJoin = 'round';
+    c.shadowBlur = 0;
+    c.setLineDash([]);
+
+    if (o.type === 'text') {
+      c.font = '600 ' + o.size + 'px ' + FONT;
+      c.textBaseline = 'alphabetic';
+      c.fillStyle = 'rgba(0,0,0,.55)';
+      c.fillText(o.str, o.x + 1.2, o.y + 1.2);
+      c.fillStyle = col.ink;
+      c.fillText(o.str, o.x, o.y);
+      c.restore();
+      return;
+    }
+
+    c.strokeStyle = (o.type === 'hl') ? col.hl : col.ink;
+    c.lineWidth = o.w;
+    if (o.type === 'hl') { c.lineCap = 'butt'; }
+
+    if (o.pts) {
+      c.beginPath();
+      c.moveTo(o.pts[0].x, o.pts[0].y);
+      for (var i = 1; i < o.pts.length - 1; i++) {
+        var a = o.pts[i], b = o.pts[i + 1];
+        c.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      }
+      var L = o.pts[o.pts.length - 1];
+      c.lineTo(L.x, L.y);
+      c.stroke();
+    } else if (o.type === 'rect') {
+      var x = Math.min(o.x1, o.x2), y = Math.min(o.y1, o.y2);
+      var w = Math.abs(o.x2 - o.x1), h = Math.abs(o.y2 - o.y1);
+      var rr = Math.min(7, w / 2, h / 2);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(x, y, w, h, rr); else c.rect(x, y, w, h);
+      c.stroke();
+    } else if (o.type === 'ellipse') {
+      c.beginPath();
+      c.ellipse((o.x1 + o.x2) / 2, (o.y1 + o.y2) / 2,
+        Math.abs(o.x2 - o.x1) / 2, Math.abs(o.y2 - o.y1) / 2, 0, 0, Math.PI * 2);
+      c.stroke();
+    } else if (o.type === 'line' || o.type === 'dline') {
+      if (o.type === 'dline') c.setLineDash([o.w * 3, o.w * 2.6]);
+      c.beginPath(); c.moveTo(o.x1, o.y1); c.lineTo(o.x2, o.y2); c.stroke();
+    } else if (o.type === 'arrow') {
+      var ang = Math.atan2(o.y2 - o.y1, o.x2 - o.x1);
+      var hl = Math.max(11, o.w * 3.6);
+      c.beginPath();
+      c.moveTo(o.x1, o.y1);
+      c.lineTo(o.x2 - Math.cos(ang) * hl * 0.72, o.y2 - Math.sin(ang) * hl * 0.72);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(o.x2, o.y2);
+      c.lineTo(o.x2 - Math.cos(ang - 0.42) * hl, o.y2 - Math.sin(ang - 0.42) * hl);
+      c.lineTo(o.x2 - Math.cos(ang + 0.42) * hl, o.y2 - Math.sin(ang + 0.42) * hl);
+      c.closePath();
+      c.fillStyle = col.ink;
+      c.fill();
+    }
+    c.restore();
+  };
+
+  // --------------------------------------------------------- loop efek (fx)
+  P._loop = function () {
+    var self = this;
+    function frame(now) {
+      self.raf = requestAnimationFrame(frame);
+      var c = self.fctx, W = self.W, H = self.H;
+      c.clearRect(0, 0, W, H);
+
+      // kerai
+      if (self.tool === 'shutter') {
+        var sy = self.shutterY * H;
+        c.fillStyle = 'rgba(8,11,17,.97)';
+        c.fillRect(0, sy, W, H - sy);
+        c.fillStyle = 'rgba(255,255,255,.16)';
+        c.fillRect(0, sy - 2, W, 3);
+        c.shadowBlur = 0;
+        c.fillStyle = 'rgba(255,255,255,.5)';
+        c.font = '600 10px ' + FONT;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText('tarik untuk membuka', W / 2, sy + 13);
+        c.textAlign = 'left';
+      }
+
+      // spotlight
+      if (self.tool === 'spot') {
+        c.save();
+        c.beginPath();
+        c.rect(0, 0, W, H);
+        c.moveTo(self.mouse.x + self.spotR, self.mouse.y);
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2, true);
+        c.fillStyle = 'rgba(6,9,14,.74)';
+        c.fill('evenodd');
+        c.restore();
+        var g = c.createRadialGradient(self.mouse.x, self.mouse.y, self.spotR * 0.86, self.mouse.x, self.mouse.y, self.spotR);
+        g.addColorStop(0, 'rgba(6,9,14,0)');
+        g.addColorStop(1, 'rgba(6,9,14,.74)');
+        c.fillStyle = g;
+        c.beginPath();
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      // lensa zoom
+      if (self.tool === 'lens') self._drawLens(c);
+
+      // laser
+      if (self.tool === 'laser') self._drawLaser(c, now);
+
+      // preview objek yang sedang digambar
+      if (self.cur) self._drawObj(c, self.cur);
+
+      // timer
+      if (self.timer.run) self._paintTimer();
+    }
+    this.raf = requestAnimationFrame(frame);
+  };
+
+  P._drawLaser = function (c, now) {
+    var tr = this.trail, LIFE = 620;
+    while (tr.length && now - tr[0].t > LIFE) tr.shift();
+    if (tr.length > 1) {
+      for (var i = 1; i < tr.length; i++) {
+        var a = tr[i - 1], b = tr[i];
+        var age = (now - b.t) / LIFE;
+        c.strokeStyle = 'rgba(255,60,52,' + (0.75 * (1 - age)).toFixed(3) + ')';
+        c.lineWidth = 3.4 * (1 - age) + 1;
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+      }
+    }
+    var m = this.mouse;
+    if (m.x < -1000) return;
+    c.save();
+    c.shadowColor = 'rgba(255,60,52,.95)';
+    c.shadowBlur = 16;
+    c.fillStyle = '#ff3b30';
+    c.beginPath(); c.arc(m.x, m.y, 5.2, 0, Math.PI * 2); c.fill();
+    c.restore();
+    c.shadowBlur = 0;
+    c.fillStyle = 'rgba(255,255,255,.9)';
+    c.beginPath(); c.arc(m.x, m.y, 1.9, 0, Math.PI * 2); c.fill();
+  };
+
+  P._hostCanvases = function () {
+    var out = [], all = (this.page ? document : this.target).querySelectorAll('canvas');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] !== this.annoCv && all[i] !== this.fxCv) out.push(all[i]);
+    }
+    return out;
+  };
+
+  P._drawLens = function (c) {
+    var m = this.mouse, R = this.lens.r, M = this.lens.m;
+    if (m.x < -1000) return;
+    var tr = this.target.getBoundingClientRect();
+    c.save();
+    c.beginPath();
+    c.arc(m.x, m.y, R, 0, Math.PI * 2);
+    c.clip();
+    c.fillStyle = '#0b0f17';
+    c.fillRect(m.x - R, m.y - R, R * 2, R * 2);
+    c.translate(m.x, m.y);
+    c.scale(M, M);
+    c.translate(-m.x, -m.y);
+    var srcs = this._hostCanvases().concat([this.annoCv]);
+    for (var i = 0; i < srcs.length; i++) {
+      var cv = srcs[i], b = cv.getBoundingClientRect();
+      try { c.drawImage(cv, b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.restore();
+    c.shadowBlur = 0;
+    c.strokeStyle = 'rgba(255,255,255,.75)';
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(m.x, m.y, R, 0, Math.PI * 2); c.stroke();
+    c.strokeStyle = 'rgba(0,0,0,.45)';
+    c.lineWidth = 4;
+    c.beginPath(); c.arc(m.x, m.y, R + 3, 0, Math.PI * 2); c.stroke();
+  };
+
+  // ------------------------------------------------------------------ timer
+  P.toggleTimer = function () {
+    var t = this.timer;
+    if (t.run) { t.acc += performance.now() - t.t0; t.run = false; }
+    else { t.t0 = performance.now(); t.run = true; }
+    this.tmEl.classList.toggle('run', t.run);
+    this._paintTimer();
+    return this;
+  };
+  P.resetTimer = function () {
+    this.timer = { t0: performance.now(), acc: 0, run: this.timer.run };
+    this._paintTimer();
+    return this;
+  };
+  P._paintTimer = function () {
+    var t = this.timer;
+    var ms = t.acc + (t.run ? performance.now() - t.t0 : 0);
+    var s = Math.floor(ms / 1000);
+    this.tmEl.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  };
+
+  // ----------------------------------------------------------------- ekspor
+  P.exportPNG = function () {
+    var dpr = this.dpr, tr = this.target.getBoundingClientRect();
+    var out = document.createElement('canvas');
+    out.width = Math.round(this.W * dpr);
+    out.height = Math.round(this.H * dpr);
+    var c = out.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var bg = getComputedStyle(this.target).backgroundColor;
+    c.fillStyle = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0e1320' : bg;
+    c.fillRect(0, 0, this.W, this.H);
+
+    var hosts = this._hostCanvases();
+    for (var i = 0; i < hosts.length; i++) {
+      var b = hosts[i].getBoundingClientRect();
+      try { c.drawImage(hosts[i], b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.drawImage(this.annoCv, 0, 0, this.W, this.H);
+
+    var a = document.createElement('a');
+    a.download = 'anotasi-tahap-' + (this.step + 1) + '.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+    this._flash('PNG disimpan');
+    return this;
+  };
+
+  P.fullscreen = function () {
+    var el = this.page ? document.documentElement : this.target;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+    return this;
+  };
+
+  // ------------------------------------------------------------ bantuan/toast
+  P._flash = function (msg) {
+    var self = this;
+    this.toast.textContent = msg;
+    this.toast.classList.add('on');
+    clearTimeout(this._ft);
+    this._ft = setTimeout(function () { self.toast.classList.remove('on'); }, 1100);
+  };
+
+  P._closeHelp = function () {
+    if (this._helpEl && this._helpEl.parentNode) this._helpEl.parentNode.removeChild(this._helpEl);
+    this._helpEl = null;
+  };
+
+  P.help = function () {
+    if (this._helpEl) { this._closeHelp(); return this; }
+    var rows = [
+      ['Spasi / →', 'tahap berikut'],
+      ['←', 'tahap sebelumnya'],
+      ['L / P / H / T', 'laser · pen · stabilo · teks'],
+      ['R / O / A / G / D', 'kotak · bulat · panah · garis · garis putus'],
+      ['S / K / B / Z', 'spotlight · kerai · papan kosong · lensa zoom'],
+      ['1 – 4', 'warna'],
+      ['X', 'ganti ketebalan'],
+      ['U / C', 'undo · bersihkan tahap ini'],
+      ['N', 'sembunyikan / tampilkan label'],
+      ['E / F', 'ekspor PNG · fullscreen'],
+      ['Roda mouse', 'ubah radius spotlight / lensa'],
+      ['Esc', 'lepas alat']
+    ];
+    var d = document.createElement('div');
+    d.className = 'al-help';
+    d.innerHTML = '<button class="x" title="Tutup">&times;</button><h4>Shortcut presenter</h4><table>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
+      '</table>';
+    var self = this;
+    d.querySelector('.x').addEventListener('click', function () { self._closeHelp(); });
+    this.root.appendChild(d);
+    this._helpEl = d;
+    return this;
+  };
+
+  // ---------------------------------------------------------------- destroy
+  P.destroy = function () {
+    cancelAnimationFrame(this.raf);
+    this._on.forEach(function (a) { a[0].removeEventListener(a[1], a[2], a[3]); });
+    if (this._ro) this._ro.disconnect();
+    if (this.ctl && this.ctl.parentNode) this.ctl.parentNode.removeChild(this.ctl);
+    if (this.root.parentNode) this.root.parentNode.removeChild(this.root);
+  };
+
+  global.AnnotationLayer = AnnotationLayer;
+  if (typeof module !== 'undefined' && module.exports) module.exports = AnnotationLayer;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>window.anno=new AnnotationLayer({target:'#anno-screen',page:true,dock:'right'});</script>
+<script>(function(){
+  var TEXT='Unverified', SIZE=70;
+  var st=document.createElement('style');
+  st.textContent='#wm-diag{position:fixed;left:0;top:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;z-index:8000;user-select:none}'
+   +'#wm-diag span{position:absolute;left:50%;top:50%;white-space:nowrap;font:300 '+SIZE+'px/1 "Segoe UI Light","Segoe UI",system-ui,Arial,sans-serif;'
+   +'letter-spacing:.14em;color:rgb(115,132,165);opacity:.62;transform-origin:50% 50%}'
+   +'@media print{#wm-diag{position:fixed}}';
+  document.head.appendChild(st);
+  var box=document.createElement('div');box.id='wm-diag';box.setAttribute('aria-hidden','true');
+  var sp=document.createElement('span');sp.textContent=TEXT;box.appendChild(sp);
+  document.body.appendChild(box);
+  function fit(){
+    var vv=window.visualViewport,w=vv?vv.width:window.innerWidth,h=vv?vv.height:window.innerHeight;
+    var ang=-Math.atan2(h,w)*180/Math.PI;          /* mengikuti diagonal layar */
+    var diag=Math.sqrt(w*w+h*h),fs=SIZE;
+    sp.style.fontSize=fs+'px';
+    var tw=sp.getBoundingClientRect().width; /* lebar sebelum rotasi */
+    sp.style.transform='translate(-50%,-50%)';
+    tw=sp.offsetWidth;
+    if(tw>diag*0.8){fs=Math.max(24,Math.floor(fs*diag*0.8/tw));sp.style.fontSize=fs+'px';}
+    sp.style.transform='translate(-50%,-50%) rotate('+ang.toFixed(3)+'deg)';
+  }
+  fit();
+  ['resize','orientationchange','fullscreenchange'].forEach(function(e){window.addEventListener(e,fit);});
+  document.addEventListener('fullscreenchange',fit);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',fit);
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(document.documentElement);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body></html>

@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medan dan Gaya Listrik</title>
+<style>
+:root{
+  --ink:#14202b; --ink2:#43525f; --line:#b9c5d1; --paper:#eaeff4; --white:#fbfcfd;
+  --accent:#5a3ea8; --ten:#1a8fb3; --com:#cf4a39; --stage:#07080f; --amber:#8a5a00;
+  --serif:'Cambria Math','STIX Two Math','Cambria','Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans)}
+a{color:var(--accent)}
+.toc{position:fixed;left:0;top:0;bottom:0;width:272px;padding:22px 18px;overflow:auto;background:var(--white);border-right:1.5px solid var(--ink);z-index:20}
+.toc h1{font-size:15px;line-height:1.3;margin:0 0 4px;font-weight:700}
+.toc p{margin:0 0 14px;font-size:13px;color:var(--ink2);line-height:1.4}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 8px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.35;border-left:3px solid transparent}
+.toc li a b{font-variant-numeric:tabular-nums;color:var(--ink2)}
+.toc li a:hover{background:var(--paper)}
+.toc li a.on{border-left-color:var(--accent);background:var(--paper);font-weight:600}
+.toc li a.seen b::after{content:"\2713";color:var(--accent);margin-left:2px}
+main{margin-left:272px;padding:0 40px 80px}
+.wrap{max-width:900px;margin:0 auto}
+.cover{padding:56px 0 34px;border-bottom:1.5px solid var(--ink)}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 18px;font-size:14px;color:var(--ink2)}
+.cover h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;margin:0 0 14px;letter-spacing:-.01em}
+.cover h1 span{display:block;font-size:.5em;font-weight:500;color:var(--ink2);letter-spacing:0;margin-top:10px}
+.cover p{max-width:62ch;margin:0}
+section{padding:46px 0 10px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.tb{display:grid;grid-template-columns:74px 1fr 1fr;border:1.5px solid var(--ink);background:var(--white);margin:0 0 26px}
+.tb>div{padding:10px 14px}
+.tb small{display:block;font-size:12.5px;color:var(--ink2);line-height:1.3;margin-bottom:2px}
+.tb .no{grid-row:1/3;border-right:1.5px solid var(--ink);text-align:center;display:flex;flex-direction:column;justify-content:center}
+.tb .no b{font-size:34px;line-height:1}
+.tb .ttl{grid-column:2/4;border-bottom:1.5px solid var(--ink)}
+.tb h2{margin:0;font-size:clamp(20px,2.6vw,27px);line-height:1.25}
+.tb .c1{border-right:1.5px solid var(--ink)}
+.tb .c1,.tb .c2{font-size:14.5px;line-height:1.45}
+h3{font-size:19px;margin:30px 0 8px;line-height:1.3}
+p,li{max-width:70ch}
+ul,ol{padding-left:1.3em}
+li{margin:.25em 0}
+.eq{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);font:italic 20px/1.9 var(--serif);text-align:center;overflow-x:auto}
+.eq i,p i,li i,td i,dd i{font-family:var(--serif);font-size:1.06em}
+.eq .u,.eq .n{font-style:normal}
+.eq .sp{display:inline-block;width:2em}
+fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .2em;line-height:1.25}
+fr>n{border-bottom:1.3px solid currentColor;padding:0 .3em}
+fr>d{padding:0 .3em}
+sub,sup{line-height:0;font-size:.7em}
+.note{margin:18px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--white);font-size:15.5px}
+.note b{display:block;margin-bottom:2px}
+.warn{border-left-color:#b76e00}
+blockquote{margin:16px 0;padding:10px 18px;border-left:4px solid var(--ink);background:var(--white);font-size:16px}
+blockquote p{margin:0}
+table.dt{border-collapse:collapse;margin:14px 0;font-size:15px;background:var(--white);width:100%;max-width:70ch}
+table.dt th,table.dt td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+table.dt th{background:#e2e9f0}
+.sim{margin:22px 0 26px;border:1.5px solid var(--ink);background:var(--white)}
+.sim .stage{background:var(--stage);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sim canvas{display:block;width:100%;min-width:760px;height:auto;aspect-ratio:16/9}
+.sim canvas.clk{cursor:pointer}
+.sim .tray{padding:14px 16px 12px;border-top:1.5px solid var(--ink)}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 26px}
+.row{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:center;font-size:14.5px}
+.row .lab{grid-column:1;line-height:1.3}
+.row output{grid-column:2;font-variant-numeric:tabular-nums;font-weight:600;font-size:14.5px}
+.row input[type=range]{grid-column:1/3;width:100%;margin:2px 0 0;accent-color:var(--accent);min-height:26px}
+.row select{grid-column:1/3;width:100%;padding:6px 8px;font:inherit;font-size:14.5px;background:#fff;border:1px solid var(--ink2);color:var(--ink);min-height:36px}
+.row.dis{opacity:.4}
+.row button,.bar button,.mapbtn button,.qbtn{font:inherit;font-size:14.5px;padding:7px 14px;background:var(--ink);color:#fff;border:0;cursor:pointer;min-height:36px}
+.row button:hover,.bar button:hover{background:var(--accent)}
+.reads{display:flex;flex-wrap:wrap;gap:8px 26px;margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--line)}
+.reads div{min-width:120px}
+.reads dt{font-size:12.5px;color:var(--ink2);line-height:1.3}
+.reads dd{margin:0;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.reads dd.bad{color:var(--com)}
+.reads dd.ok{color:var(--accent)}
+.bar{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.legend{display:flex;gap:16px;margin:0 0 6px;font-size:14px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.legend .t::before{background:#ff5470}.legend .c::before{background:#4d8bff}
+.mapbtn{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.mapbtn button{background:var(--white);color:var(--ink);border:1.5px solid var(--ink)}
+.mapbtn button.on{background:var(--ink);color:#fff}
+.detail{background:var(--white);border:1px solid var(--line);padding:12px 16px;font-size:15.5px}
+.detail h4{margin:0 0 4px;font-size:17px}
+.detail p{margin:4px 0}
+.chips a{display:inline-block;margin:2px 6px 2px 0;padding:1px 9px;border:1px solid var(--accent);text-decoration:none;font-size:14px}
+.pre .it{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.pre .opt{display:flex;gap:6px;flex-wrap:wrap}
+.pre .opt button{font:inherit;font-size:14px;padding:5px 11px;border:1.5px solid var(--ink);background:var(--white);cursor:pointer;min-height:34px}
+.pre .opt button.on{background:var(--ink);color:#fff}
+.q{background:var(--white);border:1px solid var(--line);padding:14px 18px;margin:14px 0}
+.q h4{margin:0 0 8px;font-size:16.5px;line-height:1.45;font-weight:600}
+.q label{display:block;padding:5px 0;cursor:pointer;line-height:1.45}
+.q input[type=text]{font:inherit;padding:6px 8px;width:9em;border:1px solid var(--ink2)}
+.q .fb{margin-top:8px;padding:8px 12px;font-size:15px;border-left:4px solid var(--line)}
+.q .fb.ok{border-left-color:var(--accent);background:#e4f1f2}
+.q .fb.no{border-left-color:var(--com);background:#f7e6e3}
+.sub2{margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+textarea{width:100%;max-width:70ch;min-height:110px;font:inherit;padding:10px;border:1px solid var(--ink2);background:#fff}
+.score{font-size:19px;font-weight:700;margin:10px 0}
+.closing{margin:34px 0 0;padding:22px 26px;background:var(--ink);color:#f2f6fa;font-size:19px;line-height:1.55}
+footer{margin-top:34px;padding-top:14px;border-top:1.5px solid var(--ink);font-size:13.5px;color:var(--ink2)}
+@media (max-width:980px){
+  .toc{position:sticky;top:0;width:auto;bottom:auto;padding:8px 10px;border-right:0;border-bottom:1.5px solid var(--ink);display:flex;gap:10px;align-items:center;overflow-x:auto}
+  .toc h1,.toc p{display:none}
+  .toc ol{display:flex;gap:2px}
+  .toc li a{grid-template-columns:auto;padding:6px 10px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .toc li a span{display:none}
+  .toc li a.on{border-bottom-color:var(--accent)}
+  main{margin-left:0;padding:0 16px 60px}
+  html{scroll-padding-top:60px}
+  .tb{grid-template-columns:60px 1fr}
+  .tb .ttl{grid-column:2}
+  .tb .c1{grid-column:1/3;border-right:0;border-top:0;border-bottom:1.5px solid var(--ink)}
+  .tb .c2{grid-column:1/3}
+  .tb .no{grid-row:auto}
+  .tb .c1,.tb .c2{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc{display:none}main{margin:0}.sim .tray{display:none}}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Daftar subbab">
+  <h1>Medan dan Gaya Listrik</h1>
+  <p>Fisika II</p>
+  <ol id="toc">
+    <li><a href="#s1"><b>1</b><span>Pengantar</span></a></li>
+    <li><a href="#s2"><b>2</b><span>Hukum Coulomb</span></a></li>
+    <li><a href="#s3"><b>3</b><span>Medan muatan titik</span></a></li>
+    <li><a href="#s4"><b>4</b><span>Garis medan dan superposisi</span></a></li>
+    <li><a href="#s5"><b>5</b><span>Distribusi muatan kontinu</span></a></li>
+    <li><a href="#s6"><b>6</b><span>Dipol listrik</span></a></li>
+    <li><a href="#s7"><b>7</b><span>Gerak muatan dalam medan</span></a></li>
+    <li><a href="#s8"><b>8</b><span>Kesimpulan</span></a></li>
+  </ol>
+</nav>
+<main><div class="wrap">
+
+<div class="cover">
+  <div class="meta"><span>Mata kuliah: Fisika II</span><span>Bab: Medan dan Gaya Listrik</span><span>Sasaran: mahasiswa tingkat awal</span></div>
+  <h1>Medan dan Gaya Listrik<span>Dari gaya antar dua muatan sampai gerak muatan dalam medan seragam</span></h1>
+  <p>Bab ini menelusuri satu alur: muatan listrik menimbulkan gaya pada muatan lain, gaya itu dijelaskan lewat medan listrik yang ditinggalkan tiap muatan di ruang sekitarnya, dan medan itu pada gilirannya menentukan bagaimana muatan lain bergerak.</p>
+  <h3>Tujuan pembelajaran</h3>
+  <p>Setelah mempelajari bab ini, mahasiswa mampu:</p>
+  <ul>
+    <li>menjelaskan konsep muatan listrik dan hukum kekekalan muatan;</li>
+    <li>menghitung gaya antar dua muatan titik dengan hukum Coulomb;</li>
+    <li>menjelaskan medan listrik sebagai besaran vektor dan menghitungnya untuk muatan titik;</li>
+    <li>menggambarkan garis medan listrik dan menerapkan prinsip superposisi;</li>
+    <li>menghitung medan listrik akibat distribusi muatan kontinu sederhana;</li>
+    <li>menjelaskan momen dipol serta torsi yang dialaminya dalam medan luar;</li>
+    <li>menganalisis gerak muatan dalam medan listrik seragam.</li>
+  </ul>
+</div>
+
+<section id="s1">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>1</b></div>
+    <div class="ttl"><h2>Pengantar: Tujuan, Referensi, dan Disklaimer</h2></div>
+    <div class="c1"><small>Animasi utama</small>Peta konsep Medan dan Gaya Listrik</div>
+    <div class="c2"><small>Interaksi peserta</small>Menjelajahi peta materi dan melakukan asesmen awal</div>
+  </header>
+  <h3>Deskripsi</h3>
+  <p>Medan dan gaya listrik adalah dasar bagi hampir seluruh listrik-magnet: dari petir dan kapasitor sampai tabung sinar katoda dan spektrometer massa. Bab ini dimulai dari gaya antara dua muatan titik, membangun konsep medan sebagai representasi gaya per satuan muatan, lalu menutup dengan bagaimana medan itu menggerakkan muatan.</p>
+  <h3>Peta konsep</h3>
+  <p>Tekan salah satu kotak pada peta untuk melihat contoh dan subbab yang membahasnya.</p>
+  <div class="sim" id="sim-map"></div>
+  <div class="mapbtn" id="mapbtn" aria-label="Pilih bagian peta konsep"></div>
+  <div class="detail" id="mapdetail" aria-live="polite"></div>
+  <h3>Asesmen awal</h3>
+  <p>Nilai kesiapan Anda pada tiap topik. Hasilnya hanya untuk membantu memilih urutan belajar dan tidak disimpan.</p>
+  <div class="pre" id="pre"></div>
+  <div class="detail" id="preres" aria-live="polite" style="margin-top:10px">Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.</div>
+  <h3>Referensi utama</h3>
+  <ul>
+    <li>David Halliday, Robert Resnick, dan Jearl Walker, <i>Fundamentals of Physics</i>.</li>
+    <li>Raymond A. Serway dan John W. Jewett, <i>Physics for Scientists and Engineers</i>.</li>
+    <li>Paul A. Tipler dan Gene Mosca, <i>Physics for Scientists and Engineers</i>.</li>
+    <li>David J. Griffiths, <i>Introduction to Electrodynamics</i>, untuk pendalaman.</li>
+  </ul>
+  <p>Edisi dan cakupan yang dipakai perlu dicantumkan oleh dosen sesuai kurikulum serta ketentuan yang berlaku.</p>
+  <h3>Disklaimer akademik</h3>
+  <blockquote><p>Modul ini merupakan media pendamping pembelajaran dan tidak menggantikan buku teks, penjelasan dosen, maupun latihan soal yang lengkap. Animasi memakai satuan dan skala yang disederhanakan agar perilaku medan dan gaya terlihat jelas, dan tidak selalu menggambarkan skala sesungguhnya. Persamaan hanya berlaku pada asumsi dan batas penggunaan yang dijelaskan di tiap bagian.</p></blockquote>
+  <h3>Pernyataan bantuan kecerdasan buatan</h3>
+  <blockquote><p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya.</p></blockquote>
+</section>
+
+<section id="s2">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>2</b></div>
+    <div class="ttl"><h2>Muatan Listrik dan Hukum Coulomb</h2></div>
+    <div class="c1"><small>Animasi utama</small>Dua muatan titik saling tarik atau tolak</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah besar muatan dan jarak antar muatan</div>
+  </header>
+  <p>Muatan listrik ada dua jenis, positif dan negatif, dan jumlah total muatan pada sistem tertutup selalu tetap (kekekalan muatan). Muatan sejenis tolak-menolak, muatan berlawanan jenis tarik-menarik. Besar gaya antara dua muatan titik diberikan oleh hukum Coulomb:</p>
+  <div class="eq"><i>F</i> = <i>k</i> <fr><n>|<i>q</i><sub>1</sub><i>q</i><sub>2</sub>|</n><d><i>r</i><sup>2</sup></d></fr></div>
+  <p>dengan <i>k</i> = 8,99 &times; 10<sup>9</sup> N&middot;m&sup2;/C&sup2; adalah konstanta Coulomb, dan <i>r</i> jarak antar muatan. Gaya bekerja sepanjang garis penghubung kedua muatan, sesuai hukum ketiga Newton: gaya pada muatan 1 oleh muatan 2 sama besar dan berlawanan arah dengan gaya pada muatan 2 oleh muatan 1.</p>
+  <div class="note"><b>Satuan muatan</b>Muatan diukur dalam coulomb (C). Muatan elektron adalah &minus;1,602 &times; 10<sup>&minus;19</sup> C. Pada animasi, muatan diberikan dalam nanocoulomb (nC) agar gayanya berada pada rentang yang mudah diamati.</div>
+  <div class="legend"><span class="t">Tolak-menolak</span><span class="c">Tarik-menarik</span></div>
+  <div class="sim" id="sim-coulomb"></div>
+</section>
+
+<section id="s3">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>3</b></div>
+    <div class="ttl"><h2>Medan Listrik akibat Muatan Titik</h2></div>
+    <div class="c1"><small>Animasi utama</small>Vektor medan di sekitar muatan</div>
+    <div class="c2"><small>Interaksi peserta</small>Menggeser uji muatan, mengubah besar muatan sumber</div>
+  </header>
+  <p>Medan listrik <i>E</i> di suatu titik adalah gaya yang akan dialami muatan uji positif kecil <i>q</i><sub>0</sub> di titik itu, dibagi besar muatan uji tersebut:</p>
+  <div class="eq"><i>E</i> = <fr><n><i>F</i></n><d><i>q</i><sub>0</sub></d></fr> = <i>k</i> <fr><n>|<i>q</i>|</n><d><i>r</i><sup>2</sup></d></fr></div>
+  <p>Medan listrik adalah besaran vektor: arahnya menjauhi muatan positif dan menuju muatan negatif. Dengan medan ini, gaya pada muatan mana pun di titik tersebut cukup dihitung sebagai <i>F</i> = <i>qE</i>, tanpa perlu meninjau ulang muatan sumbernya. Seret uji muatan pada animasi untuk melihat arah dan besar medan di berbagai titik.</p>
+  <div class="note"><b>Cara membaca panah</b>Panjang panah sebanding dengan besar medan; medan melemah dengan kuadrat jarak, sehingga panah memendek cepat menjauhi muatan.</div>
+  <div class="legend"><span class="t">Muatan negatif</span><span class="c">Muatan positif</span></div>
+  <div class="sim" id="sim-field1"></div>
+</section>
+
+<section id="s4">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>4</b></div>
+    <div class="ttl"><h2>Garis Medan Listrik dan Superposisi</h2></div>
+    <div class="c1"><small>Animasi utama</small>Pembentukan garis medan dari beberapa muatan</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah jumlah, tanda, dan besar muatan</div>
+  </header>
+  <p>Garis medan adalah kurva yang di setiap titiknya menyinggung arah medan listrik setempat. Aturannya: garis keluar dari muatan positif dan masuk ke muatan negatif, kerapatan garis menunjukkan kekuatan medan (semakin rapat, semakin kuat), dan garis medan tidak pernah saling berpotongan.</p>
+  <p>Bila ada lebih dari satu muatan, medan total di suatu titik adalah jumlah vektor dari medan tiap muatan (prinsip superposisi):</p>
+  <div class="eq"><i>E</i><sub>total</sub> = <i>E</i><sub>1</sub> + <i>E</i><sub>2</sub> + &hellip; + <i>E<sub>n</sub></i></div>
+  <div class="note"><b>Konfigurasi khusus</b>Dua muatan berlawanan tanda dan sama besar disebut dipol: garis medan melengkung dari muatan positif menuju muatan negatif. Dua muatan sejenis saling menolak garis medannya, dan terdapat satu titik di antara keduanya dengan medan total nol.</div>
+  <div class="legend"><span class="t">Negatif</span><span class="c">Positif</span></div>
+  <div class="sim" id="sim-lines"></div>
+</section>
+
+<section id="s5">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>5</b></div>
+    <div class="ttl"><h2>Medan Listrik dari Distribusi Muatan Kontinu</h2></div>
+    <div class="c1"><small>Animasi utama</small>Medan pada sumbu cincin bermuatan</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah muatan total, jari-jari cincin, dan posisi titik</div>
+  </header>
+  <p>Untuk benda bermuatan yang tersebar (bukan titik), medan dihitung dengan membagi benda menjadi elemen muatan kecil <i>dq</i>, menghitung medan tiap elemen sebagai muatan titik, lalu menjumlahkan (mengintegralkan) seluruh kontribusinya. Untuk cincin tipis berjari-jari <i>a</i> dengan muatan total <i>Q</i> merata, medan pada sumbu cincin sejauh <i>x</i> dari pusat adalah:</p>
+  <div class="eq"><i>E</i>(<i>x</i>) = <i>k</i> <fr><n><i>Qx</i></n><d>(<i>x</i><sup>2</sup> + <i>a</i><sup>2</sup>)<sup>3/2</sup></d></fr></div>
+  <p>Komponen medan yang tegak lurus sumbu saling meniadakan karena simetri cincin, sehingga hanya komponen sepanjang sumbu yang tersisa. Perhatikan bahwa <i>E</i> = 0 tepat di pusat cincin (<i>x</i> = 0), dan untuk <i>x</i> yang sangat besar dibanding <i>a</i>, cincin berperilaku seperti muatan titik.</p>
+  <div class="note"><b>Asumsi</b>Cincin sangat tipis, muatan tersebar merata, dan titik tinjau berada tepat pada sumbu cincin.</div>
+  <div class="sim" id="sim-ring"></div>
+</section>
+
+<section id="s6">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>6</b></div>
+    <div class="ttl"><h2>Dipol Listrik</h2></div>
+    <div class="c1"><small>Animasi utama</small>Dipol berputar menuju kesetimbangan dalam medan luar</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah momen dipol, medan luar, dan sudut awal</div>
+  </header>
+  <p>Dipol listrik adalah pasangan muatan sama besar berlawanan tanda, +<i>q</i> dan &minus;<i>q</i>, terpisah sejauh <i>d</i>. Momen dipol adalah vektor <i>p</i> = <i>qd</i>, berarah dari muatan negatif menuju muatan positif.</p>
+  <p>Dalam medan listrik luar seragam <i>E</i>, dipol mengalami torsi yang cenderung menyejajarkan <i>p</i> dengan <i>E</i>:</p>
+  <div class="eq"><i>&tau;</i> = <i>pE</i> sin <i>&theta;</i></div>
+  <p>dengan <i>&theta;</i> sudut antara <i>p</i> dan <i>E</i>. Torsi bernilai nol ketika <i>p</i> sejajar (kesetimbangan stabil) atau berlawanan arah (kesetimbangan tak stabil) dengan <i>E</i>. Gaya neto pada dipol dalam medan seragam adalah nol karena gaya pada kedua muatan sama besar berlawanan arah; hanya torsi yang bekerja.</p>
+  <div class="note"><b>Peredaman pada animasi</b>Dipol nyata kehilangan energi karena gesekan atau radiasi sehingga akhirnya berhenti sejajar dengan medan. Animasi ini meniru itu dengan peredaman buatan, bukan hasil turunan persamaan gerak penuh.</div>
+  <div class="sim" id="sim-dipole"></div>
+</section>
+
+<section id="s7">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>7</b></div>
+    <div class="ttl"><h2>Gerak Muatan dalam Medan Listrik Seragam</h2></div>
+    <div class="c1"><small>Animasi utama</small>Muatan dibelokkan di antara dua pelat sejajar</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah tegangan pelat, kecepatan masuk, dan jenis muatan</div>
+  </header>
+  <p>Antara dua pelat sejajar yang diberi beda potensial <i>V</i>, medan listrik di antara keduanya hampir seragam, <i>E</i> = <i>V</i>/<i>d</i>, dengan <i>d</i> jarak antar pelat. Muatan yang memasuki daerah ini dengan kecepatan <i>v</i><sub>0</sub> tegak lurus medan akan mengalami percepatan konstan <i>a</i> = <i>qE</i>/<i>m</i> searah medan (untuk muatan positif) atau berlawanan (untuk muatan negatif), mirip gerak peluru dengan gravitasi digantikan oleh gaya listrik.</p>
+  <div class="eq"><i>y</i> = <fr><n><i>qEL</i><sup>2</sup></n><d>2<i>mv</i><sub>0</sub><sup>2</sup></d></fr></div>
+  <p><i>y</i> adalah simpangan vertikal ketika muatan telah menempuh panjang pelat <i>L</i>. Prinsip ini dipakai pada tabung sinar katoda (CRT) lama dan spektrometer massa untuk membelokkan berkas muatan secara terkendali.</p>
+  <div class="note"><b>Asumsi</b>Medan dianggap seragam persis di antara pelat dan nol di luarnya, gravitasi diabaikan karena jauh lebih kecil daripada gaya listrik pada skala partikel bermuatan.</div>
+  <div class="sim" id="sim-deflect"></div>
+</section>
+
+<section id="s8">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>8</b></div>
+    <div class="ttl"><h2>Kesimpulan</h2></div>
+    <div class="c1"><small>Animasi utama</small>Susunan muatan gabungan</div>
+    <div class="c2"><small>Interaksi peserta</small>Memilih muatan untuk melihat kontribusinya; kuis akhir</div>
+  </header>
+  <h3>Ringkasan konsep</h3>
+  <ul>
+    <li>Muatan listrik menimbulkan gaya pada muatan lain sesuai hukum Coulomb.</li>
+    <li>Medan listrik adalah gaya per satuan muatan, dan menjadi cara untuk memisahkan sifat ruang di sekitar muatan dari muatan uji yang meninjaunya.</li>
+    <li>Medan total dari beberapa muatan adalah jumlah vektor medan tiap muatan.</li>
+    <li>Distribusi muatan kontinu dihitung dengan menjumlahkan kontribusi elemen muatan kecil.</li>
+    <li>Dipol tidak mengalami gaya neto dalam medan seragam, tetapi mengalami torsi yang menyejajarkannya dengan medan.</li>
+    <li>Medan listrik dapat mempercepat dan membelokkan muatan, dasar berbagai alat seperti CRT dan spektrometer massa.</li>
+  </ul>
+  <h3>Susunan muatan gabungan</h3>
+  <p>Empat muatan disusun bersama. Pilih setiap muatan untuk melihat perannya dalam membentuk medan total di sekitar susunan.</p>
+  <div class="legend"><span class="t">Negatif</span><span class="c">Positif</span></div>
+  <div class="sim" id="sim-final"></div>
+  <div class="mapbtn" id="finalbtn" aria-label="Pilih muatan"></div>
+  <div class="detail" id="finaldetail" aria-live="polite"></div>
+  <h3>Evaluasi akhir</h3>
+  <p>Untuk soal numerik, isikan angka dengan koma atau titik desimal; toleransi jawaban 3%.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score" aria-live="polite"></div>
+  <h3>Refleksi</h3>
+  <blockquote><p>Mengapa konsep medan listrik tetap berguna meskipun pada akhirnya yang teramati selalu berupa gaya antar muatan?</p></blockquote>
+  <textarea id="refl" aria-label="Jawaban refleksi" placeholder="Tuliskan jawaban Anda dengan kalimat sendiri."></textarea>
+  <p style="font-size:14px;color:var(--ink2)" id="reflst">Jawaban disimpan di peramban ini bila penyimpanan tersedia.</p>
+  <div class="closing">Medan listrik mengubah pertanyaan "gaya apa yang bekerja pada muatan ini" menjadi dua langkah yang lebih sederhana: ruang di sekitar muatan sumber memiliki medan, dan muatan lain di ruang itu hanya perlu dikalikan dengan medan setempat untuk mengetahui gaya yang dialaminya.</div>
+</section>
+
+<footer>
+  <p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya. Animasi memakai skala yang disederhanakan dan bukan pengganti perhitungan atau eksperimen laboratorium.</p>
+</footer>
+</div></main>
+<script>
+(function(){
+'use strict';
+/* ===== Konstanta tipografi (satu tempat) ===== */
+var SCALE=2, F_LABEL=8*SCALE, F_SEC=9*SCALE, F_TITLE=10*SCALE, F_CAP=Math.round(9*SCALE*1.2);
+var FONT="'Segoe UI', system-ui, Arial, sans-serif";
+var W=1280, H=720;
+var ctx=null;
+var reduce=false;
+try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+
+function rgba(r,g,b,a){return 'rgba('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+','+(a==null?1:a)+')';}
+var C={bg:'#07080f',t1:rgba(232,238,248,.94),t2:rgba(232,238,248,.55),t3:rgba(232,238,248,.30),yel:rgba(255,206,84,1),
+ ten:[86,196,230],com:[255,112,96],neu:[58,66,90],org:[255,170,80],grn:[110,220,160]};
+function cc(c,a){return rgba(c[0],c[1],c[2],a);}
+function mixc(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function stressColor(s,a){s=clamp(s,-1,1);var t=Math.abs(s);var c=s>=0?mixc(C.neu,C.ten,t):mixc(C.neu,C.com,t);return cc(c,a==null?1:a);}
+function nf(v,d){if(!isFinite(v))return '-';var s=(Math.abs(v)<Math.pow(10,-d)/2?0:v).toFixed(d);return s.replace('.',',');}
+function ease(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+
+/* ===== Helper gambar ===== */
+function txt(s,x,y,size,col,al,bl,wt){ctx.shadowBlur=0;ctx.font=(wt||400)+' '+size+'px '+FONT;ctx.fillStyle=col;ctx.textAlign=al||'left';ctx.textBaseline=bl||'middle';ctx.fillText(s,x,y);}
+function fitSize(str,size,maxW,wt){var s=size;while(s>6){ctx.font=(wt||400)+' '+s+'px '+FONT;if(ctx.measureText(str).width<=maxW)break;s-=1;}return s;}
+function ftxt(s,x,y,size,col,al,bl,wt,maxW){if(maxW)size=fitSize(s,size,maxW,wt);txt(s,x,y,size,col,al,bl,wt);}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+/* kotak berlabel: tinggi = baris x (font + spasi) + padding; teks dicentrasi vertikal */
+function labelBox(lines,cx,cy,o){o=o||{};var size=o.size||F_LABEL,gap=o.gap==null?5:o.gap,pad=o.pad==null?12:o.pad,maxW=o.maxW||400,wt=o.wt||400,i;
+  for(i=0;i<lines.length;i++){var fs=fitSize(lines[i],size,maxW-2*pad,i===0&&o.head?700:wt);if(fs<size)size=fs;}
+  var w=0;for(i=0;i<lines.length;i++){ctx.font=((i===0&&o.head)?700:wt)+' '+size+'px '+FONT;w=Math.max(w,ctx.measureText(lines[i]).width);}
+  w=Math.max(w+2*pad,o.minW||0);var h=lines.length*(size+gap)+pad;var x=o.left?cx:cx-w/2,y=cy-h/2;
+  ctx.shadowBlur=0;rr(x,y,w,h,6);ctx.fillStyle=o.fill||'rgba(20,26,44,.92)';ctx.fill();ctx.lineWidth=o.lw||1.5;ctx.strokeStyle=o.stroke||C.t3;ctx.stroke();
+  for(i=0;i<lines.length;i++){var ty=y+pad/2+(i+.5)*(size+gap);txt(lines[i],x+w/2,ty,size,(i===0&&o.head)?(o.hcol||C.t1):(o.col||C.t2),'center','middle',(i===0&&o.head)?700:wt);}
+  return {x:x,y:y,w:w,h:h};}
+function arrow(x1,y1,x2,y2,col,lw,head){var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);if(len<3)return;var a=Math.atan2(dy,dx),h=head||13;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw||3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-Math.cos(a)*h*.6,y2-Math.sin(a)*h*.6);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-Math.cos(a-.42)*h,y2-Math.sin(a-.42)*h);ctx.lineTo(x2-Math.cos(a+.42)*h,y2-Math.sin(a+.42)*h);ctx.closePath();ctx.fill();ctx.restore();}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();}
+function bgClear(){ctx.setTransform(ctx.dpr,0,0,ctx.dpr,0,0);ctx.shadowBlur=0;ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(232,238,248,.035)';ctx.lineWidth=1;ctx.beginPath();for(var x=40;x<W;x+=40){ctx.moveTo(x,0);ctx.lineTo(x,H);}for(var y=40;y<H;y+=40){ctx.moveTo(0,y);ctx.lineTo(W,y);}ctx.stroke();}
+function head(title,sub){txt(title,40,34,F_CAP,C.t1,'left','middle',700);if(sub)txt(sub,40,62,F_SEC,C.t1,'left','middle',400);}
+function foot(narr,note){if(note)ftxt(note,40,672,F_SEC,C.t3,'left','middle',400,W-80);ftxt(narr,40,700,F_CAP,C.yel,'left','middle',700,W-80);}
+function legendT(x,y){ctx.fillStyle=cc(C.ten,1);ctx.fillRect(x,y-7,14,14);txt('Tarik',x+22,y,F_SEC,C.t2,'left','middle');ctx.fillStyle=cc(C.com,1);ctx.fillRect(x+90,y-7,14,14);txt('Tekan',x+112,y,F_SEC,C.t2,'left','middle');}
+function hatchWall(x,y1,y2,side){ctx.save();ctx.fillStyle='rgba(150,165,190,.18)';ctx.fillRect(side>0?x:x-34,y1,34,y2-y1);ctx.strokeStyle='rgba(232,238,248,.4)';ctx.lineWidth=1.5;ctx.beginPath();for(var yy=y1;yy<y2;yy+=14){if(side>0){ctx.moveTo(x,yy+14);ctx.lineTo(x+34,yy);}else{ctx.moveTo(x-34,yy+14);ctx.lineTo(x,yy);}}ctx.stroke();line(x,y1,x,y2,C.t1,2);ctx.restore();}
+function tri(x,y,w,h,col){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-w/2,y+h);ctx.lineTo(x+w/2,y+h);ctx.closePath();ctx.fillStyle=col||'rgba(150,165,190,.35)';ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();}
+
+/* ===== Data bersama ===== */
+var MAT={steel:{n:'Baja',E:200,G:79},alu:{n:'Aluminium',E:70,G:27},brass:{n:'Kuningan',E:100,G:39},wood:{n:'Kayu (contoh)',E:12,G:0.75}};
+var SEC={
+ rectV:{n:'Persegi 100 x 200 (tegak)',h:200,w:function(y){return 100;},I:100*Math.pow(200,3)/12,A:20000},
+ rectH:{n:'Persegi 200 x 100 (rebah)',h:100,w:function(y){return 200;},I:200*Math.pow(100,3)/12,A:20000},
+ circ:{n:'Lingkaran d = 160',h:160,w:function(y){return 2*Math.sqrt(Math.max(0,6400-y*y));},I:Math.PI*Math.pow(160,4)/64,A:Math.PI*6400},
+ I:{n:'Profil I (h = 200)',h:200,w:function(y){return Math.abs(y)>80?150:10;},I:(150*Math.pow(200,3)-140*Math.pow(160,3))/12,A:2*150*20+160*10}
+};
+/* tegangan geser pada serat y (mm dari sumbu netral), V dalam kN -> MPa */
+function shearTau(sec,V,y){var yy=Math.abs(y),h2=sec.h/2;if(yy>=h2)return 0;var n=240,dy=(h2-yy)/n,Q=0,i;for(i=0;i<n;i++){var e=yy+(i+.5)*dy;Q+=sec.w(e)*e*dy;}var b=sec.w(yy+1e-6);return V*1000*Q/(sec.I*b);}
+
+/* ===== Mesin simulasi ===== */
+var sims=[];
+function Sim(o){
+  var self=this;this.o=o;this.el=document.getElementById(o.id);if(!this.el)return;
+  this.p={};this.s={};this.st={};this.t=0;this.dt=0.016;this.f=1;this.vis=true;this.inputs={};this.rows={};this.lastRead='';
+  this.play=!o.noCycle&&!reduce;
+  var el=this.el;el.innerHTML='<div class="stage"><canvas width="'+W+'" height="'+H+'" role="img" aria-label="'+(o.label||'Animasi interaktif')+'"></canvas></div><div class="tray"><div class="ctls"></div><dl class="reads"></dl><div class="bar"></div></div>';
+  this.cv=el.querySelector('canvas');this.ctx=this.cv.getContext('2d');
+  var ctls=el.querySelector('.ctls');
+  (o.controls||[]).forEach(function(c){
+    var row=document.createElement('div');row.className='row';
+    if(c.btn){var b=document.createElement('button');b.textContent=c.btn;b.type='button';b.addEventListener('click',function(){c.act(self);});row.appendChild(b);ctls.appendChild(row);return;}
+    var lab=document.createElement('label');lab.className='lab';lab.textContent=c.label;var id=o.id+'-'+c.k;lab.htmlFor=id;row.appendChild(lab);
+    if(c.options){var sel=document.createElement('select');sel.id=id;c.options.forEach(function(op){var oo=document.createElement('option');oo.value=op[0];oo.textContent=op[1];sel.appendChild(oo);});sel.value=c.val;self.p[c.k]=c.val;
+      sel.addEventListener('change',function(){self.p[c.k]=sel.value;self.changed(c.k);});row.appendChild(sel);self.inputs[c.k]=sel;}
+    else{var out=document.createElement('output');out.htmlFor=id;row.appendChild(out);var inp=document.createElement('input');inp.type='range';inp.id=id;inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.val;self.p[c.k]=+c.val;self.s[c.k]=+c.val;
+      var dec=c.dec!=null?c.dec:(c.step<1?1:0);
+      var upd=function(){out.textContent=nf(+inp.value,dec)+(c.unit?' '+c.unit:'');};upd();
+      inp.addEventListener('input',function(){self.p[c.k]=+inp.value;upd();self.changed(c.k);});row.appendChild(inp);self.inputs[c.k]=inp;inp._upd=upd;}
+    self.rows[c.k]=row;ctls.appendChild(row);});
+  var bar=el.querySelector('.bar');
+  if(!o.noCycle){var pb=document.createElement('button');pb.type='button';var pl=o.pl||'animasi';pb.textContent=this.play?'Jeda '+pl:'Putar '+pl;pb.addEventListener('click',function(){self.play=!self.play;pb.textContent=self.play?'Jeda '+pl:'Putar '+pl;});bar.appendChild(pb);
+    var nt=document.createElement('span');nt.textContent=o.note||'Angka di bawah adalah nilai pada kondisi penuh.';bar.appendChild(nt);}
+  if(o.init)o.init(this);
+  this.applyDis();
+  if(o.click){this.cv.classList.add('clk');this.cv.addEventListener('click',function(ev){var r=self.cv.getBoundingClientRect();o.click((ev.clientX-r.left)/r.width*W,(ev.clientY-r.top)/r.height*H,self);});}
+  this.resize();
+  if('IntersectionObserver' in window){new IntersectionObserver(function(en){self.vis=en[0].isIntersecting;},{rootMargin:'120px'}).observe(el);}
+  sims.push(this);
+}
+Sim.prototype.resize=function(){var dpr=window.devicePixelRatio||1;this.ctx.dpr=dpr;this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);};
+Sim.prototype.applyDis=function(){if(!this.o.dis)return;var d=this.o.dis(this.p),k;for(k in this.rows){this.rows[k].classList.toggle('dis',!!d[k]);if(this.inputs[k])this.inputs[k].disabled=!!d[k];}};
+Sim.prototype.changed=function(k){if(this.o.onChange)this.o.onChange(k,this);this.applyDis();};
+Sim.prototype.setVal=function(k,v){this.p[k]=v;this.s[k]=v;var i=this.inputs[k];if(i){i.value=v;if(i._upd)i._upd();}};
+Sim.prototype.tick=function(dt){
+  var self=this;this.dt=dt;this.t+=dt;
+  var k;for(k in this.p){if(typeof this.p[k]==='number'){var d=this.p[k]-this.s[k];this.s[k]+=Math.abs(d)<1e-6?d:d*(1-Math.exp(-dt*9));}else this.s[k]=this.p[k];}
+  if(this.o.noCycle||!this.play){this.f=1;}else{var T=5.5,c=(this.t%T)/T;this.f=c<.38?ease(c/.38):c<.6?1:c<.92?1-ease((c-.6)/.32):0;}
+  ctx=this.ctx;bgClear();this.o.draw(this.s,this.t,this.f,this);
+  if(this.o.reads){var r=this.o.reads(this.p,this),key=JSON.stringify(r);if(key!==this.lastRead){this.lastRead=key;this.el.querySelector('.reads').innerHTML=r.map(function(x){return '<div><dt>'+x[0]+'</dt><dd'+(x[2]?' class="'+x[2]+'"':'')+'>'+x[1]+'</dd></div>';}).join('');}}
+};
+var last=0;
+function loop(ts){var dt=Math.min(.05,(ts-last)/1000||.016);last=ts;for(var i=0;i<sims.length;i++){if(sims[i].vis||!sims[i].drawn){sims[i].tick(dt);sims[i].drawn=true;}}requestAnimationFrame(loop);}
+window.__sims=sims;
+window.addEventListener('resize',function(){sims.forEach(function(s){s.resize();});});
+
+var G={Sim:Sim,rgba:rgba,C:C,cc:cc,mixc:mixc,clamp:clamp,stressColor:stressColor,nf:nf,ease:ease,txt:txt,fitSize:fitSize,ftxt:ftxt,rr:rr,labelBox:labelBox,arrow:arrow,line:line,head:head,foot:foot,legendT:legendT,hatchWall:hatchWall,tri:tri,
+  MAT:MAT,SEC:SEC,shearTau:shearTau,W:W,H:H,F:{LABEL:F_LABEL,SEC:F_SEC,TITLE:F_TITLE,CAP:F_CAP},setCtx:function(c){ctx=c;},start:function(){requestAnimationFrame(loop);}};
+window.__G=G;
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,ease=G.ease,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,mixc=G.mixc,F=G.F,W=G.W,H=G.H,rr=G.rr;
+var ctx=null;
+var K=8.99; // x10^9, dipakai dengan q dalam nC dan r dalam satuan animasi (cm-skala) supaya angka enak dibaca; lihat skala per animasi
+var POS=[255,90,110],NEG=[80,140,255];
+function qcol(q,a){return cc(q>=0?POS:NEG,a==null?1:a);}
+function drawCharge(x,y,q,rad,label){var r=rad||16+Math.min(14,Math.abs(q)*1.6);ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=qcol(q,.95);ctx.fill();ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.stroke();
+  ctx.strokeStyle='#0b0d16';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x-r*.45,y);ctx.lineTo(x+r*.45,y);if(q>=0){ctx.moveTo(x,y-r*.45);ctx.lineTo(x,y+r*.45);}ctx.stroke();
+  if(label)ftxt(label,x,y+r+18,F.SEC,C.t1,'center','middle',700,120);}
+/* medan total dari daftar muatan {x,y,q} pada titik (x,y); posisi dalam px, dikonversi via sc (px per satuan) */
+function Efield(chs,x,y,sc){var ex=0,ey=0,i;for(i=0;i<chs.length;i++){var c=chs[i],dx=(x-c.x)/sc,dy=(y-c.y)/sc,r2=dx*dx+dy*dy;if(r2<0.01)continue;var r=Math.sqrt(r2),e=K*c.q/r2;ex+=e*dx/r;ey+=e*dy/r;}return [ex,ey];}
+function vlen(v){return Math.sqrt(v[0]*v[0]+v[1]*v[1]);}
+
+/* ---------- 1. Peta konsep ---------- */
+var MAP=[
+ {t:'Muatan listrik',s:'q, hukum kekekalan',ex:'Elektron dan proton, muatan pada benda yang digosok, muatan total sistem tertutup yang selalu tetap.',mat:[2],nar:'Muatan adalah sumber segalanya: tanpa muatan tidak ada gaya listrik.'},
+ {t:'Gaya Coulomb',s:'F = kq\u2081q\u2082/r\u00B2',ex:'Tarik-menarik dua muatan berlawanan tanda, tolak-menolak dua muatan sejenis, gaya yang menjaga elektron mengelilingi inti dalam model sederhana.',mat:[2],nar:'Gaya Coulomb adalah bentuk paling langsung dari interaksi antar muatan.'},
+ {t:'Medan listrik',s:'E = F/q\u2080 = kq/r\u00B2',ex:'Medan di sekitar kabel bertegangan, medan dalam kapasitor pelat sejajar, medan yang dipetakan sebelum muatan uji benar-benar diletakkan di sana.',mat:[3],nar:'Medan memisahkan sifat ruang di sekitar muatan dari muatan uji yang meninjaunya.'},
+ {t:'Garis medan & superposisi',s:'E_total = \u03A3 E\u1D62',ex:'Pola garis medan dipol, medan total di sekitar molekul dengan beberapa muatan parsial, titik dengan medan nol di antara dua muatan sejenis.',mat:[4],nar:'Superposisi membuat medan rumit bisa dibangun dari medan-medan sederhana yang dijumlahkan.'},
+ {t:'Distribusi kontinu',s:'integral dq',ex:'Medan di sekitar cincin bermuatan, batang bermuatan, pelat bermuatan luas; semuanya dihitung dengan menjumlahkan elemen muatan kecil.',mat:[5],nar:'Benda bermuatan nyata tersebar, bukan titik, sehingga perlu dijumlahkan sedikit demi sedikit.'},
+ {t:'Dipol listrik',s:'p = qd, \u03C4 = pE sin\u03B8',ex:'Molekul air yang bersifat polar, dipol dalam medan luar yang berusaha menyejajarkannya, dasar kerja microwave memanaskan makanan.',mat:[6],nar:'Dipol memperlihatkan bahwa benda netral pun bisa merasakan medan listrik lewat torsi.'},
+ {t:'Gerak dalam medan',s:'y = qEL\u00B2/2mv\u2080\u00B2',ex:'Elektron dibelokkan dalam tabung sinar katoda, pemisahan ion dalam spektrometer massa, percikan pada printer inkjet elektrostatik.',mat:[7],nar:'Medan listrik dapat mengarahkan gerak muatan secara terkendali.'}
+];
+new Sim({id:'sim-map',label:'Peta konsep Medan dan Gaya Listrik',noCycle:true,controls:[],
+ init:function(sim){sim.st.sel=0;var bw=document.getElementById('mapbtn'),dt=document.getElementById('mapdetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-pressed',j===i?'true':'false');});var m=MAP[i];
+   dt.innerHTML='<h4>'+m.t+' <small>('+m.s+')</small></h4><p>'+m.ex+'</p><p class="chips">Dibahas pada subbab: '+m.mat.map(function(n){return '<a href="#s'+n+'">'+n+'</a>';}).join('')+'</p>';}
+  MAP.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.t;b.addEventListener('click',function(){show(i);});bw.appendChild(b);});
+  sim.st.show=show;show(0);},
+ click:function(x,y,sim){var r=sim.st.rects||[];for(var i=0;i<r.length;i++){if(x>=r[i].x&&x<=r[i].x+r[i].w&&y>=r[i].y&&y<=r[i].y+r[i].h){sim.st.show(i);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Peta konsep Medan dan Gaya Listrik','Tekan kotak untuk memilih bagian');
+  var n=MAP.length,cols=4,gx=(W-80)/cols,rows=2,cy0=150,rowh=160,i,rects=[];
+  for(i=0;i<n;i++){var col=i%cols,row=Math.floor(i/cols),cx=40+gx*col+gx/2,cy=cy0+row*rowh,sel=i===sim.st.sel;
+   var b=labelBox([MAP[i].t,MAP[i].s],cx,cy,{head:true,size:F.LABEL,maxW:gx-24,minW:gx-24,fill:sel?'rgba(60,40,80,.95)':'rgba(20,26,44,.92)',stroke:sel?C.yel:C.t3,lw:sel?3:1.5,hcol:sel?C.yel:C.t1});rects.push(b);
+   if(col<cols-1&&i<n-1){var x1=b.x+b.w+4,x2=x1+(gx-b.w)-8;if(x2>x1)arrow(x1,cy,x2,cy,'rgba(232,238,248,.4)',2,10);}}
+  sim.st.rects=rects;
+  var m=MAP[sim.st.sel],by=470;
+  txt('Contoh: '+m.t.toLowerCase(),W/2,by-100,F.TITLE,C.t1,'center','middle',700);
+  var k2=sim.st.sel;
+  if(k2===0){drawCharge(W/2-60,by+20,1,22);drawCharge(W/2+60,by+20,-1,22);ftxt('muatan positif dan negatif, jumlah totalnya tetap',W/2,by+80,F.SEC,C.t2,'center','middle',400,460);}
+  else if(k2===1){drawCharge(W/2-110,by+10,1.4,24);drawCharge(W/2+110,by+10,-1.4,24);var ph=.5-.5*Math.cos(t*1.6);arrow(W/2-70,by+10,W/2-70-40*ph,by+10,cc(POS,1),4,13);arrow(W/2+70,by+10,W/2+70+40*ph,by+10,cc(NEG,1),4,13);ftxt('gaya tarik menarik sepanjang garis penghubung',W/2,by+80,F.SEC,C.t2,'center','middle',400,460);}
+  else if(k2===2){drawCharge(W/2,by+10,1.6,26);for(i=0;i<8;i++){var an=i/8*Math.PI*2,ph2=.4+.6*(0.5-.5*Math.cos(t*1.4));arrow(W/2+Math.cos(an)*40,by+10+Math.sin(an)*40,W/2+Math.cos(an)*(40+50*ph2),by+10+Math.sin(an)*(40+50*ph2),cc(C.yel,.9),2.5,9);}ftxt('medan menjauhi muatan positif ke segala arah',W/2,by+90,F.SEC,C.t2,'center','middle',400,460);}
+  else if(k2===3){drawCharge(W/2-90,by+10,1,20);drawCharge(W/2+90,by+10,-1,20);var nlin=5;for(i=0;i<nlin;i++){var a0=(-0.6+1.2*i/(nlin-1));ctx.beginPath();var px=W/2-90,py=by+10,ang=a0;for(var st2=0;st2<40;st2++){var ef=Efield([{x:W/2-90,y:by+10,q:1},{x:W/2+90,y:by+10,q:-1}],px,py,26),el=vlen(ef);if(el<1e-6)break;var dx2=ef[0]/el,dy2=ef[1]/el;px+=dx2*6;py+=dy2*6;ctx.lineTo(px,py);if(Math.abs(px-(W/2+90))<14&&Math.abs(py-(by+10))<14)break;}ctx.strokeStyle='rgba(255,206,84,.55)';ctx.lineWidth=2;ctx.stroke();}}
+  else if(k2===4){var cxp=W/2,rr2=70;ctx.beginPath();ctx.ellipse(cxp,by+10,rr2,rr2*.32,0,0,7);ctx.strokeStyle=qcol(1,.9);ctx.lineWidth=8;ctx.stroke();arrow(cxp,by+10,cxp,by+10-90,cc(C.yel,1),3,11);ftxt('cincin bermuatan; medan dijumlahkan dari tiap elemen kecil',W/2,by+90,F.SEC,C.t2,'center','middle',400,460);}
+  else if(k2===5){var ang2=(0.5-.5*Math.cos(t*1.2))*1.1;ctx.save();ctx.translate(W/2,by+10);ctx.rotate(-ang2);drawCharge(-45,0,-1,20);drawCharge(45,0,1,20);ctx.strokeStyle=C.t2;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-45,0);ctx.lineTo(45,0);ctx.stroke();ctx.restore();arrow(W/2-140,by+10,W/2+140,by+10,'rgba(232,238,248,.35)',2,10);ftxt('medan luar E',W/2+150,by+10,F.SEC,C.t2,'left','middle');}
+  else{var ex0=W/2-160,ex1=W/2+160,eyy=by+10-70*(0.5-.5*Math.cos(t*1.3));line(ex0,by-30,ex1,by-30,C.t2,1.5);line(ex0,by+50,ex1,by+50,C.t2,1.5);ctx.beginPath();ctx.arc(ex0,eyy,6,0,7);ctx.fillStyle=qcol(-1,1);ctx.fill();line(ex0,eyy,ex1,by+10,'rgba(255,255,255,.5)',2,[5,4]);ftxt('lintasan lengkung muatan antar dua pelat bermuatan',W/2,by+90,F.SEC,C.t2,'center','middle',400,460);}
+  foot(m.nar);}
+});
+
+/* ---------- 2. Hukum Coulomb ---------- */
+new Sim({id:'sim-coulomb',label:'Dua muatan titik saling tarik atau tolak',
+ controls:[{k:'q1',label:'Muatan 1',unit:'nC',min:-8,max:8,step:.5,val:4},
+  {k:'q2',label:'Muatan 2',unit:'nC',min:-8,max:8,step:.5,val:-4},
+  {k:'r',label:'Jarak antar muatan',unit:'cm',min:2,max:16,step:.5,val:6}],
+ reads:function(p){var F=K*Math.abs(p.q1*p.q2)/(p.r*p.r)*100;return [['Gaya Coulomb F',nf(F,2)+' \u00D7 10\u207B\u2077 N'],['Sifat gaya',p.q1*p.q2<0?'Tarik-menarik':(p.q1*p.q2>0?'Tolak-menolak':'Tidak ada gaya')]];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var q1=s.q1,q2=s.q2,r=s.r,Fmag=K*Math.abs(q1*q2)/(r*r)*100,attract=q1*q2<0;
+  head('Dua muatan titik saling tarik atau tolak','F = k |q\u2081q\u2082| / r\u00B2, k = 8,99 \u00D7 10\u2079 N\u00B7m\u00B2/C\u00B2');
+  var yc=230,scpx=52,cx0=W/2-r*scpx/2*f,cx1=W/2+r*scpx/2*f;
+  drawCharge(cx0,yc,q1,null,'q\u2081 = '+nf(q1,1)+' nC');drawCharge(cx1,yc,q2,null,'q\u2082 = '+nf(q2,1)+' nC');
+  var al=30+120*Math.min(1,Fmag/40)*f;
+  if(Math.abs(q1*q2)>1e-6){if(attract){arrow(cx0+30,yc-70,cx0+30+al,yc-70,cc(C.grn,1),5,15);arrow(cx1-30,yc-70,cx1-30-al,yc-70,cc(C.grn,1),5,15);}
+   else{arrow(cx0-30,yc-70,cx0-30-al,yc-70,cc(C.org,1),5,15);arrow(cx1+30,yc-70,cx1+30+al,yc-70,cc(C.org,1),5,15);}
+   txt('F',cx0+(attract?al+40:-al-14),yc-70,F.SEC,attract?cc(C.grn,1):cc(C.org,1),'center','middle',700);}
+  line(cx0,yc+62,cx1,yc+62,C.t2,1.5,[5,5]);txt('r = '+nf(r,1)+' cm',(cx0+cx1)/2,yc+84,F.SEC,C.t2,'center');
+  var g={x:120,y:400,w:1040,h:215};line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('F (\u00D7 10\u207B\u2077 N)',g.x-6,g.y-16,F.SEC,C.t2,'left');txt('r (cm)',g.x+g.w,g.y+g.h+28,F.SEC,C.t2,'right');
+  var Fmax=K*Math.abs(q1*q2)/4*100;if(Fmax<1)Fmax=1;var i;ctx.beginPath();for(i=0;i<=80;i++){var rr3=2+i/80*14,Fv=K*Math.abs(q1*q2)/(rr3*rr3)*100,xx=g.x+ (rr3-2)/14*g.w,yy=g.y+g.h-Math.min(1,Fv/Fmax)*g.h;if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3;ctx.stroke();
+  var mx=g.x+(r-2)/14*g.w,my=g.y+g.h-Math.min(1,Fmag/Fmax)*g.h;line(mx,my,mx,g.y+g.h,C.yel,1.5,[4,4]);ctx.beginPath();ctx.arc(mx,my,6,0,7);ctx.fillStyle=C.yel;ctx.fill();
+  txt('2',g.x,g.y+g.h+16,F.SEC,C.t3,'center');txt('16',g.x+g.w,g.y+g.h+16,F.SEC,C.t3,'center');
+  labelBox(['F = k|q\u2081q\u2082|/r\u00B2','= '+nf(Fmag,2)+' \u00D7 10\u207B\u2077 N'],g.x+g.w-160,g.y+56,{head:true,minW:260});
+  foot(Math.abs(q1*q2)<1e-6?'Salah satu muatan nol: tidak ada gaya Coulomb.':(attract?'Muatan berlawanan tanda: gaya tarik-menarik sepanjang garis penghubung.':'Muatan sejenis: gaya tolak-menolak sepanjang garis penghubung.'),'Gaya berbanding terbalik dengan kuadrat jarak: r dua kali membuat F menjadi seperempatnya.');}
+});
+
+/* ---------- 3. Medan muatan titik ---------- */
+new Sim({id:'sim-field1',label:'Vektor medan di sekitar muatan',noCycle:true,
+ controls:[{k:'q',label:'Muatan sumber',unit:'nC',min:-8,max:8,step:.5,val:5},
+  {k:'tx',label:'Posisi uji muatan (horizontal)',unit:'cm',min:-14,max:14,step:.5,val:8},
+  {k:'ty',label:'Posisi uji muatan (vertikal)',unit:'cm',min:-8,max:8,step:.5,val:2}],
+ reads:function(p){var sc=40,r=Math.sqrt(p.tx*p.tx+p.ty*p.ty),E=K*Math.abs(p.q)/(r*r)*100;return [['Jarak dari sumber r',nf(r,2)+' cm'],['Medan listrik E',nf(E,2)+' \u00D7 10\u2077 N/C'],['Arah',p.q>=0?'menjauhi muatan':'menuju muatan']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var q=sim.p.q,sc=40,cx=W/2,cy=340;
+  head('Medan listrik di sekitar muatan titik','Panjang panah sebanding dengan besar medan E = k|q|/r\u00B2');
+  var gx,gy,gap=90;for(gx=-5;gx<=5;gx++){for(gy=-3;gy<=3;gy++){var px=cx+gx*gap,py=cy+gy*gap,dx=gx*gap/sc,dy=gy*gap/sc,r2=dx*dx+dy*dy;if(r2<0.09)continue;var r=Math.sqrt(r2),mag=K*Math.abs(q)/r2*100,dirx=dx/r,diry=dy/r;if(q<0){dirx=-dirx;diry=-diry;}
+    var len=clamp(14+18*Math.log(1+mag),14,60);ctx.globalAlpha=clamp(.35+mag/40,.35,.95);arrow(px-dirx*len*.5,py-diry*len*.5,px+dirx*len*.5,py+diry*len*.5,cc(C.yel,1),2.5,8);ctx.globalAlpha=1;}}
+  drawCharge(cx,cy,q,26,'q = '+nf(q,1)+' nC');
+  var tx=cx+s.tx*sc,ty=cy+s.ty*sc;ctx.beginPath();ctx.arc(tx,ty,8,0,7);ctx.fillStyle='rgba(232,238,248,.95)';ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();txt('uji q\u2080',tx,ty-22,F.SEC,C.t1,'center','middle',700);
+  var ddx=(tx-cx)/sc,ddy=(ty-cy)/sc,r2t=ddx*ddx+ddy*ddy,rt=Math.sqrt(r2t),Et=K*Math.abs(q)/r2t*100;
+  if(rt>0.15){var dirx=ddx/rt,diry=ddy/rt;if(q<0){dirx=-dirx;diry=-diry;}var L=clamp(Et*1.6,20,220);arrow(tx,ty,tx+dirx*L,ty+diry*L,cc(C.grn,1),4,14);txt('E',tx+dirx*L+16,ty+diry*L,F.SEC,cc(C.grn,1),'left','middle',700);}
+  line(cx,cy,tx,ty,C.t3,1.2,[5,4]);txt('r = '+nf(rt,2)+' cm',(cx+tx)/2,(cy+ty)/2-16,F.SEC,C.t2,'center');
+  labelBox(['E = k|q|/r\u00B2','= '+nf(Et,2)+' \u00D7 10\u2077 N/C','di titik uji'],1040,470,{head:true,minW:240});
+  foot(q>=0?'Muatan sumber positif: medan menjauh dari muatan di segala arah.':'Muatan sumber negatif: medan menuju ke muatan dari segala arah.');}
+});
+
+/* ---------- 4. Garis medan dan superposisi ---------- */
+function seedLines(chs,sc,cx,cy,bx0,by0,bx1,by1){var lines=[],i,per=10;
+ chs.forEach(function(c){if(c.q<=0)return;var n=Math.max(4,Math.round(per*Math.min(3,Math.abs(c.q))));for(i=0;i<n;i++){var an=i/n*Math.PI*2+0.15,px=cx+c.x+Math.cos(an)*14,py=cy+c.y+Math.sin(an)*14,pts=[[px,py]];
+   for(var st=0;st<260;st++){var chs2=chs.map(function(cc2){return {x:cx+cc2.x,y:cy+cc2.y,q:cc2.q};});var ef=Efield(chs2,px,py,sc),el=vlen(ef);if(el<1e-9)break;var dx=ef[0]/el,dy=ef[1]/el;px+=dx*7;py+=dy*7;pts.push([px,py]);
+     if(px<bx0||px>bx1||py<by0||py>by1)break;var hit=false;chs.forEach(function(cc3){if(cc3.q<0&&Math.hypot(px-(cx+cc3.x),py-(cy+cc3.y))<16)hit=true;});if(hit)break;}
+   lines.push(pts);}});
+ return lines;}
+function drawCfg(cfg){var base=[];
+ if(cfg==='dip')base=[{x:-110,y:0,q:2},{x:110,y:0,q:-2}];
+ else if(cfg==='same')base=[{x:-110,y:0,q:2},{x:110,y:0,q:2}];
+ else if(cfg==='tri')base=[{x:0,y:-110,q:2},{x:-100,y:70,q:-1},{x:100,y:70,q:-1}];
+ else base=[{x:0,y:0,q:3}];
+ return base;}
+new Sim({id:'sim-lines',label:'Pembentukan garis medan dan superposisi',noCycle:true,
+ controls:[{k:'cfg',label:'Konfigurasi muatan',options:[['dip','Dua muatan berlawanan tanda (dipol)'],['same','Dua muatan sejenis'],['tri','Tiga muatan'],['one','Satu muatan']],val:'dip'},
+  {k:'scale',label:'Kekuatan relatif muatan',min:.5,max:2,step:.1,val:1}],
+ reads:function(p){var chs=drawCfg(p.cfg).map(function(c){return {x:c.x,y:c.y,q:c.q*p.scale};});var mid=chs.length===2?Efield(chs.map(function(c){return{x:c.x,y:c.y,q:c.q};}),(chs[0].x+chs[1].x)/2,(chs[0].y+chs[1].y)/2,52):null;
+  return [['Jumlah muatan',chs.length+''],['Medan di titik tengah (bila 2 muatan)',mid?nf(vlen(mid)*100,1)+' \u00D7 10\u2077 N/C':'-']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var cfg=sim.p.cfg,chs=drawCfg(cfg).map(function(c){return {x:c.x,y:c.y,q:c.q*s.scale};}),cx=W/2,cy=320,sc=52;
+  head('Garis medan listrik','Garis keluar dari muatan positif, masuk ke muatan negatif; kerapatan menunjukkan kekuatan medan');
+  var lines=seedLines(chs,sc,cx,cy,60,90,W-60,570);
+  lines.forEach(function(pts){ctx.beginPath();pts.forEach(function(p,i){if(i===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);});ctx.strokeStyle='rgba(255,206,84,.5)';ctx.lineWidth=1.8;ctx.stroke();
+   var mid=pts[Math.floor(pts.length*.55)],nx=pts[Math.min(pts.length-1,Math.floor(pts.length*.55)+1)];if(mid&&nx){var an=Math.atan2(nx[1]-mid[1],nx[0]-mid[0]);ctx.save();ctx.translate(mid[0],mid[1]);ctx.rotate(an);ctx.beginPath();ctx.moveTo(-6,-5);ctx.lineTo(6,0);ctx.lineTo(-6,5);ctx.closePath();ctx.fillStyle='rgba(255,206,84,.7)';ctx.fill();ctx.restore();}});
+  chs.forEach(function(c){drawCharge(cx+c.x,cy+c.y,c.q,null,(c.q>0?'+':'')+nf(c.q,1)+' q');});
+  if(chs.length===2){var mx=cx+(chs[0].x+chs[1].x)/2,my=cy+(chs[0].y+chs[1].y)/2,ef=Efield(chs.map(function(c){return{x:cx+c.x,y:cy+c.y,q:c.q};}),mx,my,sc),el=vlen(ef);
+   if(el>1e-6){ctx.beginPath();ctx.arc(mx,my,6,0,7);ctx.fillStyle=C.t1;ctx.fill();var L=clamp(el*60,20,150);arrow(mx,my,mx+ef[0]/el*L,my+ef[1]/el*L,cc(C.grn,1),4,13);}
+   else{ctx.beginPath();ctx.arc(mx,my,7,0,7);ctx.strokeStyle=cc(C.grn,1);ctx.lineWidth=3;ctx.stroke();txt('E = 0',mx,my-22,F.SEC,cc(C.grn,1),'center','middle',700);}}
+  foot(cfg==='dip'?'Dipol: garis medan melengkung keluar dari muatan positif dan masuk ke muatan negatif.':cfg==='same'?'Dua muatan sejenis saling menolak garis medannya; ada titik dengan medan nol di antara keduanya.':cfg==='tri'?'Medan total di sembarang titik adalah jumlah vektor medan tiap muatan.':'Satu muatan: garis medan lurus menjauh (atau masuk) secara radial.');}
+});
+
+/* ---------- 5. Distribusi kontinu: cincin ---------- */
+function ringE(Q,a,x){var d=Math.pow(x*x+a*a,1.5);return d<1e-9?0:K*Q*x/d*100;}
+new Sim({id:'sim-ring',label:'Medan pada sumbu cincin bermuatan',noCycle:true,
+ controls:[{k:'Q',label:'Muatan total cincin',unit:'nC',min:-10,max:10,step:.5,val:6},
+  {k:'a',label:'Jari-jari cincin',unit:'cm',min:2,max:10,step:.5,val:5},
+  {k:'x',label:'Posisi titik pada sumbu',unit:'cm',min:-15,max:15,step:.5,val:6}],
+ reads:function(p){return [['Medan E(x)',nf(ringE(p.Q,p.a,p.x),2)+' \u00D7 10\u2077 N/C'],['E di pusat (x = 0)','0 N/C']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var Q=s.Q,a=s.a,xv=s.x,sc=26,cx=260,cy=330;
+  head('Medan listrik pada sumbu cincin bermuatan','E(x) = kQx / (x\u00B2 + a\u00B2)^(3/2)');
+  ctx.save();ctx.translate(cx,cy);ctx.beginPath();ctx.ellipse(0,0,a*sc,a*sc*.34,0,0,7);ctx.strokeStyle=qcol(Q,.9);ctx.lineWidth=9;ctx.stroke();
+  var np=14,i;for(i=0;i<np;i++){var an=i/np*Math.PI*2,px=Math.cos(an)*a*sc,py=Math.sin(an)*a*sc*.34;ctx.beginPath();ctx.arc(px,py,3,0,7);ctx.fillStyle=qcol(Q,.9);ctx.fill();}
+  ctx.restore();
+  line(cx-a*sc-40,cy,cx+560,cy,C.t3,1.5,[5,5]);txt('sumbu cincin (x)',cx+570,cy,F.SEC,C.t2,'left');
+  var px2=cx+xv*sc*f;ctx.beginPath();ctx.arc(px2,cy,7,0,7);ctx.fillStyle='rgba(232,238,248,.95)';ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();txt('titik tinjau',px2,cy-24,F.SEC,C.t1,'center','middle',700);
+  var Ev=ringE(Q,a,xv*f);if(Math.abs(Ev)>0.01){var dir2=Ev>=0?1:-1,L=clamp(Math.abs(Ev)*8,20,160);arrow(px2,cy,px2+dir2*L,cy,cc(C.grn,1),4,13);txt('E',px2+dir2*L+16,cy,F.SEC,cc(C.grn,1),'left','middle',700);}
+  var g={x:700,y:150,w:460,h:340},xr=15,Emax=Math.max(1,Math.abs(ringE(Q,a,a/Math.SQRT2)))*1.15;
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h/2,g.x+g.w,g.y+g.h/2,C.t1,2);txt('E(x)',g.x-4,g.y-16,F.SEC,C.t2,'left');txt('x (cm)',g.x+g.w,g.y+g.h/2+26,F.SEC,C.t2,'right');
+  ctx.beginPath();for(i=0;i<=100;i++){var xx=-xr+i/100*2*xr,yy=ringE(Q,a,xx),py2=g.y+g.h/2-clamp(yy/Emax,-1,1)*g.h/2,px3=g.x+(xx+xr)/(2*xr)*g.w;if(i===0)ctx.moveTo(px3,py2);else ctx.lineTo(px3,py2);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3;ctx.stroke();
+  var mxg=g.x+(xv+xr)/(2*xr)*g.w,myg=g.y+g.h/2-clamp(Ev/Emax,-1,1)*g.h/2;line(mxg,myg,mxg,g.y+g.h/2,C.yel,1.5,[4,4]);ctx.beginPath();ctx.arc(mxg,myg,6,0,7);ctx.fillStyle=C.yel;ctx.fill();
+  labelBox(['E(x) = kQx / (x\u00B2+a\u00B2)^1,5','= '+nf(Ev,2)+' \u00D7 10\u2077 N/C'],g.x+g.w/2,g.y-46,{head:true,minW:320});
+  foot(Math.abs(xv)<0.3?'Tepat di pusat cincin, kontribusi tiap elemen muatan saling meniadakan: E = 0.':(Math.abs(xv)>3*a?'Pada jarak jauh dibanding jari-jari, cincin berperilaku seperti muatan titik.':'Medan bertambah dari nol di pusat, mencapai maksimum, lalu berkurang lagi menjauhi cincin.'));}
+});
+
+/* ---------- 6. Dipol listrik ---------- */
+new Sim({id:'sim-dipole',label:'Dipol berputar menuju kesetimbangan',pl:'putaran dipol',
+ controls:[{k:'q',label:'Besar muatan dipol',unit:'nC',min:1,max:6,step:.5,val:3},
+  {k:'d',label:'Jarak antar muatan dipol',unit:'cm',min:2,max:8,step:.5,val:4},
+  {k:'E',label:'Medan luar E',unit:'\u00D710\u2077 N/C',min:.5,max:4,step:.25,val:2},
+  {k:'th0',label:'Sudut awal terhadap medan',unit:'\u00B0',min:10,max:170,step:5,val:120,dec:0}],
+ init:function(sim){sim.st.th=sim.p.th0*Math.PI/180;sim.st.w=0;},
+ onChange:function(k,sim){if(k==='th0'){sim.st.th=sim.p.th0*Math.PI/180;sim.st.w=0;}},
+ reads:function(p,sim){var thd=((sim.st.th%(2*Math.PI))+2*Math.PI)%(2*Math.PI),thdeg=thd*180/Math.PI,pm=p.q*p.d*.01,tau=pm*p.E*Math.sin(thd)*100;return [['Momen dipol p = qd',nf(pm*1000,2)+' \u00D7 10\u207B\u00B9\u00B2 C\u00B7m'],['Sudut terhadap medan',nf(Math.min(thdeg,360-thdeg),1)+'\u00B0'],['Torsi \u03C4 = pE sin\u03B8',nf(Math.abs(tau),2)+' \u00D7 10\u207B\u2075 N\u00B7m']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);
+  var pm=s.q*s.d*.01,Efv=s.E,I=0.02,damp=2.2,tau=-pm*Efv*Math.sin(sim.st.th)*100;
+  var dt=Math.min(sim.dt,.05);sim.st.w+=(tau/I-damp*sim.st.w)*dt;sim.st.th+=sim.st.w*dt;
+  head('Dipol berputar menuju kesetimbangan','Panah panjang: medan luar E. Dipol berputar sampai p sejajar E, lalu berhenti (teredam)');
+  var cx=380,cy=370,Efpx=1;arrow(cx-260,cy,cx+260,cy,'rgba(232,238,248,.35)',3,13);arrow(cx-260,cy-50,cx+260,cy-50,'rgba(232,238,248,.2)',2,10);arrow(cx-260,cy+50,cx+260,cy+50,'rgba(232,238,248,.2)',2,10);
+  txt('E',cx+270,cy,F.TITLE,C.t2,'left','middle',700);
+  var Ld=s.d*22,th=sim.st.th,dxp=Math.cos(th)*Ld/2,dyp=Math.sin(th)*Ld/2;
+  line(cx-dxp,cy-dyp,cx+dxp,cy+dyp,C.t2,3);
+  drawCharge(cx-dxp,cy-dyp,-s.q,null);drawCharge(cx+dxp,cy+dyp,s.q,null);
+  arrow(cx,cy,cx+dxp*1.4,cy+dyp*1.4,cc(C.yel,1),3,12);txt('p',cx+dxp*1.4+16,cy+dyp*1.4,F.SEC,C.yel,'left','middle',700);
+  var thdeg=((th%(2*Math.PI))+2*Math.PI)%(2*Math.PI)*180/Math.PI,thshow=Math.min(thdeg,360-thdeg);
+  ctx.beginPath();ctx.arc(cx,cy,50,0,-th,th>0);ctx.strokeStyle=cc(C.grn,.8);ctx.lineWidth=2;ctx.stroke();
+  var g={x:760,y:180,w:440,h:340};line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('|\u03C4| (\u00D710\u207B\u2075 N\u00B7m)',g.x-4,g.y-16,F.SEC,C.t2,'left');txt('\u03B8 (\u00B0, 0 sampai 180)',g.x+g.w,g.y+g.h+26,F.SEC,C.t2,'right');
+  var i,tmax=pm*Efv*100;ctx.beginPath();for(i=0;i<=100;i++){var thg=i/100*Math.PI,tv=pm*Efv*Math.sin(thg)*100,xx=g.x+i/100*g.w,yy=g.y+g.h-tv/tmax*g.h;if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3;ctx.stroke();
+  var curX=g.x+thshow/180*g.w,curY=g.y+g.h-Math.abs(pm*Efv*Math.sin(th)*100)/tmax*g.h;ctx.beginPath();ctx.arc(curX,curY,6,0,7);ctx.fillStyle=C.yel;ctx.fill();
+  txt('0',g.x,g.y+g.h+16,F.SEC,C.t3,'center');txt('90',g.x+g.w/2,g.y+g.h+16,F.SEC,C.t3,'center');txt('180',g.x+g.w,g.y+g.h+16,F.SEC,C.t3,'center');
+  labelBox(['\u03C4 = pE sin\u03B8','= '+nf(Math.abs(tau)/100,3)+' \u00D7 10\u207B\u2075 N\u00B7m','\u03B8 = '+nf(thshow,1)+'\u00B0'],cx,cy+130,{head:true,minW:300});
+  foot(thshow<3?'Dipol hampir sejajar medan: torsi mendekati nol, kesetimbangan stabil.':'Torsi berusaha memutar dipol sampai momen dipol p sejajar dengan medan luar E.');}
+});
+
+/* ---------- 7. Gerak muatan dalam medan seragam ---------- */
+new Sim({id:'sim-deflect',label:'Muatan dibelokkan di antara pelat sejajar',pl:'animasi partikel',
+ controls:[{k:'V',label:'Tegangan pelat',unit:'V',min:20,max:400,step:10,val:150,dec:0},
+  {k:'d',label:'Jarak antar pelat',unit:'cm',min:1,max:5,step:.25,val:2},
+  {k:'v0',label:'Kecepatan masuk',unit:'\u00D710\u2076 m/s',min:1,max:10,step:.5,val:4},
+  {k:'sign',label:'Jenis muatan',options:[['-1','Negatif (elektron)'],['1','Positif']],val:'-1'}],
+ reads:function(p){var Efd=p.V/(p.d/100),qom=1.76e11,a=qom*Efd*(+p.sign),Lp=.08,tt=Lp/(p.v0*1e6),y=.5*a*tt*tt;return [['Medan antar pelat E',nf(Efd,0)+' V/m'],['Simpangan keluar y',nf(Math.abs(y)*1000,2)+' mm',Math.abs(y)>p.d/200?'bad':''],['Kondisi',Math.abs(y)>p.d/200?'Menumbuk pelat sebelum keluar':'Keluar dari celah pelat']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var sign=+sim.p.sign,Efd=s.V/(s.d/100),qom=1.76e11,a=qom*Efd*sign,Lp=.08,v0=s.v0*1e6,ttot=Lp/v0,ymax=.5*a*ttot*ttot;
+  head('Gerak muatan dalam medan listrik seragam','Elektron atau proton memasuki daerah antara dua pelat sejajar bermuatan');
+  var x0=140,x1=980,yc=300,dpx=(s.d/2)*90;
+  ctx.fillStyle='rgba(150,165,190,.35)';ctx.fillRect(x0,yc-dpx-16,x1-x0,12);ctx.fillRect(x0,yc+dpx+4,x1-x0,12);
+  ctx.strokeStyle=cc(POS,1);ctx.lineWidth=3;line(x0,yc-dpx-16,x1,yc-dpx-16,cc(POS,1),3);line(x0,yc+dpx+16,x1,yc+dpx+16,cc(NEG,1),3);
+  txt('+ + + + + + + + + + + + + + + +',(x0+x1)/2,yc-dpx-30,F.SEC,cc(POS,1),'center','middle',700);txt('\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212',(x0+x1)/2,yc+dpx+34,F.SEC,cc(NEG,1),'center','middle',700);
+  for(var k=0;k<6;k++){var ax=x0+40+k*(x1-x0-80)/5;arrow(ax,yc-dpx-4,ax,yc+dpx+2,'rgba(255,206,84,.5)',2,9);}
+  var hitWall=Math.abs(ymax)>s.d/200,tEnd=hitWall?Math.sqrt(Math.abs(s.d/200/(.5*a)))||0:ttot,frac=f;
+  var xu=frac*Math.min(1,tEnd/ttot),tcur=xu*ttot,ycur=.5*a*tcur*tcur,px=x0+xu*(x1-x0),py=yc-clamp(ycur/(s.d/200),-1,1)*dpx;
+  ctx.beginPath();ctx.arc(px,py,9,0,7);ctx.fillStyle=qcol(sign,.95);ctx.fill();ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();var i;for(i=0;i<=60;i++){var xu2=i/60*xu,tc2=xu2*ttot,yc2=.5*a*tc2*tc2,px2=x0+xu2*(x1-x0),py2=yc-clamp(yc2/(s.d/200),-1,1)*dpx;if(i===0)ctx.moveTo(px2,py2);else ctx.lineTo(px2,py2);}ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
+  arrow(x0-60,yc,x0-10,yc,cc(C.grn,1),4,14);txt('v\u2080',x0-70,yc-16,F.SEC,cc(C.grn,1),'right','middle',700);
+  txt(hitWall?'Muatan menumbuk pelat sebelum mencapai ujung':'Simpangan keluar y = qEL\u00B2/(2mv\u2080\u00B2)',140,440,F.SEC,hitWall?cc(C.com,1):C.t1,'left','middle',700);
+  labelBox(['y keluar (bila tidak menumbuk)','= '+nf(Math.abs(ymax)*1000,2)+' mm'],1060,300,{head:true,minW:220,stroke:hitWall?cc(C.com,1):C.t3});
+  foot(hitWall?'Simpangan yang dihitung melebihi celah pelat: pada kenyataannya muatan akan menumbuk pelat sebelum keluar.':'Lintasan berbentuk parabola, sama seperti gerak peluru, dengan gaya listrik menggantikan peran gravitasi.');}
+});
+
+/* ---------- 8. Kesimpulan: susunan gabungan ---------- */
+var FIN=[
+ {n:'Muatan A (kiri atas)',q:3,x:-140,y:-90,d:'Muatan positif ini menyumbang medan yang menjauh darinya ke segala arah; di titik-titik dekat muatan lain, kontribusinya bisa dominan atau saling meniadakan sebagian.',mat:[2,3,4]},
+ {n:'Muatan B (kanan atas)',q:-2,x:140,y:-90,d:'Muatan negatif ini menarik medan menuju dirinya, mengubah arah medan total di sekitarnya dibanding bila hanya muatan A yang ada.',mat:[3,4]},
+ {n:'Muatan C (bawah, dipol dengan D)',q:2,x:-60,y:120,d:'Bersama muatan D, membentuk dipol kecil: sumbangannya paling terasa di daerah dekat pasangan ini, dan hampir saling meniadakan di titik yang jauh.',mat:[4,6]},
+ {n:'Muatan D (bawah, dipol dengan C)',q:-2,x:60,y:120,d:'Pasangannya dengan C membentuk momen dipol lokal; keduanya bersama berkontribusi kecil terhadap medan pada jarak jauh dibanding satu muatan tunggal sebesar itu.',mat:[4,6]}
+];
+new Sim({id:'sim-final',label:'Susunan muatan gabungan',noCycle:true,controls:[],
+ init:function(sim){sim.st.sel=-1;var bw=document.getElementById('finalbtn'),dt=document.getElementById('finaldetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);});if(i<0){dt.innerHTML='<p>Pilih salah satu muatan untuk melihat perannya.</p>';return;}var m=FIN[i];dt.innerHTML='<h4>'+m.n+'</h4><p>'+m.d+'</p><p class="chips">Subbab terkait: '+m.mat.map(function(n){return '<a href="#s'+n+'">'+n+'</a>';}).join('')+'</p>';}
+  FIN.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.n.split(' (')[0];b.addEventListener('click',function(){show(i);});bw.appendChild(b);});sim.st.show=show;show(-1);},
+ click:function(x,y,sim){var cx=W/2,cy=300;for(var i=0;i<FIN.length;i++){var c=FIN[i];if(Math.hypot(x-(cx+c.x),y-(cy+c.y))<28){sim.st.show(i);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var cx=W/2,cy=300,sc=48,sel=sim.st.sel;
+  head('Susunan muatan gabungan','Pilih muatan untuk menyoroti perannya dalam medan total');
+  var chs=FIN.map(function(c){return {x:c.x,y:c.y,q:c.q};});
+  var lines=seedLines(chs,sc,cx,cy,60,90,W-60,540);
+  lines.forEach(function(pts){ctx.beginPath();pts.forEach(function(p,i){if(i===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);});ctx.strokeStyle='rgba(255,206,84,.4)';ctx.lineWidth=1.6;ctx.stroke();});
+  FIN.forEach(function(c,i){var dim=sel>=0&&sel!==i;ctx.globalAlpha=dim?.3:1;drawCharge(cx+c.x,cy+c.y,c.q,sel===i?26:20,(c.q>0?'+':'')+nf(c.q,0));ctx.globalAlpha=1;
+   if(sel===i){ctx.beginPath();ctx.arc(cx+c.x,cy+c.y,32,0,7);ctx.strokeStyle=C.yel;ctx.lineWidth=3;ctx.setLineDash([6,5]);ctx.stroke();ctx.setLineDash([]);}});
+  var probes=[[280,80],[-280,80],[0,-40]];probes.forEach(function(pr){var px=cx+pr[0],py=cy+pr[1],full=Efield(chs.map(function(c){return{x:cx+c.x,y:cy+c.y,q:c.q};}),px,py,sc),lf=vlen(full);
+   ctx.beginPath();ctx.arc(px,py,4,0,7);ctx.fillStyle='rgba(232,238,248,.6)';ctx.fill();if(lf>1e-6){var L=clamp(lf*36,16,90);arrow(px,py,px+full[0]/lf*L,py+full[1]/lf*L,cc(C.grn,.85),3,10);}});
+  foot(sel<0?'Medan total di sekitar susunan adalah jumlah vektor medan keempat muatan. Titik hijau menunjukkan beberapa contoh medan total di ruang sekitar.':'Muatan yang disorot tetap ikut membentuk medan total; garis kuning putus mengelilinginya bukan berarti ia terisolasi dari muatan lain.');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G,doc=document;
+(function(){var links=[].slice.call(doc.querySelectorAll('#toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});var a=map[e.target.id];if(a){a.classList.add('on');a.classList.add('seen');}}});},{rootMargin:'-20% 0px -70% 0px'});
+  [].forEach.call(doc.querySelectorAll('main section'),function(s){io.observe(s);});})();
+
+/* ---- Asesmen awal ---- */
+(function(){var host=doc.getElementById('pre'),res=doc.getElementById('preres');if(!host)return;
+  var items=[['Menghitung gaya Coulomb antar muatan titik',[2]],['Menghitung medan listrik akibat muatan titik',[3]],['Menggambar garis medan dan menerapkan superposisi',[4]],['Menghitung medan dari distribusi muatan kontinu',[5]],['Menjelaskan torsi pada dipol dalam medan luar',[6]],['Menganalisis gerak muatan dalam medan seragam',[7]]];
+  var val=items.map(function(){return null;}),lv=['Belum paham','Sebagian','Sudah paham'];
+  function upd(){var need=[],part=[],done=val.filter(function(v){return v!==null;}).length;items.forEach(function(it,i){if(val[i]===0)need.push(i);else if(val[i]===1)part.push(i);});
+    function lk(list){return list.map(function(i){return items[i][0].toLowerCase()+' ('+items[i][1].map(function(n){return '<a href="#s'+n+'">subbab '+n+'</a>';}).join(', ')+')';}).join('; ');}
+    var h='';if(done<items.length)h+='<p>Terjawab '+done+' dari '+items.length+'.</p>';
+    if(need.length)h+='<p><b>Mulai dari:</b> '+lk(need)+'.</p>';if(part.length)h+='<p><b>Perkuat:</b> '+lk(part)+'.</p>';
+    if(done===items.length&&!need.length&&!part.length)h+='<p>Anda merasa sudah paham di semua topik. Coba tetap jalankan tiap animasi, lalu ukur diri dengan evaluasi akhir di subbab 8.</p>';
+    res.innerHTML=h||'Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.';}
+  items.forEach(function(it,i){var row=document.createElement('div');row.className='it';var q=document.createElement('div');q.textContent=it[0];var o=document.createElement('div');o.className='opt';
+    [0,1,2].forEach(function(v){var b=document.createElement('button');b.type='button';b.textContent=lv[v];b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){val[i]=v;[].forEach.call(o.children,function(x,j){x.classList.toggle('on',j===v);x.setAttribute('aria-pressed',j===v?'true':'false');});upd();});o.appendChild(b);});
+    row.appendChild(q);row.appendChild(o);host.appendChild(row);});})();
+
+/* ---- Kuis akhir ---- */
+(function(){var host=doc.getElementById('quiz'),sc=doc.getElementById('score');if(!host)return;
+var Q=[
+{t:'mc',q:'Dua muatan sejenis didekatkan menjadi setengah jarak semula. Gaya Coulomb di antara keduanya menjadi',o:['setengah','dua kali','empat kali','seperempat'],a:2,x:'F = kq\u2081q\u2082/r\u00B2 berbanding terbalik dengan kuadrat jarak. r menjadi setengah membuat F menjadi empat kali.'},
+{t:'mc',q:'Sebuah muatan uji positif diletakkan di suatu titik dan mengalami gaya ke arah tertentu. Bila muatan uji itu diganti dengan muatan uji negatif di titik yang sama, arah gaya yang dialaminya',o:['tetap sama','berlawanan arah','tegak lurus arah semula','tidak ada gaya sama sekali'],a:1,x:'Medan listrik di titik itu tidak berubah, tetapi arah gaya F = qE bergantung tanda muatan uji. Muatan negatif mengalami gaya berlawanan arah dengan medan.'},
+{t:'mc',q:'Dua muatan sejenis dan sama besar diletakkan berdekatan. Titik dengan medan listrik total nol berada',o:['tepat di salah satu muatan','di tengah antara keduanya','di luar garis penghubung keduanya','tidak ada titik seperti itu'],a:1,x:'Karena kedua muatan sama besar dan sejenis, medan keduanya saling meniadakan tepat di titik tengah, di mana kedua medan sama besar tetapi berlawanan arah.'},
+{t:'mc',q:'Dipol listrik berada dalam medan luar seragam dengan p tidak sejajar E. Pernyataan yang benar adalah',o:['dipol mengalami gaya neto tetapi tidak mengalami torsi','dipol mengalami torsi tetapi tidak mengalami gaya neto','dipol mengalami gaya neto dan torsi','dipol tidak mengalami gaya maupun torsi'],a:1,x:'Dalam medan seragam, gaya pada kedua muatan dipol sama besar berlawanan arah sehingga totalnya nol. Namun karena titik tangkapnya berbeda, timbul torsi \u03C4 = pE sin\u03B8.'},
+{t:'num',q:'Dua muatan titik +3 nC dan \u22125 nC terpisah 4 cm. Hitung besar gaya Coulomb di antara keduanya (k = 8,99 \u00D7 10\u2079 N\u00B7m\u00B2/C\u00B2).',u:'\u00D710\u207B\u2074 N',v:8.428,x:'F = k|q\u2081q\u2082|/r\u00B2 = 8,99\u00D710\u2079 \u00D7 (3\u00D710\u207B\u2079 \u00D7 5\u00D710\u207B\u2079) / (0,04)\u00B2 = 8,43\u00D710\u207B\u2074 N.'},
+{t:'num',q:'Hitung besar medan listrik pada jarak 6 cm dari muatan titik +8 nC.',u:'\u00D710\u2074 N/C',v:2.0,x:'E = k|q|/r\u00B2 = 8,99\u00D710\u2079 \u00D7 8\u00D710\u207B\u2079 / (0,06)\u00B2 = 1,998\u00D710\u2074 N/C, sekitar 2,0 \u00D7 10\u2074 N/C.'}
+];
+var st=[];function parse(s){var v=parseFloat(String(s).replace(',','.'));return isNaN(v)?null:v;}
+Q.forEach(function(q,qi){var box=doc.createElement('div');box.className='q';var h=doc.createElement('h4');h.textContent='Soal '+(qi+1)+'. '+q.q;box.appendChild(h);var get;
+  if(q.t==='mc'){q.o.forEach(function(o,i){var l=doc.createElement('label'),r=doc.createElement('input');r.type='radio';r.name='q'+qi;r.value=i;l.appendChild(r);l.appendChild(doc.createTextNode(' '+o));box.appendChild(l);});get=function(){var c=box.querySelector('input:checked');return c?(+c.value===q.a?1:0):-1;};}
+  else{var inp=doc.createElement('input');inp.type='text';inp.inputMode='decimal';inp.setAttribute('aria-label','Jawaban');box.appendChild(inp);box.appendChild(doc.createTextNode(' '+q.u));get=function(){var v=parse(inp.value);return v===null?-1:(Math.abs(v-q.v)<=Math.abs(q.v)*.03?1:0);};}
+  var btn=doc.createElement('button');btn.type='button';btn.className='qbtn';btn.textContent='Periksa jawaban';btn.style.marginTop='10px';box.appendChild(btn);var fb=doc.createElement('div');box.appendChild(fb);st[qi]=null;
+  btn.addEventListener('click',function(){var g=get();if(g<0){fb.className='fb';fb.textContent='Isi atau pilih jawaban terlebih dahulu.';st[qi]=null;}else{fb.className='fb '+(g?'ok':'no');fb.textContent=(g?'Benar. ':'Belum tepat. ')+q.x;st[qi]=g;}score();});host.appendChild(box);});
+function score(){var s=0,n=0;st.forEach(function(v){if(v!==null){n++;s+=v;}});sc.textContent=n?'Skor sementara: '+Math.round(s/Q.length*100)+'% ('+n+' dari '+Q.length+' soal sudah diperiksa)':'';}
+})();
+
+/* ---- Refleksi ---- */
+(function(){var ta=doc.getElementById('refl'),st=doc.getElementById('reflst');if(!ta)return;var key='medanlistrik-refleksi';
+  try{var v=localStorage.getItem(key);if(v){ta.value=v;st.textContent='Jawaban sebelumnya dipulihkan dari peramban ini.';}}catch(e){st.textContent='Penyimpanan peramban tidak tersedia; jawaban hanya bertahan selama halaman terbuka.';}
+  var tm=null;ta.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){try{localStorage.setItem(key,ta.value);st.textContent='Tersimpan di peramban ini.';}catch(e){}},500);});})();
+
+G.start();
+})();
+</script>
+<div id="anno-screen" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9000;pointer-events:none"></div>
+<script>/* ============================================================================
+   annotation-layer.js  —  lapisan anotasi & alat presenter untuk modul ajar
+   Tanpa dependensi. Satu file. Tempel ke modul HTML mana pun.
+
+   PEMAKAIAN MINIMAL
+   -----------------
+     <div id="stage" style="position:relative"> ...canvas modul kamu... </div>
+     <script src="annotation-layer.js"><\/script>
+     <script> const anno = new AnnotationLayer({ target: '#stage' }); <\/script>
+
+   PEMAKAIAN DENGAN KONTROL ANIMASI (opsional — tombol muncul hanya jika di-isi)
+   ----------------------------------------------------------------------------
+   Kendali animasi (tahap, play/pause, ulang, kecepatan, label) TIDAK diletakkan
+   di toolbar anotasi. Ia dirender sebagai baris tersendiri tepat di bawah
+   elemen target, selalu terlihat, tidak ikut auto-hide.
+
+     const anno = new AnnotationLayer({
+       target: '#stage',
+       steps: 4,                          // jumlah tahap; anotasi disimpan per tahap
+       onStep:   (i) => showStep(i),      // dipanggil saat tahap berubah
+       onPlay:   (playing) => {...},      // tombol play/pause muncul jika ada
+       onSpeed:  (x) => {...},            // 0.5 / 1 / 2
+       onReplay: () => {...},             // ulangi tahap ini
+       onLabels: (hidden) => {...}        // sembunyikan/tampilkan label
+     });
+
+   API
+   ---
+     anno.setStep(i)      anno.step
+     anno.clear()         anno.undo()
+     anno.exportPNG()     anno.destroy()
+     anno.setTool('pen'|'hl'|'rect'|'ellipse'|'arrow'|'line'|'dline'|'text'
+                  |'laser'|'spot'|'shutter'|'lens'|null)
+
+   SHORTCUT
+   --------
+     Spasi / →  tahap berikut        ←  tahap sebelumnya
+     L laser   P pen   H stabilo   T teks
+     R kotak   O bulat   A panah   G garis   D garis putus
+     S spotlight   K kerai (shutter)   B papan kosong   Z lensa zoom
+     1-4 warna   X ganti ketebalan   U undo   C bersihkan
+     N sembunyikan label   E ekspor PNG   F fullscreen   ? bantuan   Esc lepas alat
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var FONT = "'Segoe UI', system-ui, -apple-system, Arial, sans-serif";
+
+  var COLORS = [
+    { name: 'merah',  ink: '#ff3b30', hl: 'rgba(255,59,48,0.30)' },
+    { name: 'kuning', ink: '#ffcc00', hl: 'rgba(255,204,0,0.35)' },
+    { name: 'biru',   ink: '#3aa0ff', hl: 'rgba(58,160,255,0.28)' },
+    { name: 'putih',  ink: '#ffffff', hl: 'rgba(255,255,255,0.25)' }
+  ];
+
+  var WIDTHS = [2.5, 5.5];          // tipis, tebal
+  var TEXT_SIZES = [18, 26];        // mengikuti indeks ketebalan
+
+  // ---------------------------------------------------------------- ikon SVG
+  function svg(d, extra) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+      d + (extra || '') + '</svg>';
+  }
+  var ICON = {
+    laser:  svg('<circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 3.5v2.6M12 17.9v2.6M3.5 12h2.6M17.9 12h2.6"/>'),
+    pen:    svg('<path d="M4 20l3.2-.8L19 7.4a2 2 0 0 0-2.8-2.8L4.4 16.3 4 20z"/>'),
+    hl:     svg('<path d="M5 19h14"/><path d="M8.5 15.5l-1.8.4.5-1.9L15.6 5.6a1.7 1.7 0 0 1 2.4 2.4L8.5 15.5z"/>'),
+    text:   svg('<path d="M5 6.5h14M12 6.5V19M9 19h6"/>'),
+    rect:   svg('<rect x="4.5" y="6.5" width="15" height="11" rx="1.4"/>'),
+    ell:    svg('<ellipse cx="12" cy="12" rx="7.6" ry="5.6"/>'),
+    arrow:  svg('<path d="M4.5 19L19 5.5M19 5.5h-6M19 5.5v6"/>'),
+    line:   svg('<path d="M4.5 19L19.5 5"/>'),
+    dline:  svg('<path d="M4.5 19l3-3M10 13.5l3-3M15.5 8l3-3" />'),
+    spot:   svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>'),
+    shut:   svg('<rect x="3.5" y="4" width="17" height="16" rx="1.6"/><path d="M3.5 12.5h17"/><path d="M10 15.6h4"/>'),
+    board:  svg('<rect x="3" y="5" width="18" height="12.5" rx="1.6"/><path d="M12 17.5V21M8.5 21h7"/>'),
+    lens:   svg('<circle cx="10.8" cy="10.8" r="6.2"/><path d="M15.4 15.4L20.5 20.5M8.4 10.8h4.8M10.8 8.4v4.8"/>'),
+    undo:   svg('<path d="M9 7.5H16a4.5 4.5 0 0 1 0 9H7"/><path d="M11.5 4.5L8.6 7.5l2.9 3"/>'),
+    clear:  svg('<path d="M7 8.5h10l-.9 10a1.6 1.6 0 0 1-1.6 1.5H9.5a1.6 1.6 0 0 1-1.6-1.5L7 8.5z"/><path d="M5.5 8.5h13M10 5.5h4"/>'),
+    png:    svg('<path d="M12 4v10"/><path d="M8.4 10.6L12 14.2l3.6-3.6"/><path d="M5 17.5v1.2A1.3 1.3 0 0 0 6.3 20h11.4a1.3 1.3 0 0 0 1.3-1.3v-1.2"/>'),
+    prev:   svg('<path d="M14.5 6l-6 6 6 6"/>'),
+    next:   svg('<path d="M9.5 6l6 6-6 6"/>'),
+    play:   svg('<path d="M8 5.5l10 6.5-10 6.5V5.5z" fill="currentColor" stroke="none"/>'),
+    pause:  svg('<path d="M9 5.5v13M15 5.5v13" stroke-width="2.6"/>'),
+    replay: svg('<path d="M4.5 12a7.5 7.5 0 1 0 2.6-5.7"/><path d="M4.2 5.2v3.6h3.6"/>'),
+    eye:    svg('<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.4"/>'),
+    eyeoff: svg('<path d="M4 4l16 16"/><path d="M9.6 6.9A9.6 9.6 0 0 1 12 6.5c6 0 9.5 5.5 9.5 5.5a17 17 0 0 1-2.7 3.2M6.2 8.4A17 17 0 0 0 2.5 12S6 17.5 12 17.5c.9 0 1.7-.1 2.5-.3"/>'),
+    full:   svg('<path d="M4 9V4.5h5M20 9V4.5h-5M4 15v4.5h5M20 15v4.5h-5"/>'),
+    help:   svg('<circle cx="12" cy="12" r="8.4"/><path d="M9.8 9.6a2.2 2.2 0 1 1 3 2.1c-.5.3-.8.8-.8 1.4v.4"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>'),
+    grip:   svg('<path d="M7 10h10M7 14h10"/>')
+  };
+
+  // -------------------------------------------------------------------- CSS
+  var CSS = [
+    '.al-root{position:absolute;inset:0;pointer-events:none;z-index:40;font-family:' + FONT + '}',
+    '.al-cv{position:absolute;inset:0;width:100%;height:100%}',
+    '.al-cv.draw{pointer-events:auto;cursor:crosshair;touch-action:none}',
+    
+    '.al-bar{position:absolute;left:9px;right:9px;bottom:12px;margin:0 auto;',
+    ' width:max-content;max-width:calc(100% - 18px);flex-wrap:wrap;justify-content:center;row-gap:2px;',
+    ' display:flex;align-items:center;gap:3px;padding:5px 7px;border-radius:12px;',
+    ' background:rgba(16,20,28,.93);border:1px solid rgba(255,255,255,.13);',
+    ' box-shadow:0 8px 26px rgba(0,0,0,.45);pointer-events:auto;',
+    ' transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(7px)}',
+    '.al-bar.hid{opacity:0;transform:translateY(130%);pointer-events:none}',
+    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%);',
+    ' display:grid;grid-auto-flow:column;grid-auto-rows:30px;grid-auto-columns:max-content;',
+    ' justify-items:center;align-items:center;gap:2px;padding:6px;width:max-content;max-width:none;',
+    ' border-radius:14px;opacity:.94}',
+    '.al-bar.dock .al-sep{display:none}',
+    '.al-bar.dock .al-tm{min-width:36px;font-size:10px;padding:0}',
+    '.al-bar.dock.hid{transform:translate(130%,-50%)}',
+    '.al-bar.dock .al-b{width:30px;height:30px}',
+    '.al-ctl{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;',
+    ' gap:3px;row-gap:2px;margin:9px auto 0;padding:4px 7px;width:max-content;max-width:100%;',
+    ' border-radius:11px;background:rgba(16,20,28,.55);border:1px solid rgba(255,255,255,.10);',
+    ' font-family:' + FONT + '}',
+    '.al-ctl.fs{position:absolute;left:9px;right:9px;bottom:56px;margin:0 auto;z-index:45;',
+    ' background:rgba(16,20,28,.93);pointer-events:auto}',
+    '.al-b{width:29px;height:29px;display:grid;place-items:center;border:0;border-radius:8px;',
+    ' background:transparent;color:#dfe6f2;cursor:pointer;padding:0;transition:background .12s,color .12s}',
+    '.al-b svg{width:18px;height:18px}',
+    '.al-b:hover{background:rgba(255,255,255,.13);color:#fff}',
+    '.al-b.on{background:#2f6df6;color:#fff}',
+    '.al-sep{width:1px;height:20px;background:rgba(255,255,255,.16);margin:0 4px}',
+    '.al-sw{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.32);cursor:pointer;padding:0;margin:0 1px}',
+    '.al-sw.on{border-color:#fff;transform:scale(1.16)}',
+    '.al-w{width:26px;height:29px;display:grid;place-items:center;border:0;background:transparent;cursor:pointer;border-radius:8px;color:#dfe6f2}',
+    '.al-w:hover{background:rgba(255,255,255,.13)}',
+    '.al-w i{display:block;width:15px;border-radius:9px;background:currentColor}',
+    '.al-sp{min-width:31px;height:29px;border:0;background:transparent;color:#dfe6f2;',
+    ' font:600 11px/1 ' + FONT + ';border-radius:8px;cursor:pointer}',
+    '.al-sp:hover{background:rgba(255,255,255,.13)}',
+    '.al-tm{min-width:44px;text-align:center;color:#9fb0c8;font:600 11px/1 ' + FONT + ';',
+    ' letter-spacing:.4px;cursor:pointer;user-select:none;padding:0 2px}',
+    '.al-tm.run{color:#4ade80}',
+    '.al-st{color:#9fb0c8;font:600 11px/1 ' + FONT + ';min-width:34px;text-align:center;user-select:none}',
+    '.al-in{position:absolute;z-index:60;background:rgba(10,14,20,.9);color:#fff;border:1px solid #2f6df6;',
+    ' border-radius:6px;padding:3px 6px;outline:none;font-family:' + FONT + ';pointer-events:auto}',
+    '.al-help{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:70;',
+    ' width:min(430px,86%);padding:16px 18px;border-radius:14px;pointer-events:auto;',
+    ' background:rgba(14,18,26,.97);border:1px solid rgba(255,255,255,.14);color:#dfe6f2;',
+    ' box-shadow:0 18px 50px rgba(0,0,0,.6);font-size:12px;line-height:1.65}',
+    '.al-help h4{margin:0 0 9px;font-size:12.5px;letter-spacing:.3px;color:#fff}',
+    '.al-help table{width:100%;border-collapse:collapse}',
+    '.al-help td{padding:1.5px 0;vertical-align:top}',
+    '.al-help td:first-child{width:96px;color:#8fa6c4;font-weight:600}',
+    '.al-help .x{position:absolute;right:9px;top:7px;border:0;background:transparent;color:#8fa6c4;',
+    ' font-size:17px;cursor:pointer;line-height:1}',
+    '.al-toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:65;',
+    ' background:rgba(14,18,26,.92);color:#dfe6f2;border:1px solid rgba(255,255,255,.13);',
+    ' padding:5px 11px;border-radius:8px;font:600 11px/1 ' + FONT + ';letter-spacing:.3px;',
+    ' opacity:0;transition:opacity .2s ease;pointer-events:none}',
+    '.al-toast.on{opacity:1}'
+  ].join('');
+
+  function injectCSS() {
+    if (document.getElementById('al-css')) return;
+    var s = document.createElement('style');
+    s.id = 'al-css';
+    s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  // =========================================================== kelas utama
+  function AnnotationLayer(opts) {
+    opts = opts || {};
+    var t = opts.target || document.body;
+    this.target = (typeof t === 'string') ? document.querySelector(t) : t;
+    if (!this.target) throw new Error('AnnotationLayer: target tidak ditemukan');
+
+    this.o = opts;
+    this.dock = opts.dock || null;
+    this.page = !!opts.page;
+    this.steps = Math.max(1, opts.steps || 1);
+    this.step = 0;
+    this.pages = {};                 // tahap -> array objek anotasi
+    this.tool = null;
+    this.ci = 0;                     // indeks warna
+    this.wi = 0;                     // indeks ketebalan
+    this.board = false;
+    this.labelsHidden = false;
+    this.playing = false;
+    this.speedIdx = 1;
+    this.speeds = [0.5, 1, 2];
+    this.trail = [];                 // jejak laser
+    this.spotR = 130;
+    this.shutterY = 0.55;            // fraksi tinggi
+    this.shutterDrag = false;
+    this.lens = { x: 0, y: 0, on: false, r: 110, m: 2 };
+    this.cur = null;                 // objek yang sedang digambar
+    this.mouse = { x: -1e4, y: -1e4 };
+    this.timer = { t0: 0, acc: 0, run: false };
+    this.raf = 0;
+
+    injectCSS();
+    this._build();
+    this._bind();
+    this._resize();
+    this._loop();
+  }
+
+  var P = AnnotationLayer.prototype;
+
+  // ------------------------------------------------------------------ build
+  P._build = function () {
+    var self = this;
+    if (getComputedStyle(this.target).position === 'static') {
+      this.target.style.position = 'relative';
+    }
+
+    var root = this.root = document.createElement('div');
+    root.className = 'al-root';
+
+    this.annoCv = document.createElement('canvas');
+    this.annoCv.className = 'al-cv';
+    this.fxCv = document.createElement('canvas');
+    this.fxCv.className = 'al-cv';
+    this.actx = this.annoCv.getContext('2d');
+    this.fctx = this.fxCv.getContext('2d');
+    root.appendChild(this.annoCv);
+    root.appendChild(this.fxCv);
+
+    var bar = this.bar = document.createElement('div');
+    bar.className = 'al-bar' + (this.dock ? ' dock' : ' hid');
+    root.appendChild(bar);
+
+    this.toast = document.createElement('div');
+    this.toast.className = 'al-toast';
+    root.appendChild(this.toast);
+
+    this.target.appendChild(root);
+
+    // ---- tombol (host = bar anotasi, atau baris kendali animasi)
+    function btn(icon, title, fn, key, host) {
+      var b = document.createElement('button');
+      b.className = 'al-b';
+      b.innerHTML = icon;
+      b.title = title + (key ? '  (' + key + ')' : '');
+      b.addEventListener('click', function (e) { e.preventDefault(); fn(b); });
+      (host || bar).appendChild(b);
+      return b;
+    }
+    function sep(host) {
+      var d = document.createElement('div');
+      d.className = 'al-sep';
+      (host || bar).appendChild(d);
+      return d;
+    }
+    this.tb = {};
+    var toolBtn = function (name, icon, title, key) {
+      self.tb[name] = btn(icon, title, function () { self.setTool(self.tool === name ? null : name); }, key);
+    };
+
+    // --- baris kendali animasi: DI LUAR overlay, tepat di bawah animasi.
+    // Kendali animasi milik modul, bukan alat anotasi — jadi ia tetap terlihat,
+    // tidak ikut auto-hide, dan tidak menutupi gambar.
+    var hasStep = this.steps > 1 || !!this.o.onStep;
+    var needCtl = hasStep || this.o.onPlay || this.o.onReplay || this.o.onSpeed || this.o.onLabels;
+    if (needCtl) {
+      var ctl = this.ctl = document.createElement('div');
+      ctl.className = 'al-ctl';
+      if (this.target.parentNode) {
+        this.target.parentNode.insertBefore(ctl, this.target.nextSibling);
+      } else {
+        this.target.appendChild(ctl);
+      }
+      if (hasStep) {
+        btn(ICON.prev, 'Tahap sebelumnya', function () { self.setStep(self.step - 1); }, '←', ctl);
+        this.stLbl = document.createElement('div');
+        this.stLbl.className = 'al-st';
+        ctl.appendChild(this.stLbl);
+        btn(ICON.next, 'Tahap berikut', function () { self.setStep(self.step + 1); }, 'spasi', ctl);
+      }
+      if (this.o.onPlay || this.o.onReplay || this.o.onSpeed) {
+        if (hasStep) sep(ctl);
+        if (this.o.onPlay) {
+          this.tb.play = btn(ICON.play, 'Play / pause', function () { self.togglePlay(); }, '', ctl);
+        }
+        if (this.o.onReplay) {
+          btn(ICON.replay, 'Ulangi tahap ini', function () { self.o.onReplay(); }, '', ctl);
+        }
+        if (this.o.onSpeed) {
+          this.spBtn = document.createElement('button');
+          this.spBtn.className = 'al-sp';
+          this.spBtn.title = 'Kecepatan';
+          this.spBtn.textContent = '1×';
+          this.spBtn.addEventListener('click', function () { self.cycleSpeed(); });
+          ctl.appendChild(this.spBtn);
+        }
+      }
+    }
+    if (this.o.onLabels) {
+      if (needCtl && this.ctl.childNodes.length) sep(this.ctl);
+      this.tb.labels = btn(ICON.eye, 'Sembunyikan / tampilkan label',
+        function () { self.toggleLabels(); }, 'N', this.ctl);
+    }
+
+    // --- alat tunjuk & gambar
+    toolBtn('laser', ICON.laser, 'Laser pointer (memudar)', 'L');
+    toolBtn('pen', ICON.pen, 'Pen', 'P');
+    toolBtn('hl', ICON.hl, 'Stabilo', 'H');
+    this.shapeName = 'rect';
+    this.tb.shape = btn(ICON.rect, 'Bentuk — klik untuk ganti: kotak/bulat/panah/garis/putus', function (b) {
+      var order = ['rect', 'ellipse', 'arrow', 'line', 'dline'];
+      if (self.tool === self.shapeName) {
+        self.shapeName = order[(order.indexOf(self.shapeName) + 1) % order.length];
+      }
+      b.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[self.shapeName];
+      self.setTool(self.shapeName);
+      self._flash({ rect: 'kotak', ellipse: 'bulat', arrow: 'panah', line: 'garis', dline: 'garis putus' }[self.shapeName]);
+    }, 'R/O/A/G/D');
+    toolBtn('text', ICON.text, 'Teks', 'T');
+    sep();
+
+    // --- warna & ketebalan
+    this.swatches = COLORS.map(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'al-sw' + (i === 0 ? ' on' : '');
+      b.style.background = c.ink;
+      b.title = 'Warna ' + c.name + '  (' + (i + 1) + ')';
+      b.addEventListener('click', function () { self.setColor(i); });
+      bar.appendChild(b);
+      return b;
+    });
+    this.wBtn = document.createElement('button');
+    this.wBtn.className = 'al-w';
+    this.wBtn.title = 'Ketebalan  (X)';
+    this.wBtn.innerHTML = '<i></i>';
+    this.wBtn.addEventListener('click', function () { self.setWidth(1 - self.wi); });
+    bar.appendChild(this.wBtn);
+    this._paintWidth();
+    sep();
+
+    // --- fokus perhatian
+    toolBtn('spot', ICON.spot, 'Spotlight (roda mouse = ubah radius)', 'S');
+    toolBtn('shutter', ICON.shut, 'Kerai — tarik tepinya', 'K');
+    this.tb.board = btn(ICON.board, 'Papan kosong', function () { self.toggleBoard(); }, 'B');
+    toolBtn('lens', ICON.lens, 'Lensa zoom 2×', 'Z');
+    sep();
+
+    // --- utilitas
+    btn(ICON.undo, 'Undo', function () { self.undo(); }, 'U');
+    btn(ICON.clear, 'Bersihkan tahap ini', function () { self.clear(); }, 'C');
+    btn(ICON.png, 'Simpan layar + coretan (PNG)', function () { self.exportPNG(); }, 'E');
+    this.tmEl = document.createElement('div');
+    this.tmEl.className = 'al-tm';
+    this.tmEl.textContent = '00:00';
+    this.tmEl.title = 'Timer — klik: mulai/pause, klik ganda: reset';
+    this.tmEl.addEventListener('click', function () { self.toggleTimer(); });
+    this.tmEl.addEventListener('dblclick', function () { self.resetTimer(); });
+    bar.appendChild(this.tmEl);
+    btn(ICON.full, 'Fullscreen', function () { self.fullscreen(); }, 'F');
+    btn(ICON.help, 'Bantuan shortcut', function () { self.help(); }, '?');
+
+    this._paintStep();
+  };
+
+  // ------------------------------------------------------------------- bind
+  P._bind = function () {
+    var self = this;
+    this._on = [];
+    function on(el, ev, fn, o) { el.addEventListener(ev, fn, o); self._on.push([el, ev, fn, o]); }
+
+    // toolbar auto-hide
+    var hideT = 0;
+    this._show = function () {
+      if (self.dock) return;
+      self.bar.classList.remove('hid');
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        if (!self.bar.matches(':hover')) self.bar.classList.add('hid');
+      }, 2600);
+    };
+    on(this.bar, 'mouseenter', function () { clearTimeout(hideT); });
+    on(this.bar, 'mouseleave', this._show);
+
+    // posisi kursor global (canvas fx boleh pointer-events:none)
+    on(window, 'pointermove', function (e) {
+      var r = self.target.getBoundingClientRect();
+      self.mouse.x = e.clientX - r.left;
+      self.mouse.y = e.clientY - r.top;
+      if (self.tool === 'laser') self.trail.push({ x: self.mouse.x, y: self.mouse.y, t: performance.now() });
+      if (self.shutterDrag) self.shutterY = Math.min(0.99, Math.max(0.01, self.mouse.y / r.height));
+      // toolbar muncul saat kursor mendekati tepi bawah (tanpa elemen penghalang)
+      if (self.mouse.x > 0 && self.mouse.x < self.W &&
+          self.mouse.y > self.H - 78 && self.mouse.y < self.H + 30 && !self.cur) self._show();
+    }, { passive: true });
+
+    on(window, 'wheel', function (e) {
+      if (self.tool === 'spot') { self.spotR = Math.min(420, Math.max(50, self.spotR - e.deltaY * 0.3)); }
+      else if (self.tool === 'lens') { self.lens.r = Math.min(260, Math.max(60, self.lens.r - e.deltaY * 0.2)); }
+    }, { passive: true });
+
+    // gambar
+    on(this.annoCv, 'pointerdown', function (e) { self._down(e); });
+    on(window, 'pointermove', function (e) { self._move(e); });
+    on(window, 'pointerup', function (e) { self._up(e); });
+
+    // shutter: tarik tepi (canvas fx tidak menangkap pointer, jadi pakai target)
+    on(this.target, 'pointerdown', function (e) {
+      if (self.tool !== 'shutter') return;
+      var r = self.target.getBoundingClientRect();
+      var y = e.clientY - r.top;
+      if (Math.abs(y - self.shutterY * r.height) < 34) { self.shutterDrag = true; }
+    });
+    on(window, 'pointerup', function () { self.shutterDrag = false; });
+
+    // resize
+    this._ro = (typeof ResizeObserver !== 'undefined')
+      ? new ResizeObserver(function () { self._resize(); })
+      : null;
+    if (this._ro) this._ro.observe(this.target);
+    on(window, 'resize', function () { self._resize(); });
+    if (this.dock && !this.page) on(window, 'scroll', function () { self._fitDock(); }, { passive: true });
+
+    // keyboard
+    on(window, 'keydown', function (e) { self._key(e); });
+
+    // fullscreen: baris kendali ikut masuk ke dalam target agar tetap terlihat
+    on(document, 'fullscreenchange', function () {
+      if (!self.ctl) return;
+      if (document.fullscreenElement === self.target) {
+        self.ctl.classList.add('fs');
+        self.root.appendChild(self.ctl);
+      } else {
+        self.ctl.classList.remove('fs');
+        if (self.target.parentNode) self.target.parentNode.insertBefore(self.ctl, self.target.nextSibling);
+      }
+      self._resize();
+    });
+  };
+
+  P._key = function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key, kl = k.toLowerCase(), self = this, hit = true;
+
+    if (!this.page && (k === ' ' || k === 'ArrowRight')) this.setStep(this.step + 1);
+    else if (!this.page && k === 'ArrowLeft') this.setStep(this.step - 1);
+    else if (kl === 'l') this.setTool(this.tool === 'laser' ? null : 'laser');
+    else if (kl === 'p') this.setTool(this.tool === 'pen' ? null : 'pen');
+    else if (kl === 'h') this.setTool(this.tool === 'hl' ? null : 'hl');
+    else if (kl === 't') this.setTool(this.tool === 'text' ? null : 'text');
+    else if (kl === 'r') this._shape('rect');
+    else if (kl === 'o') this._shape('ellipse');
+    else if (kl === 'a') this._shape('arrow');
+    else if (kl === 'g') this._shape('line');
+    else if (kl === 'd') this._shape('dline');
+    else if (kl === 's') this.setTool(this.tool === 'spot' ? null : 'spot');
+    else if (kl === 'k') this.setTool(this.tool === 'shutter' ? null : 'shutter');
+    else if (kl === 'z') this.setTool(this.tool === 'lens' ? null : 'lens');
+    else if (kl === 'b') this.toggleBoard();
+    else if (kl === 'u') this.undo();
+    else if (kl === 'c') this.clear();
+    else if (kl === 'n') this.toggleLabels();
+    else if (kl === 'e') this.exportPNG();
+    else if (kl === 'f') this.fullscreen();
+    else if (k === '?' || k === '/') this.help();
+    else if (k >= '1' && k <= '4') this.setColor(+k - 1);
+    else if (kl === 'x') this.setWidth(1 - this.wi);
+    else if (k === 'Escape') { this.setTool(null); this._closeHelp(); }
+    else hit = false;
+
+    if (hit) { e.preventDefault(); this._show(); }
+  };
+
+  P._shape = function (name) {
+    this.shapeName = name;
+    this.tb.shape.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[name];
+    this.setTool(name);
+  };
+
+  // ----------------------------------------------------------------- resize
+  P._resize = function () {
+    var r = this.target.getBoundingClientRect();
+    this.W = Math.max(1, Math.round(r.width));
+    this.H = Math.max(1, Math.round(r.height));
+    var dpr = this.dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    [this.annoCv, this.fxCv].forEach(function (c) {
+      c.width = Math.round(r.width * dpr);
+      c.height = Math.round(r.height * dpr);
+    });
+    this.actx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this._fitDock();
+    this._redraw();
+  };
+
+  // bilah vertikal: bagi tombol ke beberapa kolom bila layar pendek
+  P._fitDock = function () {
+    if (!this.dock) return;
+    var kids = [].filter.call(this.bar.children, function (n) { return !n.classList.contains('al-sep'); });
+    var n = kids.length, r = this.target.getBoundingClientRect();
+    // bagian target yang sedang terlihat di layar (bilah berada di tengahnya)
+    var vt = Math.max(0, -r.top), vb = Math.min(this.H, window.innerHeight - r.top);
+    if (vb - vt < 120) { vt = 0; vb = this.H; }
+    var vis = vb - vt;
+    var rows = Math.max(4, Math.floor((vis - 28) / 32));
+    if (rows > n) rows = n;
+    this.bar.style.gridTemplateRows = 'repeat(' + rows + ',30px)';
+    this.bar.style.top = ((vt + vb) / 2) + 'px';
+  };
+
+  // ------------------------------------------------------------ model & I/O
+  P._page = function () {
+    if (!this.pages[this.step]) this.pages[this.step] = [];
+    return this.pages[this.step];
+  };
+
+  P.setTool = function (name) {
+    this.tool = name || null;
+    var drawing = ['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(this.tool) >= 0;
+    this.annoCv.classList.toggle('draw', drawing);
+    for (var k in this.tb) {
+      if (this.tb[k] && ['play', 'labels', 'board', 'shape'].indexOf(k) < 0) {
+        this.tb[k].classList.toggle('on', k === this.tool);
+      }
+    }
+    if (this.tb.shape) {
+      this.tb.shape.classList.toggle('on', ['rect', 'ellipse', 'arrow', 'line', 'dline'].indexOf(this.tool) >= 0);
+    }
+    if (this.tool !== 'laser') this.trail.length = 0;
+    this._show();
+    return this;
+  };
+
+  P.setColor = function (i) {
+    this.ci = i % COLORS.length;
+    var self = this;
+    this.swatches.forEach(function (b, j) { b.classList.toggle('on', j === self.ci); });
+    this._paintWidth();
+    return this;
+  };
+
+  P.setWidth = function (i) {
+    this.wi = i ? 1 : 0;
+    this._paintWidth();
+    return this;
+  };
+
+  P._paintWidth = function () {
+    var h = this.wi ? 6 : 3;
+    this.wBtn.firstChild.style.height = h + 'px';
+    this.wBtn.style.color = COLORS[this.ci].ink;
+  };
+
+  P.setStep = function (i) {
+    var n = this.steps;
+    i = Math.max(0, Math.min(n - 1, i));
+    if (i === this.step) return this;
+    this.step = i;
+    this._paintStep();
+    this._redraw();
+    if (this.o.onStep) this.o.onStep(i);
+    return this;
+  };
+
+  P._paintStep = function () {
+    if (this.stLbl) this.stLbl.textContent = (this.step + 1) + '/' + this.steps;
+  };
+
+  P.togglePlay = function () {
+    this.playing = !this.playing;
+    if (this.tb.play) {
+      this.tb.play.innerHTML = this.playing ? ICON.pause : ICON.play;
+      this.tb.play.classList.toggle('on', this.playing);
+    }
+    if (this.o.onPlay) this.o.onPlay(this.playing);
+    return this;
+  };
+
+  P.cycleSpeed = function () {
+    this.speedIdx = (this.speedIdx + 1) % this.speeds.length;
+    var s = this.speeds[this.speedIdx];
+    if (this.spBtn) this.spBtn.textContent = (s === 0.5 ? '0,5' : s) + '×';
+    if (this.o.onSpeed) this.o.onSpeed(s);
+    return this;
+  };
+
+  P.toggleLabels = function () {
+    if (!this.o.onLabels) return this;
+    this.labelsHidden = !this.labelsHidden;
+    if (this.tb.labels) {
+      this.tb.labels.innerHTML = this.labelsHidden ? ICON.eyeoff : ICON.eye;
+      this.tb.labels.classList.toggle('on', this.labelsHidden);
+    }
+    this.o.onLabels(this.labelsHidden);
+    this._flash(this.labelsHidden ? 'label disembunyikan' : 'label ditampilkan');
+    return this;
+  };
+
+  P.toggleBoard = function () {
+    this.board = !this.board;
+    if (this.tb.board) this.tb.board.classList.toggle('on', this.board);
+    if (this.board && !this.tool) this.setTool('pen');
+    this._redraw();
+    return this;
+  };
+
+  P.undo = function () {
+    this._page().pop();
+    this._redraw();
+    return this;
+  };
+
+  P.clear = function () {
+    this.pages[this.step] = [];
+    this._redraw();
+    return this;
+  };
+
+  P.clearAll = function () {
+    this.pages = {};
+    this._redraw();
+    return this;
+  };
+
+  // ------------------------------------------------------------ input gambar
+  P._pt = function (e) {
+    var r = this.target.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+
+  P._down = function (e) {
+    var t = this.tool;
+    if (['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(t) < 0) return;
+    e.preventDefault();
+    var p = this._pt(e);
+    if (t === 'text') { this._textInput(p); return; }
+    var o = { type: t, ci: this.ci, w: WIDTHS[this.wi] };
+    if (t === 'pen' || t === 'hl') { o.pts = [p]; if (t === 'hl') o.w = WIDTHS[this.wi] * 3.6; }
+    else { o.x1 = p.x; o.y1 = p.y; o.x2 = p.x; o.y2 = p.y; }
+    this.cur = o;
+    try { this.annoCv.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+
+  P._move = function (e) {
+    if (!this.cur) return;
+    var p = this._pt(e);
+    if (this.cur.pts) {
+      var last = this.cur.pts[this.cur.pts.length - 1];
+      if ((p.x - last.x) * (p.x - last.x) + (p.y - last.y) * (p.y - last.y) > 2.2) this.cur.pts.push(p);
+    } else { this.cur.x2 = p.x; this.cur.y2 = p.y; }
+  };
+
+  P._up = function () {
+    if (!this.cur) return;
+    var o = this.cur;
+    this.cur = null;
+    var tiny = o.pts ? o.pts.length < 2
+      : (Math.abs(o.x2 - o.x1) < 4 && Math.abs(o.y2 - o.y1) < 4);
+    if (!tiny) { this._page().push(o); this._redraw(); }
+  };
+
+  P._textInput = function (p) {
+    var self = this, size = TEXT_SIZES[this.wi];
+    var inp = document.createElement('input');
+    inp.className = 'al-in';
+    inp.style.left = p.x + 'px';
+    inp.style.top = (p.y - size * 0.9) + 'px';
+    inp.style.font = '600 ' + size + 'px ' + FONT;
+    inp.style.color = COLORS[this.ci].ink;
+    inp.style.minWidth = '120px';
+    this.root.appendChild(inp);
+    inp.focus();
+    var done = false;
+    function commit() {
+      if (done) return;
+      done = true;
+      var v = inp.value.trim();
+      if (v) {
+        self._page().push({ type: 'text', x: p.x, y: p.y, str: v, size: size, ci: self.ci });
+        self._redraw();
+      }
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+    }
+    inp.addEventListener('keydown', function (e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { commit(); self.annoCv.focus(); }
+      else if (e.key === 'Escape') { done = true; if (inp.parentNode) inp.parentNode.removeChild(inp); }
+    });
+    inp.addEventListener('blur', commit);
+  };
+
+  // -------------------------------------------------------------- menggambar
+  P._redraw = function () {
+    var c = this.actx;
+    c.clearRect(0, 0, this.W, this.H);
+    if (this.board) {
+      c.fillStyle = '#0d1420';
+      c.fillRect(0, 0, this.W, this.H);
+      c.strokeStyle = 'rgba(255,255,255,.055)';
+      c.lineWidth = 1;
+      for (var gy = 34; gy < this.H; gy += 34) {
+        c.beginPath(); c.moveTo(0, gy); c.lineTo(this.W, gy); c.stroke();
+      }
+    }
+    var page = this.pages[this.step] || [];
+    for (var i = 0; i < page.length; i++) this._drawObj(c, page[i]);
+  };
+
+  P._drawObj = function (c, o) {
+    var col = COLORS[o.ci] || COLORS[0];
+    c.save();
+    c.lineCap = 'round';
+    c.lineJoin = 'round';
+    c.shadowBlur = 0;
+    c.setLineDash([]);
+
+    if (o.type === 'text') {
+      c.font = '600 ' + o.size + 'px ' + FONT;
+      c.textBaseline = 'alphabetic';
+      c.fillStyle = 'rgba(0,0,0,.55)';
+      c.fillText(o.str, o.x + 1.2, o.y + 1.2);
+      c.fillStyle = col.ink;
+      c.fillText(o.str, o.x, o.y);
+      c.restore();
+      return;
+    }
+
+    c.strokeStyle = (o.type === 'hl') ? col.hl : col.ink;
+    c.lineWidth = o.w;
+    if (o.type === 'hl') { c.lineCap = 'butt'; }
+
+    if (o.pts) {
+      c.beginPath();
+      c.moveTo(o.pts[0].x, o.pts[0].y);
+      for (var i = 1; i < o.pts.length - 1; i++) {
+        var a = o.pts[i], b = o.pts[i + 1];
+        c.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      }
+      var L = o.pts[o.pts.length - 1];
+      c.lineTo(L.x, L.y);
+      c.stroke();
+    } else if (o.type === 'rect') {
+      var x = Math.min(o.x1, o.x2), y = Math.min(o.y1, o.y2);
+      var w = Math.abs(o.x2 - o.x1), h = Math.abs(o.y2 - o.y1);
+      var rr = Math.min(7, w / 2, h / 2);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(x, y, w, h, rr); else c.rect(x, y, w, h);
+      c.stroke();
+    } else if (o.type === 'ellipse') {
+      c.beginPath();
+      c.ellipse((o.x1 + o.x2) / 2, (o.y1 + o.y2) / 2,
+        Math.abs(o.x2 - o.x1) / 2, Math.abs(o.y2 - o.y1) / 2, 0, 0, Math.PI * 2);
+      c.stroke();
+    } else if (o.type === 'line' || o.type === 'dline') {
+      if (o.type === 'dline') c.setLineDash([o.w * 3, o.w * 2.6]);
+      c.beginPath(); c.moveTo(o.x1, o.y1); c.lineTo(o.x2, o.y2); c.stroke();
+    } else if (o.type === 'arrow') {
+      var ang = Math.atan2(o.y2 - o.y1, o.x2 - o.x1);
+      var hl = Math.max(11, o.w * 3.6);
+      c.beginPath();
+      c.moveTo(o.x1, o.y1);
+      c.lineTo(o.x2 - Math.cos(ang) * hl * 0.72, o.y2 - Math.sin(ang) * hl * 0.72);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(o.x2, o.y2);
+      c.lineTo(o.x2 - Math.cos(ang - 0.42) * hl, o.y2 - Math.sin(ang - 0.42) * hl);
+      c.lineTo(o.x2 - Math.cos(ang + 0.42) * hl, o.y2 - Math.sin(ang + 0.42) * hl);
+      c.closePath();
+      c.fillStyle = col.ink;
+      c.fill();
+    }
+    c.restore();
+  };
+
+  // --------------------------------------------------------- loop efek (fx)
+  P._loop = function () {
+    var self = this;
+    function frame(now) {
+      self.raf = requestAnimationFrame(frame);
+      var c = self.fctx, W = self.W, H = self.H;
+      c.clearRect(0, 0, W, H);
+
+      // kerai
+      if (self.tool === 'shutter') {
+        var sy = self.shutterY * H;
+        c.fillStyle = 'rgba(8,11,17,.97)';
+        c.fillRect(0, sy, W, H - sy);
+        c.fillStyle = 'rgba(255,255,255,.16)';
+        c.fillRect(0, sy - 2, W, 3);
+        c.shadowBlur = 0;
+        c.fillStyle = 'rgba(255,255,255,.5)';
+        c.font = '600 10px ' + FONT;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText('tarik untuk membuka', W / 2, sy + 13);
+        c.textAlign = 'left';
+      }
+
+      // spotlight
+      if (self.tool === 'spot') {
+        c.save();
+        c.beginPath();
+        c.rect(0, 0, W, H);
+        c.moveTo(self.mouse.x + self.spotR, self.mouse.y);
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2, true);
+        c.fillStyle = 'rgba(6,9,14,.74)';
+        c.fill('evenodd');
+        c.restore();
+        var g = c.createRadialGradient(self.mouse.x, self.mouse.y, self.spotR * 0.86, self.mouse.x, self.mouse.y, self.spotR);
+        g.addColorStop(0, 'rgba(6,9,14,0)');
+        g.addColorStop(1, 'rgba(6,9,14,.74)');
+        c.fillStyle = g;
+        c.beginPath();
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      // lensa zoom
+      if (self.tool === 'lens') self._drawLens(c);
+
+      // laser
+      if (self.tool === 'laser') self._drawLaser(c, now);
+
+      // preview objek yang sedang digambar
+      if (self.cur) self._drawObj(c, self.cur);
+
+      // timer
+      if (self.timer.run) self._paintTimer();
+    }
+    this.raf = requestAnimationFrame(frame);
+  };
+
+  P._drawLaser = function (c, now) {
+    var tr = this.trail, LIFE = 620;
+    while (tr.length && now - tr[0].t > LIFE) tr.shift();
+    if (tr.length > 1) {
+      for (var i = 1; i < tr.length; i++) {
+        var a = tr[i - 1], b = tr[i];
+        var age = (now - b.t) / LIFE;
+        c.strokeStyle = 'rgba(255,60,52,' + (0.75 * (1 - age)).toFixed(3) + ')';
+        c.lineWidth = 3.4 * (1 - age) + 1;
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+      }
+    }
+    var m = this.mouse;
+    if (m.x < -1000) return;
+    c.save();
+    c.shadowColor = 'rgba(255,60,52,.95)';
+    c.shadowBlur = 16;
+    c.fillStyle = '#ff3b30';
+    c.beginPath(); c.arc(m.x, m.y, 5.2, 0, Math.PI * 2); c.fill();
+    c.restore();
+    c.shadowBlur = 0;
+    c.fillStyle = 'rgba(255,255,255,.9)';
+    c.beginPath(); c.arc(m.x, m.y, 1.9, 0, Math.PI * 2); c.fill();
+  };
+
+  P._hostCanvases = function () {
+    var out = [], all = (this.page ? document : this.target).querySelectorAll('canvas');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] !== this.annoCv && all[i] !== this.fxCv) out.push(all[i]);
+    }
+    return out;
+  };
+
+  P._drawLens = function (c) {
+    var m = this.mouse, R = this.lens.r, M = this.lens.m;
+    if (m.x < -1000) return;
+    var tr = this.target.getBoundingClientRect();
+    c.save();
+    c.beginPath();
+    c.arc(m.x, m.y, R, 0, Math.PI * 2);
+    c.clip();
+    c.fillStyle = '#0b0f17';
+    c.fillRect(m.x - R, m.y - R, R * 2, R * 2);
+    c.translate(m.x, m.y);
+    c.scale(M, M);
+    c.translate(-m.x, -m.y);
+    var srcs = this._hostCanvases().concat([this.annoCv]);
+    for (var i = 0; i < srcs.length; i++) {
+      var cv = srcs[i], b = cv.getBoundingClientRect();
+      try { c.drawImage(cv, b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.restore();
+    c.shadowBlur = 0;
+    c.strokeStyle = 'rgba(255,255,255,.75)';
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(m.x, m.y, R, 0, Math.PI * 2); c.stroke();
+    c.strokeStyle = 'rgba(0,0,0,.45)';
+    c.lineWidth = 4;
+    c.beginPath(); c.arc(m.x, m.y, R + 3, 0, Math.PI * 2); c.stroke();
+  };
+
+  // ------------------------------------------------------------------ timer
+  P.toggleTimer = function () {
+    var t = this.timer;
+    if (t.run) { t.acc += performance.now() - t.t0; t.run = false; }
+    else { t.t0 = performance.now(); t.run = true; }
+    this.tmEl.classList.toggle('run', t.run);
+    this._paintTimer();
+    return this;
+  };
+  P.resetTimer = function () {
+    this.timer = { t0: performance.now(), acc: 0, run: this.timer.run };
+    this._paintTimer();
+    return this;
+  };
+  P._paintTimer = function () {
+    var t = this.timer;
+    var ms = t.acc + (t.run ? performance.now() - t.t0 : 0);
+    var s = Math.floor(ms / 1000);
+    this.tmEl.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  };
+
+  // ----------------------------------------------------------------- ekspor
+  P.exportPNG = function () {
+    var dpr = this.dpr, tr = this.target.getBoundingClientRect();
+    var out = document.createElement('canvas');
+    out.width = Math.round(this.W * dpr);
+    out.height = Math.round(this.H * dpr);
+    var c = out.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var bg = getComputedStyle(this.target).backgroundColor;
+    c.fillStyle = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0e1320' : bg;
+    c.fillRect(0, 0, this.W, this.H);
+
+    var hosts = this._hostCanvases();
+    for (var i = 0; i < hosts.length; i++) {
+      var b = hosts[i].getBoundingClientRect();
+      try { c.drawImage(hosts[i], b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.drawImage(this.annoCv, 0, 0, this.W, this.H);
+
+    var a = document.createElement('a');
+    a.download = 'anotasi-tahap-' + (this.step + 1) + '.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+    this._flash('PNG disimpan');
+    return this;
+  };
+
+  P.fullscreen = function () {
+    var el = this.page ? document.documentElement : this.target;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+    return this;
+  };
+
+  // ------------------------------------------------------------ bantuan/toast
+  P._flash = function (msg) {
+    var self = this;
+    this.toast.textContent = msg;
+    this.toast.classList.add('on');
+    clearTimeout(this._ft);
+    this._ft = setTimeout(function () { self.toast.classList.remove('on'); }, 1100);
+  };
+
+  P._closeHelp = function () {
+    if (this._helpEl && this._helpEl.parentNode) this._helpEl.parentNode.removeChild(this._helpEl);
+    this._helpEl = null;
+  };
+
+  P.help = function () {
+    if (this._helpEl) { this._closeHelp(); return this; }
+    var rows = [
+      ['Spasi / →', 'tahap berikut'],
+      ['←', 'tahap sebelumnya'],
+      ['L / P / H / T', 'laser · pen · stabilo · teks'],
+      ['R / O / A / G / D', 'kotak · bulat · panah · garis · garis putus'],
+      ['S / K / B / Z', 'spotlight · kerai · papan kosong · lensa zoom'],
+      ['1 – 4', 'warna'],
+      ['X', 'ganti ketebalan'],
+      ['U / C', 'undo · bersihkan tahap ini'],
+      ['N', 'sembunyikan / tampilkan label'],
+      ['E / F', 'ekspor PNG · fullscreen'],
+      ['Roda mouse', 'ubah radius spotlight / lensa'],
+      ['Esc', 'lepas alat']
+    ];
+    var d = document.createElement('div');
+    d.className = 'al-help';
+    d.innerHTML = '<button class="x" title="Tutup">&times;</button><h4>Shortcut presenter</h4><table>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
+      '</table>';
+    var self = this;
+    d.querySelector('.x').addEventListener('click', function () { self._closeHelp(); });
+    this.root.appendChild(d);
+    this._helpEl = d;
+    return this;
+  };
+
+  // ---------------------------------------------------------------- destroy
+  P.destroy = function () {
+    cancelAnimationFrame(this.raf);
+    this._on.forEach(function (a) { a[0].removeEventListener(a[1], a[2], a[3]); });
+    if (this._ro) this._ro.disconnect();
+    if (this.ctl && this.ctl.parentNode) this.ctl.parentNode.removeChild(this.ctl);
+    if (this.root.parentNode) this.root.parentNode.removeChild(this.root);
+  };
+
+  global.AnnotationLayer = AnnotationLayer;
+  if (typeof module !== 'undefined' && module.exports) module.exports = AnnotationLayer;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>window.anno=new AnnotationLayer({target:'#anno-screen',page:true,dock:'right'});</script>
+<script>(function(){
+  var TEXT='Unverified', SIZE=70;
+  var st=document.createElement('style');
+  st.textContent='#wm-diag{position:fixed;left:0;top:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;z-index:8000;user-select:none}'
+   +'#wm-diag span{position:absolute;left:50%;top:50%;white-space:nowrap;font:300 '+SIZE+'px/1 "Segoe UI Light","Segoe UI",system-ui,Arial,sans-serif;'
+   +'letter-spacing:.14em;color:rgb(115,132,165);opacity:.62;transform-origin:50% 50%}'
+   +'@media print{#wm-diag{position:fixed}}';
+  document.head.appendChild(st);
+  var box=document.createElement('div');box.id='wm-diag';box.setAttribute('aria-hidden','true');
+  var sp=document.createElement('span');sp.textContent=TEXT;box.appendChild(sp);
+  document.body.appendChild(box);
+  function fit(){
+    var vv=window.visualViewport,w=vv?vv.width:window.innerWidth,h=vv?vv.height:window.innerHeight;
+    var ang=-Math.atan2(h,w)*180/Math.PI;          /* mengikuti diagonal layar */
+    var diag=Math.sqrt(w*w+h*h),fs=SIZE;
+    sp.style.fontSize=fs+'px';
+    var tw=sp.getBoundingClientRect().width; /* lebar sebelum rotasi */
+    sp.style.transform='translate(-50%,-50%)';
+    tw=sp.offsetWidth;
+    if(tw>diag*0.8){fs=Math.max(24,Math.floor(fs*diag*0.8/tw));sp.style.fontSize=fs+'px';}
+    sp.style.transform='translate(-50%,-50%) rotate('+ang.toFixed(3)+'deg)';
+  }
+  fit();
+  ['resize','orientationchange','fullscreenchange'].forEach(function(e){window.addEventListener(e,fit);});
+  document.addEventListener('fullscreenchange',fit);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',fit);
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(document.documentElement);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body></html>

@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sel Saraf dan Potensial Aksi</title>
+<style>
+:root{
+  --ink:#14202b; --ink2:#43525f; --line:#b9c5d1; --paper:#eaeff4; --white:#fbfcfd;
+  --accent:#0d6ba8; --ten:#1a8fb3; --com:#cf4a39; --stage:#07080f; --amber:#8a5a00;
+  --serif:'Cambria Math','STIX Two Math','Cambria','Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans)}
+a{color:var(--accent)}
+.toc{position:fixed;left:0;top:0;bottom:0;width:272px;padding:22px 18px;overflow:auto;background:var(--white);border-right:1.5px solid var(--ink);z-index:20}
+.toc h1{font-size:15px;line-height:1.3;margin:0 0 4px;font-weight:700}
+.toc p{margin:0 0 14px;font-size:13px;color:var(--ink2);line-height:1.4}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 8px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.35;border-left:3px solid transparent}
+.toc li a b{font-variant-numeric:tabular-nums;color:var(--ink2)}
+.toc li a:hover{background:var(--paper)}
+.toc li a.on{border-left-color:var(--accent);background:var(--paper);font-weight:600}
+.toc li a.seen b::after{content:"\2713";color:var(--accent);margin-left:2px}
+main{margin-left:272px;padding:0 40px 80px}
+.wrap{max-width:900px;margin:0 auto}
+.cover{padding:56px 0 34px;border-bottom:1.5px solid var(--ink)}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 18px;font-size:14px;color:var(--ink2)}
+.cover h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;margin:0 0 14px;letter-spacing:-.01em}
+.cover h1 span{display:block;font-size:.5em;font-weight:500;color:var(--ink2);letter-spacing:0;margin-top:10px}
+.cover p{max-width:62ch;margin:0}
+section{padding:46px 0 10px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.tb{display:grid;grid-template-columns:74px 1fr 1fr;border:1.5px solid var(--ink);background:var(--white);margin:0 0 26px}
+.tb>div{padding:10px 14px}
+.tb small{display:block;font-size:12.5px;color:var(--ink2);line-height:1.3;margin-bottom:2px}
+.tb .no{grid-row:1/3;border-right:1.5px solid var(--ink);text-align:center;display:flex;flex-direction:column;justify-content:center}
+.tb .no b{font-size:34px;line-height:1}
+.tb .ttl{grid-column:2/4;border-bottom:1.5px solid var(--ink)}
+.tb h2{margin:0;font-size:clamp(20px,2.6vw,27px);line-height:1.25}
+.tb .c1{border-right:1.5px solid var(--ink)}
+.tb .c1,.tb .c2{font-size:14.5px;line-height:1.45}
+h3{font-size:19px;margin:30px 0 8px;line-height:1.3}
+p,li{max-width:70ch}
+ul,ol{padding-left:1.3em}
+li{margin:.25em 0}
+.eq{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);font:italic 20px/1.9 var(--serif);text-align:center;overflow-x:auto}
+.eq i,p i,li i,td i,dd i{font-family:var(--serif);font-size:1.06em}
+.eq .u,.eq .n{font-style:normal}
+.eq .sp{display:inline-block;width:2em}
+fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .2em;line-height:1.25}
+fr>n{border-bottom:1.3px solid currentColor;padding:0 .3em}
+fr>d{padding:0 .3em}
+sub,sup{line-height:0;font-size:.7em}
+.note{margin:18px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--white);font-size:15.5px}
+.note b{display:block;margin-bottom:2px}
+.warn{border-left-color:#b76e00}
+blockquote{margin:16px 0;padding:10px 18px;border-left:4px solid var(--ink);background:var(--white);font-size:16px}
+blockquote p{margin:0}
+table.dt{border-collapse:collapse;margin:14px 0;font-size:15px;background:var(--white);width:100%;max-width:70ch}
+table.dt th,table.dt td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+table.dt th{background:#e2e9f0}
+.sim{margin:22px 0 26px;border:1.5px solid var(--ink);background:var(--white)}
+.sim .stage{background:var(--stage);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sim canvas{display:block;width:100%;min-width:760px;height:auto;aspect-ratio:16/9}
+.sim canvas.clk{cursor:pointer}
+.sim .tray{padding:14px 16px 12px;border-top:1.5px solid var(--ink)}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 26px}
+.row{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:center;font-size:14.5px}
+.row .lab{grid-column:1;line-height:1.3}
+.row output{grid-column:2;font-variant-numeric:tabular-nums;font-weight:600;font-size:14.5px}
+.row input[type=range]{grid-column:1/3;width:100%;margin:2px 0 0;accent-color:var(--accent);min-height:26px}
+.row select{grid-column:1/3;width:100%;padding:6px 8px;font:inherit;font-size:14.5px;background:#fff;border:1px solid var(--ink2);color:var(--ink);min-height:36px}
+.row.dis{opacity:.4}
+.row button,.bar button,.mapbtn button,.qbtn{font:inherit;font-size:14.5px;padding:7px 14px;background:var(--ink);color:#fff;border:0;cursor:pointer;min-height:36px}
+.row button:hover,.bar button:hover{background:var(--accent)}
+.reads{display:flex;flex-wrap:wrap;gap:8px 26px;margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--line)}
+.reads div{min-width:120px}
+.reads dt{font-size:12.5px;color:var(--ink2);line-height:1.3}
+.reads dd{margin:0;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.reads dd.bad{color:var(--com)}
+.reads dd.ok{color:var(--accent)}
+.bar{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.legend{display:flex;gap:16px;margin:0 0 6px;font-size:14px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.legend .t::before{background:#4dd68a}.legend .c::before{background:#ff6a6a}
+.mapbtn{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.mapbtn button{background:var(--white);color:var(--ink);border:1.5px solid var(--ink)}
+.mapbtn button.on{background:var(--ink);color:#fff}
+.detail{background:var(--white);border:1px solid var(--line);padding:12px 16px;font-size:15.5px}
+.detail h4{margin:0 0 4px;font-size:17px}
+.detail p{margin:4px 0}
+.chips a{display:inline-block;margin:2px 6px 2px 0;padding:1px 9px;border:1px solid var(--accent);text-decoration:none;font-size:14px}
+.pre .it{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.pre .opt{display:flex;gap:6px;flex-wrap:wrap}
+.pre .opt button{font:inherit;font-size:14px;padding:5px 11px;border:1.5px solid var(--ink);background:var(--white);cursor:pointer;min-height:34px}
+.pre .opt button.on{background:var(--ink);color:#fff}
+.q{background:var(--white);border:1px solid var(--line);padding:14px 18px;margin:14px 0}
+.q h4{margin:0 0 8px;font-size:16.5px;line-height:1.45;font-weight:600}
+.q label{display:block;padding:5px 0;cursor:pointer;line-height:1.45}
+.q input[type=text]{font:inherit;padding:6px 8px;width:9em;border:1px solid var(--ink2)}
+.q .fb{margin-top:8px;padding:8px 12px;font-size:15px;border-left:4px solid var(--line)}
+.q .fb.ok{border-left-color:var(--accent);background:#e4f1f2}
+.q .fb.no{border-left-color:var(--com);background:#f7e6e3}
+.sub2{margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+textarea{width:100%;max-width:70ch;min-height:110px;font:inherit;padding:10px;border:1px solid var(--ink2);background:#fff}
+.score{font-size:19px;font-weight:700;margin:10px 0}
+.closing{margin:34px 0 0;padding:22px 26px;background:var(--ink);color:#f2f6fa;font-size:19px;line-height:1.55}
+footer{margin-top:34px;padding-top:14px;border-top:1.5px solid var(--ink);font-size:13.5px;color:var(--ink2)}
+@media (max-width:980px){
+  .toc{position:sticky;top:0;width:auto;bottom:auto;padding:8px 10px;border-right:0;border-bottom:1.5px solid var(--ink);display:flex;gap:10px;align-items:center;overflow-x:auto}
+  .toc h1,.toc p{display:none}
+  .toc ol{display:flex;gap:2px}
+  .toc li a{grid-template-columns:auto;padding:6px 10px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .toc li a span{display:none}
+  .toc li a.on{border-bottom-color:var(--accent)}
+  main{margin-left:0;padding:0 16px 60px}
+  html{scroll-padding-top:60px}
+  .tb{grid-template-columns:60px 1fr}
+  .tb .ttl{grid-column:2}
+  .tb .c1{grid-column:1/3;border-right:0;border-top:0;border-bottom:1.5px solid var(--ink)}
+  .tb .c2{grid-column:1/3}
+  .tb .no{grid-row:auto}
+  .tb .c1,.tb .c2{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc{display:none}main{margin:0}.sim .tray{display:none}}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Daftar subbab">
+  <h1>Sel Saraf dan Potensial Aksi</h1>
+  <p>Biopsikologi</p>
+  <ol id="toc">
+    <li><a href="#s1"><b>1</b><span>Pengantar</span></a></li>
+    <li><a href="#s2"><b>2</b><span>Struktur neuron</span></a></li>
+    <li><a href="#s3"><b>3</b><span>Potensial istirahat</span></a></li>
+    <li><a href="#s4"><b>4</b><span>Depolarisasi dan ambang</span></a></li>
+    <li><a href="#s5"><b>5</b><span>Fase potensial aksi</span></a></li>
+    <li><a href="#s6"><b>6</b><span>All-or-none & refrakter</span></a></li>
+    <li><a href="#s7"><b>7</b><span>Konduksi impuls</span></a></li>
+    <li><a href="#s8"><b>8</b><span>Kesimpulan</span></a></li>
+  </ol>
+</nav>
+<main><div class="wrap">
+
+<div class="cover">
+  <div class="meta"><span>Mata kuliah: Biopsikologi</span><span>Bab: Sel Saraf dan Potensial Aksi</span><span>Sasaran: mahasiswa tingkat awal</span></div>
+  <h1>Sel Saraf dan Potensial Aksi<span>Bagaimana satu sel saraf menyalakan dan mengirim sinyal listriknya</span></h1>
+  <p>Bab ini menelusuri satu neuron dari bentuknya, bagaimana ia menjaga muatan listrik saat diam, apa yang terjadi ketika muatan itu berubah cukup besar untuk memicu ledakan sinyal listrik singkat, dan bagaimana sinyal itu merambat di sepanjang akson menuju ujung sel.</p>
+  <h3>Tujuan pembelajaran</h3>
+  <p>Setelah mempelajari bab ini, mahasiswa mampu:</p>
+  <ul>
+    <li>menjelaskan struktur dasar neuron dan fungsi tiap bagiannya;</li>
+    <li>menjelaskan asal-usul potensial membran istirahat berdasarkan permeabilitas ion;</li>
+    <li>menjelaskan bagaimana potensial berjenjang mencapai ambang batas di akson hillock;</li>
+    <li>menguraikan fase-fase potensial aksi beserta perubahan konduktansi ion yang mendasarinya;</li>
+    <li>menjelaskan hukum all-or-none dan peran periode refrakter;</li>
+    <li>membandingkan konduksi impuls kontinu dan saltatori serta faktor yang memengaruhi kecepatannya.</li>
+  </ul>
+</div>
+
+<section id="s1">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>1</b></div>
+    <div class="ttl"><h2>Pengantar: Tujuan, Referensi, dan Disklaimer</h2></div>
+    <div class="c1"><small>Animasi utama</small>Peta konsep Sel Saraf dan Potensial Aksi</div>
+    <div class="c2"><small>Interaksi peserta</small>Menjelajahi peta materi dan melakukan asesmen awal</div>
+  </header>
+  <h3>Deskripsi</h3>
+  <p>Neuron adalah unit dasar sistem saraf yang mengirim sinyal lewat perubahan listrik pada membrannya. Bab ini adalah fondasi bagi hampir seluruh biopsikologi: dari persepsi, gerakan, sampai suasana hati, semuanya bergantung pada bagaimana neuron menyala dan mengirim sinyal.</p>
+  <h3>Peta konsep</h3>
+  <p>Tekan salah satu kotak pada peta untuk melihat contoh dan subbab yang membahasnya.</p>
+  <div class="sim" id="sim-map"></div>
+  <div class="mapbtn" id="mapbtn" aria-label="Pilih bagian peta konsep"></div>
+  <div class="detail" id="mapdetail" aria-live="polite"></div>
+  <h3>Asesmen awal</h3>
+  <p>Tingkat pemahaman pada tiap topik menentukan saran urutan belajar. Hasilnya tidak disimpan.</p>
+  <div class="pre" id="pre"></div>
+  <div class="detail" id="preres" aria-live="polite" style="margin-top:10px">Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.</div>
+  <h3>Referensi utama</h3>
+  <ul>
+    <li>James W. Kalat, <i>Biological Psychology</i>.</li>
+    <li>John P. J. Pinel dan Steven Barnes, <i>Biopsychology</i>.</li>
+    <li>Eric R. Kandel dkk., <i>Principles of Neural Science</i>.</li>
+    <li>Mark F. Bear, Barry W. Connors, dan Michael A. Paradiso, <i>Neuroscience: Exploring the Brain</i>, untuk pendalaman.</li>
+  </ul>
+  <p>Edisi dan cakupan yang dipakai perlu dicantumkan oleh dosen sesuai kurikulum serta ketentuan yang berlaku.</p>
+  <h3>Disklaimer akademik</h3>
+  <blockquote><p>Modul ini merupakan media pendamping pembelajaran dan tidak menggantikan buku teks, penjelasan dosen, maupun praktikum laboratorium. Animasi memakai model konduktansi yang disederhanakan, terinspirasi dari model Hodgkin-Huxley namun tidak menyelesaikan persamaan diferensial penuhnya, sehingga bentuk kurva benar secara kualitatif tetapi angka-angkanya bersifat ilustratif. Nilai potensial istirahat dihitung dengan persamaan Goldman-Hodgkin-Katz yang disederhanakan untuk dua ion (Na\u207A dan K\u207A), tanpa memasukkan Cl\u207B.</p></blockquote>
+  <h3>Pernyataan bantuan kecerdasan buatan</h3>
+  <blockquote><p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya.</p></blockquote>
+</section>
+
+<section id="s2">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>2</b></div>
+    <div class="ttl"><h2>Struktur Neuron</h2></div>
+    <div class="c1"><small>Animasi utama</small>Diagram neuron interaktif</div>
+    <div class="c2"><small>Interaksi peserta</small>Memilih bagian untuk melihat fungsinya</div>
+  </header>
+  <p>Neuron memiliki beberapa bagian utama yang bekerja sama menerima, mengolah, dan mengirim sinyal listrik. Tekan tiap bagian pada diagram atau tombolnya untuk membaca fungsinya.</p>
+  <div class="sim" id="sim-neuron"></div>
+  <div class="mapbtn" id="neuronbtn" aria-label="Pilih bagian neuron"></div>
+  <div class="detail" id="neurondetail" aria-live="polite"></div>
+  <div class="note"><b>Variasi bentuk</b>Diagram ini menyederhanakan neuron motorik sebagai contoh. Bentuk neuron sebenarnya sangat beragam: neuron sensorik, interneuron, dan neuron motorik memiliki susunan dendrit dan akson yang berbeda-beda.</div>
+</section>
+
+<section id="s3">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>3</b></div>
+    <div class="ttl"><h2>Potensial Membran Istirahat</h2></div>
+    <div class="c1"><small>Animasi utama</small>Membran dengan saluran ion dan pompa Na\u207A-K\u207A</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah permeabilitas relatif Na\u207A/K\u207A</div>
+  </header>
+  <p>Saat tidak ada sinyal yang sedang dikirim, bagian dalam neuron tetap lebih negatif daripada luarnya, sekitar &minus;70 mV. Keadaan ini disebut potensial membran istirahat, dan muncul dari dua hal: konsentrasi ion yang berbeda di dalam dan luar sel (dijaga oleh pompa Na&#8314;-K&#8314;), dan membran yang jauh lebih permeabel terhadap K&#8314; daripada Na&#8314; saat istirahat.</p>
+  <div class="eq"><i>V</i><sub>m</sub> = 61,5 log<sub>10</sub> <fr><n><i>P</i><sub>K</sub>[K&#8314;]<sub>luar</sub> + <i>P</i><sub>Na</sub>[Na&#8314;]<sub>luar</sub></n><d><i>P</i><sub>K</sub>[K&#8314;]<sub>dalam</sub> + <i>P</i><sub>Na</sub>[Na&#8314;]<sub>dalam</sub></d></fr> mV</div>
+  <p>Persamaan di atas adalah bentuk dua-ion dari persamaan Goldman-Hodgkin-Katz. <i>P</i><sub>K</sub> dan <i>P</i><sub>Na</sub> adalah permeabilitas relatif membran terhadap tiap ion. Karena saat istirahat <i>P</i><sub>K</sub> jauh lebih besar daripada <i>P</i><sub>Na</sub>, potensial membran mendekati potensial kesetimbangan K&#8314; (sekitar &minus;90 mV), tetapi tidak sepenuhnya mencapainya karena sedikit kebocoran Na&#8314;.</p>
+  <div class="note"><b>Pompa Na\u207A-K\u207A</b>Pompa ini secara aktif mengeluarkan 3 ion Na&#8314; dan memasukkan 2 ion K&#8314; setiap siklusnya, memakai energi ATP, menjaga agar gradien konsentrasi tidak luntur meski ada kebocoran ion melalui saluran.</div>
+  <div class="sim" id="sim-resting"></div>
+</section>
+
+<section id="s4">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>4</b></div>
+    <div class="ttl"><h2>Depolarisasi dan Ambang Batas</h2></div>
+    <div class="c1"><small>Animasi utama</small>Potensial berjenjang menuju ambang di akson hillock</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah kekuatan stimulus</div>
+  </header>
+  <p>Sinyal masuk dari dendrit menghasilkan potensial berjenjang (<i>graded potential</i>): perubahan kecil pada voltase membran yang besarnya sebanding dengan kekuatan stimulus, dan meluruh seiring jarak serta waktu bila tidak diperkuat oleh sinyal lain. Bila jumlah potensial berjenjang yang tiba di akson hillock cukup besar untuk melewati ambang batas (biasanya sekitar &minus;55 mV), akson hillock akan memicu potensial aksi.</p>
+  <div class="note"><b>Penjumlahan spasial dan temporal</b>Potensial berjenjang dari beberapa sinapsis berbeda, penjumlahan spasial, atau dari sinapsis yang sama secara berturut-turut, penjumlahan temporal, bergabung mencapai ambang meski masing-masing sinyal sendirian tidak cukup kuat.</div>
+  <div class="sim" id="sim-threshold"></div>
+</section>
+
+<section id="s5">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>5</b></div>
+    <div class="ttl"><h2>Fase-Fase Potensial Aksi</h2></div>
+    <div class="c1"><small>Animasi utama</small>Grafik voltase dan konduktansi Na\u207A/K\u207A terhadap waktu</div>
+    <div class="c2"><small>Interaksi peserta</small>Memberi stimulus dan mengamati tiap fase</div>
+  </header>
+  <p>Begitu ambang batas terlampaui, serangkaian perubahan konduktansi ion yang cepat dan otomatis menghasilkan potensial aksi:</p>
+  <ul>
+    <li><b>Depolarisasi cepat:</b> saluran Na&#8314; berpintu voltase terbuka, Na&#8314; mengalir deras masuk, voltase melonjak naik bahkan sampai positif (overshoot, sekitar +40 mV).</li>
+    <li><b>Repolarisasi:</b> saluran Na&#8314; mulai tidak aktif (inaktivasi) sementara saluran K&#8314; berpintu voltase terbuka lebih lambat, K&#8314; mengalir keluar, voltase turun kembali.</li>
+    <li><b>Hiperpolarisasi sesaat (undershoot):</b> saluran K&#8314; menutup lebih lambat daripada munculnya, sehingga voltase sempat turun di bawah potensial istirahat sebelum kembali normal.</li>
+  </ul>
+  <div class="note"><b>Model yang disederhanakan</b>Animasi memakai konduktansi g<sub>Na</sub>(t) dan g<sub>K</sub>(t) berbentuk fungsi alfa (naik cepat, turun bertahap) yang dipicu begitu ambang terlampaui, lalu voltase dihitung sebagai rata-rata berbobot potensial kesetimbangan tiap ion terhadap konduktansinya. Ini menangkap bentuk kualitatif kurva potensial aksi tanpa menyelesaikan empat persamaan diferensial model Hodgkin-Huxley yang sesungguhnya.</div>
+  <div class="legend"><span class="t">Konduktansi K\u207A</span><span class="c">Konduktansi Na\u207A</span></div>
+  <div class="sim" id="sim-ap"></div>
+</section>
+
+<section id="s6">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>6</b></div>
+    <div class="ttl"><h2>Hukum All-or-None dan Periode Refrakter</h2></div>
+    <div class="c1"><small>Animasi utama</small>Rangkaian stimulus dengan amplitudo berbeda-beda</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah kekuatan dan jarak antar-stimulus</div>
+  </header>
+  <p>Begitu ambang batas terlampaui, bentuk dan ukuran potensial aksi selalu sama, tidak peduli seberapa kuat stimulus yang memicunya melampaui ambang itu. Inilah hukum all-or-none: potensial aksi terjadi penuh atau tidak terjadi sama sekali, tidak ada potensial aksi "setengah besar". Informasi tentang kekuatan stimulus dikodekan lewat frekuensi potensial aksi (semakin kuat stimulus yang bertahan, semakin sering neuron menembak), bukan lewat besar amplitudonya.</p>
+  <p>Periode refrakter setelah satu potensial aksi membatasi seberapa cepat potensial aksi berikutnya dipicu:</p>
+  <ul>
+    <li><b>Periode refrakter absolut:</b> neuron sama sekali tidak memicu potensial aksi baru, seberapa pun kuat stimulusnya, karena saluran Na&#8314; belum aktif kembali.</li>
+    <li><b>Periode refrakter relatif:</b> potensial aksi baru terjadi dengan stimulus yang lebih kuat dari biasanya, karena sebagian membran berada dalam hiperpolarisasi.</li>
+  </ul>
+  <div class="note"><b>Fungsi periode refrakter</b>Periode refrakter membatasi frekuensi maksimum penembakan neuron dan memastikan sinyal listrik merambat satu arah di sepanjang akson, karena bagian akson yang baru saja aktif untuk sesaat tidak dipicu ulang.</div>
+  <div class="sim" id="sim-refrac"></div>
+</section>
+
+<section id="s7">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>7</b></div>
+    <div class="ttl"><h2>Konduksi Impuls: Kontinu vs Saltatori</h2></div>
+    <div class="c1"><small>Animasi utama</small>Impuls merambat pada akson bermielin vs tidak bermielin</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah ada/tidaknya mielin dan diameter akson</div>
+  </header>
+  <p>Pada akson tanpa selubung mielin, potensial aksi harus dibangkitkan ulang di setiap titik sepanjang membran secara berurutan, disebut konduksi kontinu. Ini relatif lambat karena setiap titik membran harus melalui seluruh siklus buka-tutup saluran ionnya sendiri.</p>
+  <p>Pada akson bermielin, selubung mielin (dibentuk oleh sel Schwann di sistem saraf tepi atau oligodendrosit di sistem saraf pusat) membungkus akson dan menyekatnya secara listrik, kecuali pada celah kecil yang disebut nodus Ranvier. Potensial aksi baru dibangkitkan hanya di tiap nodus, sehingga sinyal listriknya seolah "meloncat" dari satu nodus ke nodus berikutnya, disebut konduksi saltatori. Ini jauh lebih cepat dan lebih hemat energi karena pompa ion hanya perlu bekerja di nodus, bukan di sepanjang akson.</p>
+  <div class="note"><b>Faktor kecepatan</b>Selain mielinasi, diameter akson yang lebih besar juga mempercepat konduksi karena mengurangi resistansi internal terhadap aliran arus. Kedua faktor ini bekerja terpisah dan saling memperkuat bila hadir bersama.</div>
+  <div class="sim" id="sim-conduct"></div>
+</section>
+
+<section id="s8">
+  <header class="tb">
+    <div class="no"><small>Subbab</small><b>8</b></div>
+    <div class="ttl"><h2>Kesimpulan</h2></div>
+    <div class="c1"><small>Animasi utama</small>Garis waktu terpadu satu potensial aksi utuh</div>
+    <div class="c2"><small>Interaksi peserta</small>Kuis akhir dan refleksi</div>
+  </header>
+  <h3>Ringkasan konsep</h3>
+  <ul>
+    <li>Neuron menjaga potensial istirahat sekitar &minus;70 mV lewat perbedaan konsentrasi ion dan permeabilitas membran yang selektif.</li>
+    <li>Potensial berjenjang dari dendrit dijumlahkan di akson hillock; bila melewati ambang, potensial aksi dipicu.</li>
+    <li>Potensial aksi terjadi lewat pembukaan cepat saluran Na&#8314; lalu saluran K&#8314;, menghasilkan lonjakan dan pemulihan voltase yang khas.</li>
+    <li>Potensial aksi mengikuti hukum all-or-none dan dibatasi oleh periode refrakter, yang menjamin sinyal merambat satu arah.</li>
+    <li>Mielin memungkinkan konduksi saltatori yang jauh lebih cepat dan hemat energi dibanding konduksi kontinu.</li>
+  </ul>
+  <h3>Garis waktu terpadu</h3>
+  <p>Animasi berikut menggabungkan seluruh proses, dari potensial istirahat sampai kembali istirahat, dalam satu garis waktu.</p>
+  <div class="sim" id="sim-timeline"></div>
+  <h3>Evaluasi akhir</h3>
+  <p>Untuk soal numerik, isikan angka dengan koma atau titik desimal; toleransi jawaban 5%.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score" aria-live="polite"></div>
+  <h3>Refleksi</h3>
+  <blockquote><p>Mengapa hukum all-or-none dan periode refrakter menjadi syarat agar sistem saraf mengodekan informasi tentang kekuatan stimulus secara andal?</p></blockquote>
+  <textarea id="refl" aria-label="Jawaban refleksi" placeholder="Tuliskan jawaban dengan kalimat sendiri."></textarea>
+  <p style="font-size:14px;color:var(--ink2)" id="reflst">Jawaban disimpan di peramban ini bila penyimpanan tersedia.</p>
+  <div class="closing">Satu potensial aksi hanyalah beberapa milidetik pembukaan dan penutupan saluran ion, tetapi dari peristiwa singkat dan berulang inilah seluruh sistem saraf, dan pada akhirnya seluruh perilaku dan pengalaman mental yang dipelajari psikologi, dibangun.</div>
+</section>
+
+<footer>
+  <p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya. Animasi memakai model yang disederhanakan dan bukan pengganti buku teks neurosains atau praktikum laboratorium.</p>
+</footer>
+</div></main>
+<script>
+(function(){
+'use strict';
+/* ===== Konstanta tipografi (satu tempat) ===== */
+var SCALE=2, F_LABEL=8*SCALE, F_SEC=9*SCALE, F_TITLE=10*SCALE, F_CAP=Math.round(9*SCALE*1.2);
+var FONT="'Segoe UI', system-ui, Arial, sans-serif";
+var W=1280, H=720;
+var ctx=null;
+var reduce=false;
+try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+
+function rgba(r,g,b,a){return 'rgba('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+','+(a==null?1:a)+')';}
+var C={bg:'#07080f',t1:rgba(232,238,248,.94),t2:rgba(232,238,248,.55),t3:rgba(232,238,248,.30),yel:rgba(255,206,84,1),
+ ten:[86,196,230],com:[255,112,96],neu:[58,66,90],org:[255,170,80],grn:[110,220,160]};
+function cc(c,a){return rgba(c[0],c[1],c[2],a);}
+function mixc(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function stressColor(s,a){s=clamp(s,-1,1);var t=Math.abs(s);var c=s>=0?mixc(C.neu,C.ten,t):mixc(C.neu,C.com,t);return cc(c,a==null?1:a);}
+function nf(v,d){if(!isFinite(v))return '-';var s=(Math.abs(v)<Math.pow(10,-d)/2?0:v).toFixed(d);return s.replace('.',',');}
+function ease(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+
+/* ===== Helper gambar ===== */
+function txt(s,x,y,size,col,al,bl,wt){ctx.shadowBlur=0;ctx.font=(wt||400)+' '+size+'px '+FONT;ctx.fillStyle=col;ctx.textAlign=al||'left';ctx.textBaseline=bl||'middle';ctx.fillText(s,x,y);}
+function fitSize(str,size,maxW,wt){var s=size;while(s>6){ctx.font=(wt||400)+' '+s+'px '+FONT;if(ctx.measureText(str).width<=maxW)break;s-=1;}return s;}
+function ftxt(s,x,y,size,col,al,bl,wt,maxW){if(maxW)size=fitSize(s,size,maxW,wt);txt(s,x,y,size,col,al,bl,wt);}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+/* kotak berlabel: tinggi = baris x (font + spasi) + padding; teks dicentrasi vertikal */
+function labelBox(lines,cx,cy,o){o=o||{};var size=o.size||F_LABEL,gap=o.gap==null?5:o.gap,pad=o.pad==null?12:o.pad,maxW=o.maxW||400,wt=o.wt||400,i;
+  for(i=0;i<lines.length;i++){var fs=fitSize(lines[i],size,maxW-2*pad,i===0&&o.head?700:wt);if(fs<size)size=fs;}
+  var w=0;for(i=0;i<lines.length;i++){ctx.font=((i===0&&o.head)?700:wt)+' '+size+'px '+FONT;w=Math.max(w,ctx.measureText(lines[i]).width);}
+  w=Math.max(w+2*pad,o.minW||0);var h=lines.length*(size+gap)+pad;var x=o.left?cx:cx-w/2,y=cy-h/2;
+  ctx.shadowBlur=0;rr(x,y,w,h,6);ctx.fillStyle=o.fill||'rgba(20,26,44,.92)';ctx.fill();ctx.lineWidth=o.lw||1.5;ctx.strokeStyle=o.stroke||C.t3;ctx.stroke();
+  for(i=0;i<lines.length;i++){var ty=y+pad/2+(i+.5)*(size+gap);txt(lines[i],x+w/2,ty,size,(i===0&&o.head)?(o.hcol||C.t1):(o.col||C.t2),'center','middle',(i===0&&o.head)?700:wt);}
+  return {x:x,y:y,w:w,h:h};}
+function arrow(x1,y1,x2,y2,col,lw,head){var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);if(len<3)return;var a=Math.atan2(dy,dx),h=head||13;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw||3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-Math.cos(a)*h*.6,y2-Math.sin(a)*h*.6);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-Math.cos(a-.42)*h,y2-Math.sin(a-.42)*h);ctx.lineTo(x2-Math.cos(a+.42)*h,y2-Math.sin(a+.42)*h);ctx.closePath();ctx.fill();ctx.restore();}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();}
+function bgClear(){ctx.setTransform(ctx.dpr,0,0,ctx.dpr,0,0);ctx.shadowBlur=0;ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(232,238,248,.035)';ctx.lineWidth=1;ctx.beginPath();for(var x=40;x<W;x+=40){ctx.moveTo(x,0);ctx.lineTo(x,H);}for(var y=40;y<H;y+=40){ctx.moveTo(0,y);ctx.lineTo(W,y);}ctx.stroke();}
+function head(title,sub){txt(title,40,34,F_CAP,C.t1,'left','middle',700);if(sub)txt(sub,40,62,F_SEC,C.t1,'left','middle',400);}
+function foot(narr,note){if(note)ftxt(note,40,672,F_SEC,C.t3,'left','middle',400,W-80);ftxt(narr,40,700,F_CAP,C.yel,'left','middle',700,W-80);}
+function legendT(x,y){ctx.fillStyle=cc(C.ten,1);ctx.fillRect(x,y-7,14,14);txt('Tarik',x+22,y,F_SEC,C.t2,'left','middle');ctx.fillStyle=cc(C.com,1);ctx.fillRect(x+90,y-7,14,14);txt('Tekan',x+112,y,F_SEC,C.t2,'left','middle');}
+function hatchWall(x,y1,y2,side){ctx.save();ctx.fillStyle='rgba(150,165,190,.18)';ctx.fillRect(side>0?x:x-34,y1,34,y2-y1);ctx.strokeStyle='rgba(232,238,248,.4)';ctx.lineWidth=1.5;ctx.beginPath();for(var yy=y1;yy<y2;yy+=14){if(side>0){ctx.moveTo(x,yy+14);ctx.lineTo(x+34,yy);}else{ctx.moveTo(x-34,yy+14);ctx.lineTo(x,yy);}}ctx.stroke();line(x,y1,x,y2,C.t1,2);ctx.restore();}
+function tri(x,y,w,h,col){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-w/2,y+h);ctx.lineTo(x+w/2,y+h);ctx.closePath();ctx.fillStyle=col||'rgba(150,165,190,.35)';ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();}
+
+/* ===== Data bersama ===== */
+var MAT={steel:{n:'Baja',E:200,G:79},alu:{n:'Aluminium',E:70,G:27},brass:{n:'Kuningan',E:100,G:39},wood:{n:'Kayu (contoh)',E:12,G:0.75}};
+var SEC={
+ rectV:{n:'Persegi 100 x 200 (tegak)',h:200,w:function(y){return 100;},I:100*Math.pow(200,3)/12,A:20000},
+ rectH:{n:'Persegi 200 x 100 (rebah)',h:100,w:function(y){return 200;},I:200*Math.pow(100,3)/12,A:20000},
+ circ:{n:'Lingkaran d = 160',h:160,w:function(y){return 2*Math.sqrt(Math.max(0,6400-y*y));},I:Math.PI*Math.pow(160,4)/64,A:Math.PI*6400},
+ I:{n:'Profil I (h = 200)',h:200,w:function(y){return Math.abs(y)>80?150:10;},I:(150*Math.pow(200,3)-140*Math.pow(160,3))/12,A:2*150*20+160*10}
+};
+/* tegangan geser pada serat y (mm dari sumbu netral), V dalam kN -> MPa */
+function shearTau(sec,V,y){var yy=Math.abs(y),h2=sec.h/2;if(yy>=h2)return 0;var n=240,dy=(h2-yy)/n,Q=0,i;for(i=0;i<n;i++){var e=yy+(i+.5)*dy;Q+=sec.w(e)*e*dy;}var b=sec.w(yy+1e-6);return V*1000*Q/(sec.I*b);}
+
+/* ===== Mesin simulasi ===== */
+var sims=[];
+function Sim(o){
+  var self=this;this.o=o;this.el=document.getElementById(o.id);if(!this.el)return;
+  this.p={};this.s={};this.st={};this.t=0;this.dt=0.016;this.f=1;this.vis=true;this.inputs={};this.rows={};this.lastRead='';
+  this.play=!o.noCycle&&!reduce;
+  var el=this.el;el.innerHTML='<div class="stage"><canvas width="'+W+'" height="'+H+'" role="img" aria-label="'+(o.label||'Animasi interaktif')+'"></canvas></div><div class="tray"><div class="ctls"></div><dl class="reads"></dl><div class="bar"></div></div>';
+  this.cv=el.querySelector('canvas');this.ctx=this.cv.getContext('2d');
+  var ctls=el.querySelector('.ctls');
+  (o.controls||[]).forEach(function(c){
+    var row=document.createElement('div');row.className='row';
+    if(c.btn){var b=document.createElement('button');b.textContent=c.btn;b.type='button';b.addEventListener('click',function(){c.act(self);});row.appendChild(b);ctls.appendChild(row);return;}
+    var lab=document.createElement('label');lab.className='lab';lab.textContent=c.label;var id=o.id+'-'+c.k;lab.htmlFor=id;row.appendChild(lab);
+    if(c.options){var sel=document.createElement('select');sel.id=id;c.options.forEach(function(op){var oo=document.createElement('option');oo.value=op[0];oo.textContent=op[1];sel.appendChild(oo);});sel.value=c.val;self.p[c.k]=c.val;
+      sel.addEventListener('change',function(){self.p[c.k]=sel.value;self.changed(c.k);});row.appendChild(sel);self.inputs[c.k]=sel;}
+    else{var out=document.createElement('output');out.htmlFor=id;row.appendChild(out);var inp=document.createElement('input');inp.type='range';inp.id=id;inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.val;self.p[c.k]=+c.val;self.s[c.k]=+c.val;
+      var dec=c.dec!=null?c.dec:(c.step<1?1:0);
+      var upd=function(){out.textContent=nf(+inp.value,dec)+(c.unit?' '+c.unit:'');};upd();
+      inp.addEventListener('input',function(){self.p[c.k]=+inp.value;upd();self.changed(c.k);});row.appendChild(inp);self.inputs[c.k]=inp;inp._upd=upd;}
+    self.rows[c.k]=row;ctls.appendChild(row);});
+  var bar=el.querySelector('.bar');
+  if(!o.noCycle){var pb=document.createElement('button');pb.type='button';var pl=o.pl||'animasi';pb.textContent=this.play?'Jeda '+pl:'Putar '+pl;pb.addEventListener('click',function(){self.play=!self.play;pb.textContent=self.play?'Jeda '+pl:'Putar '+pl;});bar.appendChild(pb);
+    var nt=document.createElement('span');nt.textContent=o.note||'Angka di bawah adalah nilai pada kondisi penuh.';bar.appendChild(nt);}
+  if(o.init)o.init(this);
+  this.applyDis();
+  if(o.click){this.cv.classList.add('clk');this.cv.addEventListener('click',function(ev){var r=self.cv.getBoundingClientRect();o.click((ev.clientX-r.left)/r.width*W,(ev.clientY-r.top)/r.height*H,self);});}
+  this.resize();
+  if('IntersectionObserver' in window){new IntersectionObserver(function(en){self.vis=en[0].isIntersecting;},{rootMargin:'120px'}).observe(el);}
+  sims.push(this);
+}
+Sim.prototype.resize=function(){var dpr=window.devicePixelRatio||1;this.ctx.dpr=dpr;this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);};
+Sim.prototype.applyDis=function(){if(!this.o.dis)return;var d=this.o.dis(this.p),k;for(k in this.rows){this.rows[k].classList.toggle('dis',!!d[k]);if(this.inputs[k])this.inputs[k].disabled=!!d[k];}};
+Sim.prototype.changed=function(k){if(this.o.onChange)this.o.onChange(k,this);this.applyDis();};
+Sim.prototype.setVal=function(k,v){this.p[k]=v;this.s[k]=v;var i=this.inputs[k];if(i){i.value=v;if(i._upd)i._upd();}};
+Sim.prototype.tick=function(dt){
+  var self=this;this.dt=dt;this.t+=dt;
+  var k;for(k in this.p){if(typeof this.p[k]==='number'){var d=this.p[k]-this.s[k];this.s[k]+=Math.abs(d)<1e-6?d:d*(1-Math.exp(-dt*9));}else this.s[k]=this.p[k];}
+  if(this.o.noCycle||!this.play){this.f=1;}else{var T=5.5,c=(this.t%T)/T;this.f=c<.38?ease(c/.38):c<.6?1:c<.92?1-ease((c-.6)/.32):0;}
+  ctx=this.ctx;bgClear();this.o.draw(this.s,this.t,this.f,this);
+  if(this.o.reads){var r=this.o.reads(this.p,this),key=JSON.stringify(r);if(key!==this.lastRead){this.lastRead=key;this.el.querySelector('.reads').innerHTML=r.map(function(x){return '<div><dt>'+x[0]+'</dt><dd'+(x[2]?' class="'+x[2]+'"':'')+'>'+x[1]+'</dd></div>';}).join('');}}
+};
+var last=0;
+function loop(ts){var dt=Math.min(.05,(ts-last)/1000||.016);last=ts;for(var i=0;i<sims.length;i++){if(sims[i].vis||!sims[i].drawn){sims[i].tick(dt);sims[i].drawn=true;}}requestAnimationFrame(loop);}
+window.__sims=sims;
+window.addEventListener('resize',function(){sims.forEach(function(s){s.resize();});});
+
+var G={Sim:Sim,rgba:rgba,C:C,cc:cc,mixc:mixc,clamp:clamp,stressColor:stressColor,nf:nf,ease:ease,txt:txt,fitSize:fitSize,ftxt:ftxt,rr:rr,labelBox:labelBox,arrow:arrow,line:line,head:head,foot:foot,legendT:legendT,hatchWall:hatchWall,tri:tri,
+  MAT:MAT,SEC:SEC,shearTau:shearTau,W:W,H:H,F:{LABEL:F_LABEL,SEC:F_SEC,TITLE:F_TITLE,CAP:F_CAP},setCtx:function(c){ctx=c;},start:function(){requestAnimationFrame(loop);}};
+window.__G=G;
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,ease=G.ease,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,mixc=G.mixc,F=G.F,W=G.W,H=G.H,rr=G.rr;
+var ctx=null;
+var ENA=55,EK=-90,EL=-70; // mV, potensial kesetimbangan
+/* fungsi alfa: naik cepat lalu turun, puncak di tp, skala Gmax */
+function alphaFn(tau,tp,Gmax){if(tau<0)return 0;var x=tau/tp;return Gmax*x*Math.exp(1-x);}
+function gNa(tau){return alphaFn(tau,.35,1.0);}
+function gK(tau){return alphaFn(tau-.15,1.1,0.55);}
+function apVoltage(tau){if(tau<0)return EL;var gna=gNa(tau),gk=gK(tau),gl=0.06;var num=gna*ENA+gk*EK+gl*EL,den=gna+gk+gl;return num/den;}
+/* GHK dua ion */
+function ghk(PK,PNa,Ko,Ki,Nao,Nai){return 61.5*Math.log10((PK*Ko+PNa*Nao)/(PK*Ki+PNa*Nai));}
+function vcol(v){var u=clamp((v-EK)/(ENA-EK),0,1);return cc(mixc([80,140,255],[255,90,90],u),1);}
+
+/* ---------- 1. Peta konsep ---------- */
+var MAP=[
+ {t:'Struktur neuron',s:'dendrit, akson, mielin',ex:'Neuron motorik yang mengirim sinyal dari sumsum tulang belakang ke otot, neuron sensorik yang membawa sinyal raba dari kulit.',mat:[2],nar:'Bentuk neuron menentukan ke mana dan dari mana sinyal listrik mengalir.'},
+ {t:'Potensial istirahat',s:'\u221270 mV, pompa Na-K',ex:'Setiap neuron yang sedang tidak aktif tetap menjaga muatan negatif di dalam selnya, siap menyala kapan saja dibutuhkan.',mat:[3],nar:'Potensial istirahat adalah keadaan siaga neuron sebelum sinyal apa pun dikirim.'},
+ {t:'Ambang batas',s:'\u221255 mV, penjumlahan',ex:'Ratusan sinyal kecil dari dendrit yang bergabung di akson hillock, seperti banyak tetes air yang akhirnya membuat gelas tumpah.',mat:[4],nar:'Ambang batas adalah titik keputusan: cukup besar untuk memicu, atau meluruh begitu saja.'},
+ {t:'Potensial aksi',s:'depolarisasi-repolarisasi',ex:'Lonjakan listrik singkat yang membawa sinyal "nyeri!" dari jari yang tersentuh benda panas menuju sumsum tulang belakang.',mat:[5],nar:'Potensial aksi adalah unit dasar sinyal listrik dalam sistem saraf.'},
+ {t:'All-or-none & refrakter',s:'penuh atau tidak sama sekali',ex:'Semakin keras suara, semakin sering (bukan semakin besar) neuron pendengaran menembakkan potensial aksi.',mat:[6],nar:'Kekuatan stimulus dikodekan lewat frekuensi, bukan lewat besar sinyal.'},
+ {t:'Konduksi impuls',s:'kontinu vs saltatori',ex:'Penyakit yang merusak mielin, seperti multiple sclerosis, memperlambat sinyal saraf secara nyata karena konduksi saltatori kehilangan mielinnya.',mat:[7],nar:'Mielin mengubah cara sinyal merambat, dari kontinu menjadi meloncat antar-nodus.'}
+];
+new Sim({id:'sim-map',label:'Peta konsep Sel Saraf dan Potensial Aksi',noCycle:true,controls:[],
+ init:function(sim){sim.st.sel=0;var bw=document.getElementById('mapbtn'),dt=document.getElementById('mapdetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-pressed',j===i?'true':'false');});var m=MAP[i];
+   dt.innerHTML='<h4>'+m.t+' <small>('+m.s+')</small></h4><p>'+m.ex+'</p><p class="chips">Dibahas pada subbab: '+m.mat.map(function(n){return '<a href="#s'+n+'">'+n+'</a>';}).join('')+'</p>';}
+  MAP.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.t;b.addEventListener('click',function(){show(i);});bw.appendChild(b);});
+  sim.st.show=show;show(0);},
+ click:function(x,y,sim){var r=sim.st.rects||[];for(var i=0;i<r.length;i++){if(x>=r[i].x&&x<=r[i].x+r[i].w&&y>=r[i].y&&y<=r[i].y+r[i].h){sim.st.show(i);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Peta konsep Sel Saraf dan Potensial Aksi','Tekan kotak untuk memilih bagian');
+  var n=MAP.length,cols=3,gx=(W-80)/cols,cy0=150,rowh=170,i,rects=[];
+  for(i=0;i<n;i++){var col=i%cols,row=Math.floor(i/cols),cx=40+gx*col+gx/2,cy=cy0+row*rowh,sel=i===sim.st.sel;
+   var b=labelBox([MAP[i].t,MAP[i].s],cx,cy,{head:true,size:F.LABEL,maxW:gx-24,minW:gx-24,fill:sel?'rgba(20,50,70,.95)':'rgba(20,26,44,.92)',stroke:sel?C.yel:C.t3,lw:sel?3:1.5,hcol:sel?C.yel:C.t1});rects.push(b);}
+  sim.st.rects=rects;
+  var m=MAP[sim.st.sel],by=550,k2=sim.st.sel;
+  txt('Contoh: '+m.t.toLowerCase(),W/2,by-110,F.TITLE,C.t1,'center','middle',700);
+  var g={x:280,y:by-70,w:720,h:150};line(g.x,g.y+g.h/2,g.x+g.w,g.y+g.h/2,C.t3,1.5);
+  if(k2===0){ctx.beginPath();ctx.arc(g.x+340,g.y+75,26,0,7);ctx.fillStyle='rgba(150,165,190,.4)';ctx.fill();line(g.x+366,g.y+75,g.x+620,g.y+75,C.t1,5);for(var q=0;q<3;q++){ctx.beginPath();ctx.ellipse(g.x+430+q*60,g.y+75,22,16,0,0,7);ctx.strokeStyle=cc([120,190,255],.8);ctx.lineWidth=3;ctx.stroke();}txt('badan sel \u2192 akson bermielin',g.x+340,g.y+120,F.SEC,C.t2,'center');}
+  else if(k2===1){var np=6,ii;for(ii=0;ii<np;ii++){var xx=g.x+120+ii*80;drawIonDot(xx,g.y+50,'K',1);drawIonDot(xx+20,g.y+100,'Na',-1);}txt('K\u207A banyak di dalam, Na\u207A banyak di luar',g.x+g.w/2,g.y+140,F.SEC,C.t2,'center');}
+  else if(k2===2){var gph={x:g.x+40,y:g.y+10,w:g.w-80,h:110};line(gph.x,gph.y+gph.h*.3,gph.x+gph.w,gph.y+gph.h*.3,cc(C.com,.7),1.5,[5,4]);ctx.beginPath();var ii2;for(ii2=0;ii2<=60;ii2++){var xx2=ii2/60*gph.w,yy2=gph.y+gph.h*.85-gph.h*.6*Math.min(1,ii2/50)*ease(ii2/60);if(ii2===0)ctx.moveTo(gph.x+xx2,yy2);else ctx.lineTo(gph.x+xx2,yy2);}ctx.strokeStyle=cc(C.grn,1);ctx.lineWidth=3;ctx.stroke();txt('ambang',gph.x+gph.w+8,gph.y+gph.h*.3,F.SEC,cc(C.com,1),'left','middle');}
+  else if(k2===3){var gph2={x:g.x+40,y:g.y,w:g.w-80,h:130};ctx.beginPath();var ii3;for(ii3=0;ii3<=80;ii3++){var tau=(ii3/80-.2)*2.2,vv=apVoltage(tau),xx3=gph2.x+ii3/80*gph2.w,yy3=gph2.y+gph2.h-(vv-EK)/(ENA-EK)*gph2.h;if(ii3===0)ctx.moveTo(xx3,yy3);else ctx.lineTo(xx3,yy3);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3;ctx.stroke();}
+  else if(k2===4){var bx=g.x+60;for(var r2=0;r2<3;r2++){var amp=[.3,.9,.9][r2],xx4=bx+r2*220;ctx.beginPath();for(var ii4=0;ii4<=40;ii4++){var tau2=ii4/40*1.5-.2,vv2=r2===0?EL+18*Math.exp(-Math.pow((tau2-.3)/.4,2)):apVoltage(tau2),yy4=g.y+130-(vv2-EK)/(ENA-EK)*140,xx5=xx4+ii4/40*160;if(ii4===0)ctx.moveTo(xx5,yy4);else ctx.lineTo(xx5,yy4);}ctx.strokeStyle=r2===0?cc(C.t2,1):cc(C.org,1);ctx.lineWidth=2.5;ctx.stroke();}}
+  else{var ax=g.x+20,ay=g.y+75;line(ax,ay,ax+g.w-40,ay,C.t1,4);for(var nd=1;nd<4;nd++){var nx=ax+nd*(g.w-40)/4;ctx.beginPath();ctx.arc(nx,ay,7,0,7);ctx.fillStyle=cc(C.yel,.9);ctx.fill();}
+   for(nd=0;nd<4;nd++){var seg0=ax+nd*(g.w-40)/4+10,seg1=ax+(nd+1)*(g.w-40)/4-10;ctx.beginPath();ctx.ellipse((seg0+seg1)/2,ay,(seg1-seg0)/2,14,0,0,7);ctx.strokeStyle=cc([120,190,255],.6);ctx.lineWidth=2;ctx.stroke();}
+   var ph=(t*.5)%1,jn=Math.floor(ph*4),jx=ax+jn*(g.w-40)/4+((ph*4)%1)*(g.w-40)/4;ctx.beginPath();ctx.arc(jx,ay,6,0,7);ctx.fillStyle=C.yel;ctx.fill();txt('meloncat antar nodus',g.x+g.w/2,g.y+130,F.SEC,C.t2,'center');}
+  foot(m.nar);}
+});
+function drawIonDot(x,y,ion,sign){ctx.beginPath();ctx.arc(x,y,10,0,7);ctx.fillStyle=ion==='K'?'rgba(100,200,255,.9)':'rgba(255,150,100,.9)';ctx.fill();ctx.strokeStyle=C.t1;ctx.lineWidth=1.2;ctx.stroke();txt(ion,x,y,9,'#0a0a12','center','middle',700);}
+
+/* ---------- 2. Struktur neuron ---------- */
+var PARTS=[
+ {n:'Dendrit',d:'Cabang pendek yang menerima sinyal kimiawi dari neuron lain dan mengubahnya menjadi potensial berjenjang kecil.',x:130,y:250,w:180,h:180,shape:'dendrite'},
+ {n:'Badan sel (soma)',d:'Berisi inti sel dan organel utama; di sinilah potensial berjenjang dari seluruh dendrit dijumlahkan.',x:330,y:300,w:110,h:110,shape:'soma'},
+ {n:'Akson hillock',d:'Titik keputusan: bila jumlah potensial berjenjang yang tiba di sini melewati ambang batas, potensial aksi dipicu di sini.',x:455,y:320,w:70,h:70,shape:'hillock'},
+ {n:'Akson',d:'Serat panjang yang menghantarkan potensial aksi dari badan sel menuju ujung akson, dengan panjang yang melebihi satu meter pada manusia.',x:560,y:310,w:420,h:70,shape:'axon'},
+ {n:'Selubung mielin',d:'Lapisan lemak yang membungkus akson secara tersegmen, mempercepat konduksi lewat mekanisme saltatori (dibahas subbab 7).',x:560,y:280,w:420,h:20,shape:'myelin'},
+ {n:'Nodus Ranvier',d:'Celah kecil tanpa mielin di antara segmen; di sinilah potensial aksi baru dibangkitkan ulang selama konduksi saltatori.',x:660,y:310,w:16,h:70,shape:'node'},
+ {n:'Terminal akson',d:'Ujung bercabang tempat potensial aksi memicu pelepasan neurotransmitter menuju sel berikutnya lewat sinapsis.',x:1000,y:270,w:140,h:140,shape:'terminal'}
+];
+new Sim({id:'sim-neuron',label:'Diagram neuron interaktif',noCycle:true,controls:[],
+ init:function(sim){sim.st.sel=-1;var bw=document.getElementById('neuronbtn'),dt=document.getElementById('neurondetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);});if(i<0){dt.innerHTML='<p>Pilih salah satu bagian untuk membaca fungsinya.</p>';return;}var p=PARTS[i];dt.innerHTML='<h4>'+p.n+'</h4><p>'+p.d+'</p>';}
+  PARTS.forEach(function(p,i){var b=document.createElement('button');b.type='button';b.textContent=p.n;b.addEventListener('click',function(){show(i);});bw.appendChild(b);});sim.st.show=show;show(-1);},
+ click:function(x,y,sim){for(var i=0;i<PARTS.length;i++){var p=PARTS[i];if(x>=p.x-10&&x<=p.x+p.w+10&&y>=p.y-10&&y<=p.y+p.h+10){sim.st.show(i);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Struktur neuron','Klik salah satu bagian pada diagram, atau gunakan tombol di bawah');
+  var sel=sim.st.sel;
+  function hl(i){return sel===i?3:0;}
+  /* dendrit */
+  ctx.strokeStyle=sel===0?C.yel:'rgba(150,180,220,.85)';ctx.lineWidth=(sel===0?4:2.5);var dcx=220,dcy=340,b;for(b=0;b<7;b++){var an=(-1.3+b*.38),len=60+((b%3)*14);ctx.beginPath();ctx.moveTo(dcx,dcy);var mx=dcx+Math.cos(an)*len*.6,my=dcy+Math.sin(an)*len*.6;ctx.quadraticCurveTo(mx,my,dcx+Math.cos(an)*len,dcy+Math.sin(an)*len);ctx.stroke();}
+  /* soma */
+  ctx.beginPath();ctx.arc(dcx+130,340,60,0,7);ctx.fillStyle=sel===1?'rgba(255,206,84,.25)':'rgba(150,165,190,.25)';ctx.fill();ctx.strokeStyle=sel===1?C.yel:C.t1;ctx.lineWidth=sel===1?4:2.5;ctx.stroke();
+  /* hillock */
+  ctx.beginPath();ctx.moveTo(dcx+188,320);ctx.lineTo(dcx+230,335);ctx.lineTo(dcx+230,345);ctx.lineTo(dcx+188,360);ctx.closePath();ctx.fillStyle=sel===2?'rgba(255,206,84,.4)':'rgba(150,165,190,.3)';ctx.fill();ctx.strokeStyle=sel===2?C.yel:C.t2;ctx.lineWidth=sel===2?3:1.5;ctx.stroke();
+  /* axon + myelin + nodes */
+  var ax0=dcx+230,ax1=980,ay=340;ctx.strokeStyle=sel===3?C.yel:'rgba(150,165,190,.7)';ctx.lineWidth=sel===3?6:4;line(ax0,ay,ax1,ay,ctx.strokeStyle,ctx.lineWidth);
+  var nseg=5,gap=(ax1-ax0)/nseg,seg;for(seg=0;seg<nseg;seg++){var sx0=ax0+seg*gap+8,sx1=ax0+(seg+1)*gap-8;ctx.beginPath();ctx.ellipse((sx0+sx1)/2,ay,(sx1-sx0)/2,20,0,0,7);ctx.fillStyle=sel===4?'rgba(120,190,255,.35)':'rgba(120,190,255,.18)';ctx.fill();ctx.strokeStyle=sel===4?C.yel:cc([120,190,255],.7);ctx.lineWidth=sel===4?3:1.5;ctx.stroke();
+   if(seg>0){var nx=ax0+seg*gap;ctx.beginPath();ctx.arc(nx,ay,7,0,7);ctx.fillStyle=sel===5?C.yel:'rgba(255,206,84,.6)';ctx.fill();}}
+  /* terminal */
+  var tx=ax1+30,ty=ay;ctx.strokeStyle=sel===6?C.yel:'rgba(150,180,220,.85)';ctx.lineWidth=sel===6?4:2.5;var tb;for(tb=0;tb<5;tb++){var an2=(-.5+tb*.28),len2=90;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(tx+Math.cos(an2)*len2,ty+Math.sin(an2)*len2);ctx.stroke();ctx.beginPath();ctx.arc(tx+Math.cos(an2)*len2,ty+Math.sin(an2)*len2,6,0,7);ctx.fillStyle=sel===6?C.yel:cc([150,180,220],.8);ctx.fill();}
+  var labels=[['Dendrit',dcx-60,dcy-90],['Badan sel',dcx+130,258],['Akson hillock',dcx+225,410],['Akson',(ax0+ax1)/2,400],['Mielin',(ax0+ax1)/2,225],['Nodus Ranvier',ax0+gap,432],['Terminal akson',tx+100,180]];
+  labels.forEach(function(lb,i){ftxt(lb[0],lb[1],lb[2],F.SEC,i===sel?C.yel:C.t2,'center','middle',i===sel?700:400,150);});
+  foot(sel<0?'Klik bagian mana pun pada diagram untuk mempelajari fungsinya.':PARTS[sel].n+': '+PARTS[sel].d);}
+});
+
+/* ---------- 3. Potensial istirahat (GHK) ---------- */
+new Sim({id:'sim-resting',label:'Potensial membran istirahat',noCycle:true,
+ controls:[{k:'PNa',label:'Permeabilitas relatif Na\u207A (P_K tetap = 1)',min:.01,max:.6,step:.01,val:.04,dec:2}],
+ reads:function(p){var v=ghk(1,p.PNa,5,150,145,15);return [['Potensial membran V_m',nf(v,1)+' mV'],['Mendekati E_K (\u221290 mV)?',Math.abs(v-(-90))<8?'ya, hampir':'agak menjauh']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var PNa=s.PNa,v=ghk(1,PNa,5,150,145,15);
+  head('Potensial membran istirahat','V_m dihitung dari persamaan GHK dua ion; geser permeabilitas Na\u207A untuk melihat pengaruhnya');
+  var mx=520,my=390,mw=8,mh=220;ctx.fillStyle='rgba(150,165,190,.28)';ctx.fillRect(mx-mw/2,my-mh/2,mw,mh);ctx.strokeStyle=C.t1;ctx.lineWidth=1.5;ctx.strokeRect(mx-mw/2,my-mh/2,mw,mh);
+  ftxt('luar sel',mx,my-mh/2-20,F.SEC,C.t2,'center','middle',700,140);ftxt('dalam sel',mx,my+mh/2+20,F.SEC,C.t2,'center','middle',700,140);
+  var nK=4,nNa=4,i;for(i=0;i<nK;i++){drawIonDot(mx-110-((i%4)*26),my-mh/2-40,'K',1);}
+  for(i=0;i<nK*3;i++){drawIonDot(mx-130+((i%6)*24),my+mh/2+40+Math.floor(i/6)*26,'K',1);}
+  for(i=0;i<nNa;i++){drawIonDot(mx+110+((i%4)*24),my-mh/2-40,'Na',-1);}
+  for(i=0;i<Math.max(1,Math.round(nNa*PNa*10));i++){drawIonDot(mx+130-((i%6)*24),my+mh/2+40+Math.floor(i/6)*26,'Na',-1);}
+  ctx.fillStyle='rgba(120,190,255,.7)';ctx.beginPath();ctx.arc(mx,my-60,9,0,7);ctx.fill();ftxt('saluran bocor K\u207A',mx+40,my-60,F.SEC,C.t2,'left','middle',400,190);
+  ctx.fillStyle=cc([255,150,100],clamp(PNa*3,.15,.9));ctx.beginPath();ctx.arc(mx,my,9,0,7);ctx.fill();ftxt('saluran bocor Na\u207A',mx+40,my,F.SEC,C.t2,'left','middle',400,190);
+  ctx.strokeStyle=cc(C.grn,.8);ctx.lineWidth=2;ctx.beginPath();ctx.arc(mx,my+60,14,0,7);ctx.stroke();ftxt('pompa Na\u207A-K\u207A',mx+40,my+60,F.SEC,C.t2,'left','middle',400,190);
+  var g={x:820,y:150,w:340,h:400};line(g.x,g.y,g.x,g.y+g.h,C.t1,2);var i2,vmin=-100,vmax=10;
+  for(i2=vmin;i2<=vmax;i2+=20){var yy=g.y+g.h-(i2-vmin)/(vmax-vmin)*g.h;line(g.x,yy,g.x+60,yy,'rgba(232,238,248,.15)',1);txt(nf(i2,0),g.x-8,yy,F.SEC,C.t2,'right');}
+  var barY=g.y+g.h-(v-vmin)/(vmax-vmin)*g.h;ctx.fillStyle=vcol(v);ctx.fillRect(g.x+10,barY,50,g.y+g.h-barY);ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.strokeRect(g.x+10,g.y,50,g.h);
+  ftxt('V_m = '+nf(v,1)+' mV',g.x+90,barY,F.LABEL+2,C.t1,'left','middle',700,220);
+  var ekY=g.y+g.h-(-90-vmin)/(vmax-vmin)*g.h;line(g.x,ekY,g.x+70,ekY,cc(C.ten,.7),1.5,[5,4]);ftxt('E_K \u2248 \u221290 mV',g.x+90,ekY+22,F.SEC,cc(C.ten,1),'left','middle',400,190);
+  foot(PNa<0.1?'Permeabilitas Na\u207A rendah (mendekati keadaan normal): potensial membran mendekati E_K.':'Permeabilitas Na\u207A tinggi: potensial membran tertarik menjauh dari E_K menuju E_Na yang positif.');}
+});
+
+/* ---------- 4. Depolarisasi dan ambang ---------- */
+new Sim({id:'sim-threshold',label:'Potensial berjenjang menuju ambang',pl:'rangkaian stimulus',
+ controls:[{k:'amp',label:'Kekuatan stimulus',unit:'relatif',min:.1,max:2,step:.1,val:.9},
+  {k:'n',label:'Jumlah stimulus berturut-turut (penjumlahan temporal)',min:1,max:5,step:1,val:2,dec:0}],
+ reads:function(p){var peak=p.amp*p.n*11;return [['Perkiraan puncak depolarisasi',nf(-70+peak,1)+' mV'],['Mencapai ambang (\u221255 mV)?',peak>=15?'ya, potensial aksi dipicu':'tidak, hanya potensial berjenjang']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var amp=s.amp,n=Math.round(s.n),cyc=(t*.6)%3;
+  head('Potensial berjenjang menuju ambang batas','Stimulus berturut-turut dijumlahkan, penjumlahan temporal, untuk mencapai ambang');
+  var g={x:140,y:150,w:950,h:350},vmin=-90,vmax=10,i;
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('V (mV)',g.x-4,g.y-16,F.SEC,C.t2,'left');txt('waktu',g.x+g.w,g.y+g.h+26,F.SEC,C.t2,'right');
+  function yv(v){return g.y+g.h-(v-vmin)/(vmax-vmin)*g.h;}
+  line(g.x,yv(-70),g.x+g.w,yv(-70),C.t3,1.5,[5,4]);ftxt('istirahat \u221270 mV',g.x-4,yv(-70),F.SEC,C.t2,'right','middle',400,110);
+  line(g.x,yv(-55),g.x+g.w,yv(-55),cc(C.com,.8),1.5,[6,4]);ftxt('ambang \u221255 mV',g.x+g.w+6,yv(-55),F.SEC,cc(C.com,1),'left','middle',700,130);
+  var dur=2.2*f,step=dur/n,peak=-200,curve=[];for(i=0;i<=140;i++){var tt=i/140*3,v=-70;for(var k=0;k<n;k++){var t0=.15+k*step*.6;if(tt>=t0){var dt2=tt-t0;v+=amp*11*Math.exp(-dt2*1.6)*(1-Math.exp(-dt2*9));}}curve.push(v);peak=Math.max(peak,v);}
+  var reached=peak>=-55;
+  ctx.beginPath();for(i=0;i<curve.length;i++){var xx=g.x+i/(curve.length-1)*g.w,yy=yv(curve[i]);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.strokeStyle=reached?cc(C.org,1):cc([120,190,255],1);ctx.lineWidth=3.5;ctx.stroke();
+  labelBox([reached?'Ambang tercapai':'Belum mencapai ambang','Puncak \u2248 '+nf(peak,1)+' mV'],g.x+g.w-160,g.y+50,{head:true,minW:260,stroke:reached?cc(C.org,1):C.t3});
+  foot(reached?'Jumlah stimulus cukup besar untuk melewati ambang: potensial aksi akan dipicu di akson hillock.':'Depolarisasi belum cukup besar; potensial berjenjang akan meluruh kembali ke istirahat tanpa memicu potensial aksi.');}
+});
+
+/* ---------- 5. Fase-fase potensial aksi ---------- */
+new Sim({id:'sim-ap',label:'Fase-fase potensial aksi',pl:'stimulus',
+ controls:[{k:'stim',label:'Kekuatan stimulus',unit:'relatif',min:.3,max:2,step:.1,val:1.3}],
+ reads:function(p){return [['Ambang terlampaui?',p.stim>=1?'ya':'tidak'],['Potensial puncak (bila terpicu)',p.stim>=1?nf(apVoltage(.35),1)+' mV':'-'],['Undershoot minimum',p.stim>=1?nf(apVoltage(1.6),1)+' mV':'-']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var stim=s.stim,fire=stim>=1;
+  head('Fase-fase potensial aksi','Konduktansi Na\u207A membuka cepat lalu K\u207A menyusul, membentuk lonjakan dan pemulihan voltase yang khas');
+  var TW=4.0,T0=-.3,g={x:140,y:150,w:1000,h:300},vmin=-100,vmax=60,i;
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('V (mV)',g.x-4,g.y-16,F.SEC,C.t2,'left');
+  function yv(v){return g.y+g.h-(v-vmin)/(vmax-vmin)*g.h;}
+  line(g.x,yv(-55),g.x+g.w,yv(-55),cc(C.com,.6),1.2,[5,4]);line(g.x,yv(-70),g.x+g.w,yv(-70),C.t3,1.2,[4,4]);
+  ctx.beginPath();for(i=0;i<=200;i++){var tt=T0+i/200*TW,v=fire?apVoltage(tt):(-70+ (tt>0&&tt<.3?stim*12*Math.sin(tt/.3*Math.PI):0)),xx=g.x+i/200*g.w,yy=yv(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3.5;ctx.stroke();
+  var tau=T0+f*TW;
+  if(fire){var mx=g.x+(tau-T0)/TW*g.w,mv=apVoltage(tau);ctx.beginPath();ctx.arc(clamp(mx,g.x,g.x+g.w),yv(clamp(mv,vmin,vmax)),7,0,7);ctx.fillStyle=C.yel;ctx.fill();}
+  var phase=tau<0?'menunggu stimulus':tau<.3?'depolarisasi cepat (Na\u207A masuk)':tau<.75?'repolarisasi (K\u207A keluar, Na\u207A inaktif)':tau<2.6?'hiperpolarisasi sesaat (undershoot)':'kembali istirahat';
+  if(fire)labelBox(['Fase saat ini',phase],g.x+g.w-220,g.y+40,{head:true,minW:280,stroke:C.yel});
+  var g2={x:140,y:500,w:1000,h:130};line(g2.x,g2.y+g2.h,g2.x+g2.w,g2.y+g2.h,C.t1,1.5);txt('konduktansi (relatif)',g2.x-4,g2.y-14,F.SEC,C.t2,'left');
+  ctx.beginPath();for(i=0;i<=200;i++){var tt2=T0+i/200*TW,gv=fire?gNa(tt2):0,xx2=g2.x+i/200*g2.w,yy2=g2.y+g2.h-clamp(gv,0,1.3)/1.3*g2.h;if(i===0)ctx.moveTo(xx2,yy2);else ctx.lineTo(xx2,yy2);}ctx.strokeStyle=cc(C.com,1);ctx.lineWidth=2.5;ctx.stroke();
+  ctx.beginPath();for(i=0;i<=200;i++){var tt3=T0+i/200*TW,gv2=fire?gK(tt3):0,xx3=g2.x+i/200*g2.w,yy3=g2.y+g2.h-clamp(gv2,0,1.3)/1.3*g2.h;if(i===0)ctx.moveTo(xx3,yy3);else ctx.lineTo(xx3,yy3);}ctx.strokeStyle=cc(C.grn,1);ctx.lineWidth=2.5;ctx.stroke();
+  foot(fire?'Stimulus melewati ambang: potensial aksi penuh terpicu, bentuknya sama tidak peduli seberapa kuat stimulus melampaui ambang.':'Stimulus di bawah ambang: hanya menghasilkan potensial berjenjang kecil yang meluruh kembali.');}
+});
+
+/* ---------- 6. All-or-none dan refrakter ---------- */
+new Sim({id:'sim-refrac',label:'Hukum all-or-none dan periode refrakter',pl:'rangkaian stimulus',
+ controls:[{k:'gap',label:'Jarak antar dua stimulus',unit:'ms (skala animasi)',min:.2,max:2.5,step:.1,val:1},
+  {k:'amp2',label:'Kekuatan stimulus kedua',unit:'relatif',min:.5,max:3,step:.1,val:1.5}],
+ reads:function(p){var refracAbs=.75,refracRel=1.6,fire2;if(p.gap<refracAbs)fire2=false;else if(p.gap<refracRel)fire2=p.amp2>=1.8;else fire2=p.amp2>=1;return [['Stimulus pertama','selalu memicu potensial aksi penuh'],['Stimulus kedua terpicu?',fire2?'ya':'tidak'],['Berada di periode refrakter',p.gap<refracAbs?'absolut':(p.gap<refracRel?'relatif':'sudah pulih')]];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var gap=s.gap,amp2=s.amp2,refracAbs=.75,refracRel=1.6,fire2;
+  if(gap<refracAbs)fire2=false;else if(gap<refracRel)fire2=amp2>=1.8;else fire2=amp2>=1;
+  head('Hukum all-or-none dan periode refrakter','Stimulus pertama selalu memicu spike penuh; stimulus kedua bergantung pada jarak waktu dan periode refrakter');
+  var g={x:140,y:170,w:1000,h:340},vmin=-100,vmax=60,i;
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('V (mV)',g.x-4,g.y-16,F.SEC,C.t2,'left');txt('waktu',g.x+g.w,g.y+g.h+26,F.SEC,C.t2,'right');
+  function yv(v){return g.y+g.h-(v-vmin)/(vmax-vmin)*g.h;}
+  var tmax=4.2,t1=.3,t2=t1+gap;
+  ctx.fillStyle='rgba(255,100,90,.10)';ctx.fillRect(g.x+(t1)/tmax*g.w,g.y,(refracAbs)/tmax*g.w,g.h);
+  ctx.fillStyle='rgba(255,206,84,.08)';ctx.fillRect(g.x+(t1+refracAbs)/tmax*g.w,g.y,(refracRel-refracAbs)/tmax*g.w,g.h);
+  ftxt('refrakter absolut',g.x+(t1+refracAbs/2)/tmax*g.w,g.y+18,F.SEC,cc(C.com,.9),'center','middle',700,150);
+  ftxt('refrakter relatif',g.x+(t1+refracAbs+(refracRel-refracAbs)/2)/tmax*g.w,g.y+18,F.SEC,cc(C.yel,.9),'center','middle',700,150);
+  ctx.beginPath();for(i=0;i<=300;i++){var tt=i/300*tmax,v=-70,tau1=tt-t1;if(tau1>=-.3)v=apVoltage(tau1);
+   if(fire2){var tau2=tt-t2;if(tau2>=-.3){var v2=apVoltage(tau2);v=Math.max(v,v2);}}
+   var xx=g.x+tt/tmax*g.w,yy=yv(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}
+  ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3.5;ctx.stroke();
+  arrow(g.x+t2/tmax*g.w,g.y-8,g.x+t2/tmax*g.w,g.y+30,fire2?cc(C.grn,1):cc(C.com,1),3,11);ftxt('stimulus kedua',g.x+t2/tmax*g.w,g.y-24,F.SEC,fire2?cc(C.grn,1):cc(C.com,1),'center','middle',700,140);
+  labelBox([fire2?'Stimulus kedua berhasil memicu spike':'Stimulus kedua gagal memicu spike'],g.x+g.w-220,g.y+g.h-40,{head:true,minW:280,stroke:fire2?cc(C.grn,1):cc(C.com,1)});
+  foot(gap<refracAbs?'Di dalam periode refrakter absolut, saluran Na\u207A masih inaktif: seberapa pun kuat stimulusnya, spike baru tidak akan terpicu.':(gap<refracRel?'Di periode refrakter relatif, spike baru masih mungkin tetapi perlu stimulus lebih kuat dari biasanya.':'Periode refrakter sudah lewat: neuron merespons stimulus kedua seperti biasa.'));}
+});
+
+/* ---------- 7. Konduksi impuls ---------- */
+new Sim({id:'sim-conduct',label:'Konduksi impuls kontinu vs saltatori',pl:'rambatan impuls',
+ controls:[{k:'diam',label:'Diameter akson',unit:'relatif',min:.5,max:2,step:.1,val:1}],
+ reads:function(p){var vCont=2*p.diam,vSalt=14*p.diam;return [['Kecepatan konduksi kontinu (perkiraan)',nf(vCont,1)+' m/s'],['Kecepatan konduksi saltatori (perkiraan)',nf(vSalt,1)+' m/s'],['Rasio percepatan oleh mielin',nf(vSalt/vCont,1)+' kali']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var diam=s.diam,vCont=2*diam,vSalt=14*diam,x0=160,x1=1140;
+  head('Konduksi impuls: kontinu vs saltatori','Kedua akson memiliki panjang sama; bandingkan seberapa jauh impuls merambat dalam waktu yang sama');
+  var y1=250,y2=470,thick=10+14*diam;
+  ctx.strokeStyle='rgba(150,165,190,.7)';ctx.lineWidth=thick;line(x0,y1,x1,y1,ctx.strokeStyle,thick);
+  ftxt('akson tanpa mielin (konduksi kontinu)',x0,y1-thick/2-20,F.SEC,C.t1,'left','middle',700,400);
+  var pc=((t*.15*vCont)%1);var pcx=x0+pc*(x1-x0);ctx.beginPath();ctx.arc(pcx,y1,10,0,7);ctx.fillStyle=cc(C.org,1);ctx.fill();
+  var glow=40;var gr=ctx.createRadialGradient(pcx,y1,0,pcx,y1,glow);gr.addColorStop(0,'rgba(255,170,80,.5)');gr.addColorStop(1,'rgba(255,170,80,0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(pcx,y1,glow,0,7);ctx.fill();
+  ctx.strokeStyle='rgba(150,165,190,.7)';ctx.lineWidth=thick;line(x0,y2,x1,y2,ctx.strokeStyle,thick);
+  var nseg=8,gap=(x1-x0)/nseg,seg;for(seg=0;seg<nseg;seg++){var sx0=x0+seg*gap+6,sx1=x0+(seg+1)*gap-6;ctx.beginPath();ctx.ellipse((sx0+sx1)/2,y2,(sx1-sx0)/2,thick/2+10,0,0,7);ctx.fillStyle='rgba(120,190,255,.22)';ctx.fill();ctx.strokeStyle=cc([120,190,255],.6);ctx.lineWidth=1.5;ctx.stroke();
+   if(seg>0){ctx.beginPath();ctx.arc(x0+seg*gap,y2,6,0,7);ctx.fillStyle=cc(C.yel,.8);ctx.fill();}}
+  ftxt('akson bermielin (konduksi saltatori)',x0,y2-thick/2-30,F.SEC,C.t1,'left','middle',700,400);
+  var ps=((t*.15*vSalt)%1);var nodeIdx=Math.min(nseg,Math.floor(ps*nseg));var psx=x0+Math.min(1,ps)*(x1-x0);
+  var jumpFrac=(ps*nseg)%1;var curNode=Math.floor(ps*nseg);var jx=x0+curNode*gap+Math.min(1,jumpFrac*2)*gap;
+  ctx.beginPath();ctx.arc(clamp(jx,x0,x1),y2,10,0,7);ctx.fillStyle=cc(C.grn,1);ctx.fill();
+  var gr2=ctx.createRadialGradient(jx,y2,0,jx,y2,glow);gr2.addColorStop(0,'rgba(77,214,138,.5)');gr2.addColorStop(1,'rgba(77,214,138,0)');ctx.fillStyle=gr2;ctx.beginPath();ctx.arc(clamp(jx,x0,x1),y2,glow,0,7);ctx.fill();
+  labelBox(['Kecepatan kontinu \u2248 '+nf(vCont,1)+' m/s','Kecepatan saltatori \u2248 '+nf(vSalt,1)+' m/s',nf(vSalt/vCont,1)+' kali lebih cepat'],W/2,610,{head:true,minW:420});
+  foot('Titik oranye membangkitkan sinyal di tiap titik sepanjang akson; titik hijau meloncat antar nodus Ranvier, jauh lebih cepat pada diameter yang sama.');}
+});
+
+/* ---------- 8. Garis waktu terpadu ---------- */
+new Sim({id:'sim-timeline',label:'Garis waktu potensial aksi',pl:'siklus potensial aksi',
+ controls:[],
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);
+  head('Garis waktu satu potensial aksi utuh','Dari potensial istirahat, melalui ambang, hingga kembali istirahat');
+  var TW=4.2,T0=-.4,g={x:120,y:170,w:1040,h:360},vmin=-100,vmax=60,i;
+  line(g.x,g.y,g.x,g.y+g.h,C.t1,2);line(g.x,g.y+g.h,g.x+g.w,g.y+g.h,C.t1,2);txt('V (mV)',g.x-4,g.y-16,F.SEC,C.t2,'left');txt('waktu',g.x+g.w,g.y+g.h+26,F.SEC,C.t2,'right');
+  function yv(v){return g.y+g.h-(v-vmin)/(vmax-vmin)*g.h;}
+  line(g.x,yv(-55),g.x+g.w,yv(-55),cc(C.com,.6),1.2,[5,4]);ftxt('ambang',g.x+g.w+6,yv(-55),F.SEC,cc(C.com,1),'left','middle',700,90);
+  line(g.x,yv(-70),g.x+g.w,yv(-70),C.t3,1.2,[4,4]);ftxt('istirahat',g.x+g.w+6,yv(-70),F.SEC,C.t2,'left','middle',400,90);
+  var tau=T0+f*TW;
+  ctx.beginPath();for(i=0;i<=240;i++){var tt=T0+i/240*TW,v=apVoltage(tt),xx=g.x+i/240*g.w,yy=yv(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=3.5;ctx.stroke();
+  var phases=[[-.3,'istirahat'],[0,'ambang tercapai'],[.15,'depolarisasi'],[.35,'puncak (overshoot)'],[.75,'repolarisasi'],[2.3,'undershoot']];
+  phases.forEach(function(ph){var xx=g.x+(ph[0]-T0)/TW*g.w,yy=yv(apVoltage(ph[0]));ctx.beginPath();ctx.arc(xx,yy,4,0,7);ctx.fillStyle=C.t1;ctx.fill();});
+  var curV=apVoltage(tau),curX=g.x+(tau-T0)/TW*g.w,curY=yv(curV);ctx.beginPath();ctx.arc(clamp(curX,g.x,g.x+g.w),clamp(curY,g.y,g.y+g.h),8,0,7);ctx.fillStyle=C.yel;ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
+  var phaseName=tau<-.05?'istirahat, menunggu stimulus':tau<.15?'ambang terlampaui, Na\u207A mulai masuk':tau<.35?'depolarisasi cepat menuju puncak':tau<.75?'repolarisasi, K\u207A keluar':tau<2.6?'hiperpolarisasi sesaat (undershoot)':'kembali ke istirahat';
+  labelBox(['Fase saat ini',phaseName],g.x+g.w-220,g.y+50,{head:true,minW:320,stroke:C.yel});
+  foot('Seluruh siklus ini berlangsung hanya sekitar 1 sampai 2 milidetik pada neuron sesungguhnya, dan dapat berulang ratusan kali per detik.');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G,doc=document;
+(function(){var links=[].slice.call(doc.querySelectorAll('#toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});var a=map[e.target.id];if(a){a.classList.add('on');a.classList.add('seen');}}});},{rootMargin:'-20% 0px -70% 0px'});
+  [].forEach.call(doc.querySelectorAll('main section'),function(s){io.observe(s);});})();
+
+/* ---- Asesmen awal ---- */
+(function(){var host=doc.getElementById('pre'),res=doc.getElementById('preres');if(!host)return;
+  var items=[['Menjelaskan fungsi bagian-bagian neuron',[2]],['Menjelaskan asal-usul potensial istirahat',[3]],['Menjelaskan penjumlahan menuju ambang batas',[4]],['Menguraikan fase-fase potensial aksi',[5]],['Menjelaskan hukum all-or-none dan refrakter',[6]],['Membandingkan konduksi kontinu dan saltatori',[7]]];
+  var val=items.map(function(){return null;}),lv=['Belum paham','Sebagian','Sudah paham'];
+  function upd(){var need=[],part=[],done=val.filter(function(v){return v!==null;}).length;items.forEach(function(it,i){if(val[i]===0)need.push(i);else if(val[i]===1)part.push(i);});
+    function lk(list){return list.map(function(i){return items[i][0].toLowerCase()+' ('+items[i][1].map(function(n){return '<a href="#s'+n+'">subbab '+n+'</a>';}).join(', ')+')';}).join('; ');}
+    var h='';if(done<items.length)h+='<p>Terjawab '+done+' dari '+items.length+'.</p>';
+    if(need.length)h+='<p><b>Mulai dari:</b> '+lk(need)+'.</p>';if(part.length)h+='<p><b>Perkuat:</b> '+lk(part)+'.</p>';
+    if(done===items.length&&!need.length&&!part.length)h+='<p>Seluruh topik telah dinilai paham. Jalankan tiap animasi sekali lagi, lalu ukur diri dengan evaluasi akhir di subbab 8.</p>';
+    res.innerHTML=h||'Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.';}
+  items.forEach(function(it,i){var row=document.createElement('div');row.className='it';var q=document.createElement('div');q.textContent=it[0];var o=document.createElement('div');o.className='opt';
+    [0,1,2].forEach(function(v){var b=document.createElement('button');b.type='button';b.textContent=lv[v];b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){val[i]=v;[].forEach.call(o.children,function(x,j){x.classList.toggle('on',j===v);x.setAttribute('aria-pressed',j===v?'true':'false');});upd();});o.appendChild(b);});
+    row.appendChild(q);row.appendChild(o);host.appendChild(row);});})();
+
+/* ---- Kuis akhir ---- */
+(function(){var host=doc.getElementById('quiz'),sc=doc.getElementById('score');if(!host)return;
+var Q=[
+{t:'mc',q:'Bagian neuron yang berfungsi sebagai titik keputusan untuk memicu potensial aksi, tempat potensial berjenjang dari seluruh dendrit dijumlahkan, adalah',o:['dendrit','badan sel','akson hillock','terminal akson'],a:2,x:'Akson hillock adalah tempat potensial berjenjang dijumlahkan; bila hasilnya melewati ambang batas, potensial aksi dipicu di sinilah.'},
+{t:'mc',q:'Saat istirahat, membran neuron jauh lebih permeabel terhadap K\u207A daripada Na\u207A. Akibatnya, potensial membran istirahat',o:['sangat dekat dengan potensial kesetimbangan Na\u207A','sangat dekat dengan potensial kesetimbangan K\u207A','tepat berada di tengah antara kedua potensial kesetimbangan','tidak dipengaruhi oleh permeabilitas ion sama sekali'],a:1,x:'Karena permeabilitas K\u207A jauh lebih besar, persamaan GHK memberi bobot lebih besar pada E_K, sehingga potensial istirahat mendekati E_K (sekitar \u221290 mV), meski tidak persis mencapainya.'},
+{t:'mc',q:'Ketika sebuah potensial aksi dipicu oleh stimulus yang jauh melebihi ambang batas, dibandingkan dengan potensial aksi yang dipicu oleh stimulus yang baru saja melewati ambang, amplitudonya',o:['jauh lebih besar','sedikit lebih besar','sama besar','lebih kecil'],a:2,x:'Hukum all-or-none menyatakan bahwa begitu ambang terlampaui, bentuk dan besar potensial aksi selalu sama, tidak bergantung pada seberapa kuat stimulus melampaui ambang.'},
+{t:'mc',q:'Selama periode refrakter absolut, sebuah neuron',o:['memicu potensial aksi baru bila stimulusnya cukup kuat','sama sekali tidak memicu potensial aksi baru','hanya memicu potensial aksi dengan amplitudo lebih kecil','menjadi lebih peka terhadap stimulus daripada biasanya'],a:1,x:'Pada periode refrakter absolut, saluran Na\u207A berada dalam keadaan inaktif dan tidak dibuka lagi, sehingga neuron sama sekali tidak responsif seberapa pun kuat stimulusnya.'},
+{t:'mc',q:'Konduksi saltatori pada akson bermielin lebih cepat daripada konduksi kontinu terutama karena',o:['diameter akson bermielin selalu lebih besar','potensial aksi hanya perlu dibangkitkan ulang di nodus Ranvier, bukan di sepanjang membran','mielin sendiri menghantarkan listrik lebih baik daripada akson','jumlah saluran Na\u207A pada akson bermielin jauh lebih sedikit'],a:1,x:'Mielin menyekat sebagian besar akson secara listrik, sehingga potensial aksi baru hanya perlu dibangkitkan di nodus Ranvier yang berjarak renggang, membuat sinyal seolah meloncat lebih cepat.'},
+{t:'num',q:'Dengan P_K = 1 dan P_Na = 0,04, [K\u207A]luar = 5 mM, [K\u207A]dalam = 150 mM, [Na\u207A]luar = 145 mM, [Na\u207A]dalam = 15 mM, hitung potensial membran menurut persamaan GHK dua-ion (V_m = 61,5 log10[(P_K[K]luar+P_Na[Na]luar)/(P_K[K]dalam+P_Na[Na]dalam)]).',u:'mV',v:-70.4,x:'Pembilang = 1(5)+0,04(145) = 10,8. Penyebut = 1(150)+0,04(15) = 150,6. log10(10,8/150,6) = log10(0,0717) \u2248 \u22121,144. V_m = 61,5 \u00D7 (\u22121,144) \u2248 \u221270,4 mV.'}
+];
+var st=[];function parse(s){var v=parseFloat(String(s).replace(',','.'));return isNaN(v)?null:v;}
+Q.forEach(function(q,qi){var box=doc.createElement('div');box.className='q';var h=doc.createElement('h4');h.textContent='Soal '+(qi+1)+'. '+q.q;box.appendChild(h);var get;
+  if(q.t==='mc'){q.o.forEach(function(o,i){var l=doc.createElement('label'),r=doc.createElement('input');r.type='radio';r.name='q'+qi;r.value=i;l.appendChild(r);l.appendChild(doc.createTextNode(' '+o));box.appendChild(l);});get=function(){var c=box.querySelector('input:checked');return c?(+c.value===q.a?1:0):-1;};}
+  else{var inp=doc.createElement('input');inp.type='text';inp.inputMode='decimal';inp.setAttribute('aria-label','Jawaban');box.appendChild(inp);box.appendChild(doc.createTextNode(' '+q.u));get=function(){var v=parse(inp.value);return v===null?-1:(Math.abs(v-q.v)<=Math.max(Math.abs(q.v)*.05,.5)?1:0);};}
+  var btn=doc.createElement('button');btn.type='button';btn.className='qbtn';btn.textContent='Periksa jawaban';btn.style.marginTop='10px';box.appendChild(btn);var fb=doc.createElement('div');box.appendChild(fb);st[qi]=null;
+  btn.addEventListener('click',function(){var g=get();if(g<0){fb.className='fb';fb.textContent='Isi atau pilih jawaban terlebih dahulu.';st[qi]=null;}else{fb.className='fb '+(g?'ok':'no');fb.textContent=(g?'Benar. ':'Belum tepat. ')+q.x;st[qi]=g;}score();});host.appendChild(box);});
+function score(){var s=0,n=0;st.forEach(function(v){if(v!==null){n++;s+=v;}});sc.textContent=n?'Skor sementara: '+Math.round(s/Q.length*100)+'% ('+n+' dari '+Q.length+' soal telah diperiksa)':'';}
+})();
+
+/* ---- Refleksi ---- */
+(function(){var ta=doc.getElementById('refl'),st=doc.getElementById('reflst');if(!ta)return;var key='potensialaksi-refleksi';
+  try{var v=localStorage.getItem(key);if(v){ta.value=v;st.textContent='Jawaban sebelumnya dipulihkan dari peramban ini.';}}catch(e){st.textContent='Penyimpanan peramban tidak tersedia; jawaban hanya bertahan selama halaman terbuka.';}
+  var tm=null;ta.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){try{localStorage.setItem(key,ta.value);st.textContent='Tersimpan di peramban ini.';}catch(e){}},500);});})();
+
+G.start();
+})();
+</script>
+<div id="anno-screen" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9000;pointer-events:none"></div>
+<script>/* ============================================================================
+   annotation-layer.js  —  lapisan anotasi & alat presenter untuk modul ajar
+   Tanpa dependensi. Satu file. Tempel ke modul HTML mana pun.
+
+   PEMAKAIAN MINIMAL
+   -----------------
+     <div id="stage" style="position:relative"> ...canvas modul kamu... </div>
+     <script src="annotation-layer.js"><\/script>
+     <script> const anno = new AnnotationLayer({ target: '#stage' }); <\/script>
+
+   PEMAKAIAN DENGAN KONTROL ANIMASI (opsional — tombol muncul hanya jika di-isi)
+   ----------------------------------------------------------------------------
+   Kendali animasi (tahap, play/pause, ulang, kecepatan, label) TIDAK diletakkan
+   di toolbar anotasi. Ia dirender sebagai baris tersendiri tepat di bawah
+   elemen target, selalu terlihat, tidak ikut auto-hide.
+
+     const anno = new AnnotationLayer({
+       target: '#stage',
+       steps: 4,                          // jumlah tahap; anotasi disimpan per tahap
+       onStep:   (i) => showStep(i),      // dipanggil saat tahap berubah
+       onPlay:   (playing) => {...},      // tombol play/pause muncul jika ada
+       onSpeed:  (x) => {...},            // 0.5 / 1 / 2
+       onReplay: () => {...},             // ulangi tahap ini
+       onLabels: (hidden) => {...}        // sembunyikan/tampilkan label
+     });
+
+   API
+   ---
+     anno.setStep(i)      anno.step
+     anno.clear()         anno.undo()
+     anno.exportPNG()     anno.destroy()
+     anno.setTool('pen'|'hl'|'rect'|'ellipse'|'arrow'|'line'|'dline'|'text'
+                  |'laser'|'spot'|'shutter'|'lens'|null)
+
+   SHORTCUT
+   --------
+     Spasi / →  tahap berikut        ←  tahap sebelumnya
+     L laser   P pen   H stabilo   T teks
+     R kotak   O bulat   A panah   G garis   D garis putus
+     S spotlight   K kerai (shutter)   B papan kosong   Z lensa zoom
+     1-4 warna   X ganti ketebalan   U undo   C bersihkan
+     N sembunyikan label   E ekspor PNG   F fullscreen   ? bantuan   Esc lepas alat
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var FONT = "'Segoe UI', system-ui, -apple-system, Arial, sans-serif";
+
+  var COLORS = [
+    { name: 'merah',  ink: '#ff3b30', hl: 'rgba(255,59,48,0.30)' },
+    { name: 'kuning', ink: '#ffcc00', hl: 'rgba(255,204,0,0.35)' },
+    { name: 'biru',   ink: '#3aa0ff', hl: 'rgba(58,160,255,0.28)' },
+    { name: 'putih',  ink: '#ffffff', hl: 'rgba(255,255,255,0.25)' }
+  ];
+
+  var WIDTHS = [2.5, 5.5];          // tipis, tebal
+  var TEXT_SIZES = [18, 26];        // mengikuti indeks ketebalan
+
+  // ---------------------------------------------------------------- ikon SVG
+  function svg(d, extra) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+      d + (extra || '') + '</svg>';
+  }
+  var ICON = {
+    laser:  svg('<circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 3.5v2.6M12 17.9v2.6M3.5 12h2.6M17.9 12h2.6"/>'),
+    pen:    svg('<path d="M4 20l3.2-.8L19 7.4a2 2 0 0 0-2.8-2.8L4.4 16.3 4 20z"/>'),
+    hl:     svg('<path d="M5 19h14"/><path d="M8.5 15.5l-1.8.4.5-1.9L15.6 5.6a1.7 1.7 0 0 1 2.4 2.4L8.5 15.5z"/>'),
+    text:   svg('<path d="M5 6.5h14M12 6.5V19M9 19h6"/>'),
+    rect:   svg('<rect x="4.5" y="6.5" width="15" height="11" rx="1.4"/>'),
+    ell:    svg('<ellipse cx="12" cy="12" rx="7.6" ry="5.6"/>'),
+    arrow:  svg('<path d="M4.5 19L19 5.5M19 5.5h-6M19 5.5v6"/>'),
+    line:   svg('<path d="M4.5 19L19.5 5"/>'),
+    dline:  svg('<path d="M4.5 19l3-3M10 13.5l3-3M15.5 8l3-3" />'),
+    spot:   svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>'),
+    shut:   svg('<rect x="3.5" y="4" width="17" height="16" rx="1.6"/><path d="M3.5 12.5h17"/><path d="M10 15.6h4"/>'),
+    board:  svg('<rect x="3" y="5" width="18" height="12.5" rx="1.6"/><path d="M12 17.5V21M8.5 21h7"/>'),
+    lens:   svg('<circle cx="10.8" cy="10.8" r="6.2"/><path d="M15.4 15.4L20.5 20.5M8.4 10.8h4.8M10.8 8.4v4.8"/>'),
+    undo:   svg('<path d="M9 7.5H16a4.5 4.5 0 0 1 0 9H7"/><path d="M11.5 4.5L8.6 7.5l2.9 3"/>'),
+    clear:  svg('<path d="M7 8.5h10l-.9 10a1.6 1.6 0 0 1-1.6 1.5H9.5a1.6 1.6 0 0 1-1.6-1.5L7 8.5z"/><path d="M5.5 8.5h13M10 5.5h4"/>'),
+    png:    svg('<path d="M12 4v10"/><path d="M8.4 10.6L12 14.2l3.6-3.6"/><path d="M5 17.5v1.2A1.3 1.3 0 0 0 6.3 20h11.4a1.3 1.3 0 0 0 1.3-1.3v-1.2"/>'),
+    prev:   svg('<path d="M14.5 6l-6 6 6 6"/>'),
+    next:   svg('<path d="M9.5 6l6 6-6 6"/>'),
+    play:   svg('<path d="M8 5.5l10 6.5-10 6.5V5.5z" fill="currentColor" stroke="none"/>'),
+    pause:  svg('<path d="M9 5.5v13M15 5.5v13" stroke-width="2.6"/>'),
+    replay: svg('<path d="M4.5 12a7.5 7.5 0 1 0 2.6-5.7"/><path d="M4.2 5.2v3.6h3.6"/>'),
+    eye:    svg('<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.4"/>'),
+    eyeoff: svg('<path d="M4 4l16 16"/><path d="M9.6 6.9A9.6 9.6 0 0 1 12 6.5c6 0 9.5 5.5 9.5 5.5a17 17 0 0 1-2.7 3.2M6.2 8.4A17 17 0 0 0 2.5 12S6 17.5 12 17.5c.9 0 1.7-.1 2.5-.3"/>'),
+    full:   svg('<path d="M4 9V4.5h5M20 9V4.5h-5M4 15v4.5h5M20 15v4.5h-5"/>'),
+    help:   svg('<circle cx="12" cy="12" r="8.4"/><path d="M9.8 9.6a2.2 2.2 0 1 1 3 2.1c-.5.3-.8.8-.8 1.4v.4"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>'),
+    grip:   svg('<path d="M7 10h10M7 14h10"/>')
+  };
+
+  // -------------------------------------------------------------------- CSS
+  var CSS = [
+    '.al-root{position:absolute;inset:0;pointer-events:none;z-index:40;font-family:' + FONT + '}',
+    '.al-cv{position:absolute;inset:0;width:100%;height:100%}',
+    '.al-cv.draw{pointer-events:auto;cursor:crosshair;touch-action:none}',
+    
+    '.al-bar{position:absolute;left:9px;right:9px;bottom:12px;margin:0 auto;',
+    ' width:max-content;max-width:calc(100% - 18px);flex-wrap:wrap;justify-content:center;row-gap:2px;',
+    ' display:flex;align-items:center;gap:3px;padding:5px 7px;border-radius:12px;',
+    ' background:rgba(16,20,28,.93);border:1px solid rgba(255,255,255,.13);',
+    ' box-shadow:0 8px 26px rgba(0,0,0,.45);pointer-events:auto;',
+    ' transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(7px)}',
+    '.al-bar.hid{opacity:0;transform:translateY(130%);pointer-events:none}',
+    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%);',
+    ' display:grid;grid-auto-flow:column;grid-auto-rows:30px;grid-auto-columns:max-content;',
+    ' justify-items:center;align-items:center;gap:2px;padding:6px;width:max-content;max-width:none;',
+    ' border-radius:14px;opacity:.94}',
+    '.al-bar.dock .al-sep{display:none}',
+    '.al-bar.dock .al-tm{min-width:36px;font-size:10px;padding:0}',
+    '.al-bar.dock.hid{transform:translate(130%,-50%)}',
+    '.al-bar.dock .al-b{width:30px;height:30px}',
+    '.al-ctl{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;',
+    ' gap:3px;row-gap:2px;margin:9px auto 0;padding:4px 7px;width:max-content;max-width:100%;',
+    ' border-radius:11px;background:rgba(16,20,28,.55);border:1px solid rgba(255,255,255,.10);',
+    ' font-family:' + FONT + '}',
+    '.al-ctl.fs{position:absolute;left:9px;right:9px;bottom:56px;margin:0 auto;z-index:45;',
+    ' background:rgba(16,20,28,.93);pointer-events:auto}',
+    '.al-b{width:29px;height:29px;display:grid;place-items:center;border:0;border-radius:8px;',
+    ' background:transparent;color:#dfe6f2;cursor:pointer;padding:0;transition:background .12s,color .12s}',
+    '.al-b svg{width:18px;height:18px}',
+    '.al-b:hover{background:rgba(255,255,255,.13);color:#fff}',
+    '.al-b.on{background:#2f6df6;color:#fff}',
+    '.al-sep{width:1px;height:20px;background:rgba(255,255,255,.16);margin:0 4px}',
+    '.al-sw{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.32);cursor:pointer;padding:0;margin:0 1px}',
+    '.al-sw.on{border-color:#fff;transform:scale(1.16)}',
+    '.al-w{width:26px;height:29px;display:grid;place-items:center;border:0;background:transparent;cursor:pointer;border-radius:8px;color:#dfe6f2}',
+    '.al-w:hover{background:rgba(255,255,255,.13)}',
+    '.al-w i{display:block;width:15px;border-radius:9px;background:currentColor}',
+    '.al-sp{min-width:31px;height:29px;border:0;background:transparent;color:#dfe6f2;',
+    ' font:600 11px/1 ' + FONT + ';border-radius:8px;cursor:pointer}',
+    '.al-sp:hover{background:rgba(255,255,255,.13)}',
+    '.al-tm{min-width:44px;text-align:center;color:#9fb0c8;font:600 11px/1 ' + FONT + ';',
+    ' letter-spacing:.4px;cursor:pointer;user-select:none;padding:0 2px}',
+    '.al-tm.run{color:#4ade80}',
+    '.al-st{color:#9fb0c8;font:600 11px/1 ' + FONT + ';min-width:34px;text-align:center;user-select:none}',
+    '.al-in{position:absolute;z-index:60;background:rgba(10,14,20,.9);color:#fff;border:1px solid #2f6df6;',
+    ' border-radius:6px;padding:3px 6px;outline:none;font-family:' + FONT + ';pointer-events:auto}',
+    '.al-help{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:70;',
+    ' width:min(430px,86%);padding:16px 18px;border-radius:14px;pointer-events:auto;',
+    ' background:rgba(14,18,26,.97);border:1px solid rgba(255,255,255,.14);color:#dfe6f2;',
+    ' box-shadow:0 18px 50px rgba(0,0,0,.6);font-size:12px;line-height:1.65}',
+    '.al-help h4{margin:0 0 9px;font-size:12.5px;letter-spacing:.3px;color:#fff}',
+    '.al-help table{width:100%;border-collapse:collapse}',
+    '.al-help td{padding:1.5px 0;vertical-align:top}',
+    '.al-help td:first-child{width:96px;color:#8fa6c4;font-weight:600}',
+    '.al-help .x{position:absolute;right:9px;top:7px;border:0;background:transparent;color:#8fa6c4;',
+    ' font-size:17px;cursor:pointer;line-height:1}',
+    '.al-toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:65;',
+    ' background:rgba(14,18,26,.92);color:#dfe6f2;border:1px solid rgba(255,255,255,.13);',
+    ' padding:5px 11px;border-radius:8px;font:600 11px/1 ' + FONT + ';letter-spacing:.3px;',
+    ' opacity:0;transition:opacity .2s ease;pointer-events:none}',
+    '.al-toast.on{opacity:1}'
+  ].join('');
+
+  function injectCSS() {
+    if (document.getElementById('al-css')) return;
+    var s = document.createElement('style');
+    s.id = 'al-css';
+    s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  // =========================================================== kelas utama
+  function AnnotationLayer(opts) {
+    opts = opts || {};
+    var t = opts.target || document.body;
+    this.target = (typeof t === 'string') ? document.querySelector(t) : t;
+    if (!this.target) throw new Error('AnnotationLayer: target tidak ditemukan');
+
+    this.o = opts;
+    this.dock = opts.dock || null;
+    this.page = !!opts.page;
+    this.steps = Math.max(1, opts.steps || 1);
+    this.step = 0;
+    this.pages = {};                 // tahap -> array objek anotasi
+    this.tool = null;
+    this.ci = 0;                     // indeks warna
+    this.wi = 0;                     // indeks ketebalan
+    this.board = false;
+    this.labelsHidden = false;
+    this.playing = false;
+    this.speedIdx = 1;
+    this.speeds = [0.5, 1, 2];
+    this.trail = [];                 // jejak laser
+    this.spotR = 130;
+    this.shutterY = 0.55;            // fraksi tinggi
+    this.shutterDrag = false;
+    this.lens = { x: 0, y: 0, on: false, r: 110, m: 2 };
+    this.cur = null;                 // objek yang sedang digambar
+    this.mouse = { x: -1e4, y: -1e4 };
+    this.timer = { t0: 0, acc: 0, run: false };
+    this.raf = 0;
+
+    injectCSS();
+    this._build();
+    this._bind();
+    this._resize();
+    this._loop();
+  }
+
+  var P = AnnotationLayer.prototype;
+
+  // ------------------------------------------------------------------ build
+  P._build = function () {
+    var self = this;
+    if (getComputedStyle(this.target).position === 'static') {
+      this.target.style.position = 'relative';
+    }
+
+    var root = this.root = document.createElement('div');
+    root.className = 'al-root';
+
+    this.annoCv = document.createElement('canvas');
+    this.annoCv.className = 'al-cv';
+    this.fxCv = document.createElement('canvas');
+    this.fxCv.className = 'al-cv';
+    this.actx = this.annoCv.getContext('2d');
+    this.fctx = this.fxCv.getContext('2d');
+    root.appendChild(this.annoCv);
+    root.appendChild(this.fxCv);
+
+    var bar = this.bar = document.createElement('div');
+    bar.className = 'al-bar' + (this.dock ? ' dock' : ' hid');
+    root.appendChild(bar);
+
+    this.toast = document.createElement('div');
+    this.toast.className = 'al-toast';
+    root.appendChild(this.toast);
+
+    this.target.appendChild(root);
+
+    // ---- tombol (host = bar anotasi, atau baris kendali animasi)
+    function btn(icon, title, fn, key, host) {
+      var b = document.createElement('button');
+      b.className = 'al-b';
+      b.innerHTML = icon;
+      b.title = title + (key ? '  (' + key + ')' : '');
+      b.addEventListener('click', function (e) { e.preventDefault(); fn(b); });
+      (host || bar).appendChild(b);
+      return b;
+    }
+    function sep(host) {
+      var d = document.createElement('div');
+      d.className = 'al-sep';
+      (host || bar).appendChild(d);
+      return d;
+    }
+    this.tb = {};
+    var toolBtn = function (name, icon, title, key) {
+      self.tb[name] = btn(icon, title, function () { self.setTool(self.tool === name ? null : name); }, key);
+    };
+
+    // --- baris kendali animasi: DI LUAR overlay, tepat di bawah animasi.
+    // Kendali animasi milik modul, bukan alat anotasi — jadi ia tetap terlihat,
+    // tidak ikut auto-hide, dan tidak menutupi gambar.
+    var hasStep = this.steps > 1 || !!this.o.onStep;
+    var needCtl = hasStep || this.o.onPlay || this.o.onReplay || this.o.onSpeed || this.o.onLabels;
+    if (needCtl) {
+      var ctl = this.ctl = document.createElement('div');
+      ctl.className = 'al-ctl';
+      if (this.target.parentNode) {
+        this.target.parentNode.insertBefore(ctl, this.target.nextSibling);
+      } else {
+        this.target.appendChild(ctl);
+      }
+      if (hasStep) {
+        btn(ICON.prev, 'Tahap sebelumnya', function () { self.setStep(self.step - 1); }, '←', ctl);
+        this.stLbl = document.createElement('div');
+        this.stLbl.className = 'al-st';
+        ctl.appendChild(this.stLbl);
+        btn(ICON.next, 'Tahap berikut', function () { self.setStep(self.step + 1); }, 'spasi', ctl);
+      }
+      if (this.o.onPlay || this.o.onReplay || this.o.onSpeed) {
+        if (hasStep) sep(ctl);
+        if (this.o.onPlay) {
+          this.tb.play = btn(ICON.play, 'Play / pause', function () { self.togglePlay(); }, '', ctl);
+        }
+        if (this.o.onReplay) {
+          btn(ICON.replay, 'Ulangi tahap ini', function () { self.o.onReplay(); }, '', ctl);
+        }
+        if (this.o.onSpeed) {
+          this.spBtn = document.createElement('button');
+          this.spBtn.className = 'al-sp';
+          this.spBtn.title = 'Kecepatan';
+          this.spBtn.textContent = '1×';
+          this.spBtn.addEventListener('click', function () { self.cycleSpeed(); });
+          ctl.appendChild(this.spBtn);
+        }
+      }
+    }
+    if (this.o.onLabels) {
+      if (needCtl && this.ctl.childNodes.length) sep(this.ctl);
+      this.tb.labels = btn(ICON.eye, 'Sembunyikan / tampilkan label',
+        function () { self.toggleLabels(); }, 'N', this.ctl);
+    }
+
+    // --- alat tunjuk & gambar
+    toolBtn('laser', ICON.laser, 'Laser pointer (memudar)', 'L');
+    toolBtn('pen', ICON.pen, 'Pen', 'P');
+    toolBtn('hl', ICON.hl, 'Stabilo', 'H');
+    this.shapeName = 'rect';
+    this.tb.shape = btn(ICON.rect, 'Bentuk — klik untuk ganti: kotak/bulat/panah/garis/putus', function (b) {
+      var order = ['rect', 'ellipse', 'arrow', 'line', 'dline'];
+      if (self.tool === self.shapeName) {
+        self.shapeName = order[(order.indexOf(self.shapeName) + 1) % order.length];
+      }
+      b.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[self.shapeName];
+      self.setTool(self.shapeName);
+      self._flash({ rect: 'kotak', ellipse: 'bulat', arrow: 'panah', line: 'garis', dline: 'garis putus' }[self.shapeName]);
+    }, 'R/O/A/G/D');
+    toolBtn('text', ICON.text, 'Teks', 'T');
+    sep();
+
+    // --- warna & ketebalan
+    this.swatches = COLORS.map(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'al-sw' + (i === 0 ? ' on' : '');
+      b.style.background = c.ink;
+      b.title = 'Warna ' + c.name + '  (' + (i + 1) + ')';
+      b.addEventListener('click', function () { self.setColor(i); });
+      bar.appendChild(b);
+      return b;
+    });
+    this.wBtn = document.createElement('button');
+    this.wBtn.className = 'al-w';
+    this.wBtn.title = 'Ketebalan  (X)';
+    this.wBtn.innerHTML = '<i></i>';
+    this.wBtn.addEventListener('click', function () { self.setWidth(1 - self.wi); });
+    bar.appendChild(this.wBtn);
+    this._paintWidth();
+    sep();
+
+    // --- fokus perhatian
+    toolBtn('spot', ICON.spot, 'Spotlight (roda mouse = ubah radius)', 'S');
+    toolBtn('shutter', ICON.shut, 'Kerai — tarik tepinya', 'K');
+    this.tb.board = btn(ICON.board, 'Papan kosong', function () { self.toggleBoard(); }, 'B');
+    toolBtn('lens', ICON.lens, 'Lensa zoom 2×', 'Z');
+    sep();
+
+    // --- utilitas
+    btn(ICON.undo, 'Undo', function () { self.undo(); }, 'U');
+    btn(ICON.clear, 'Bersihkan tahap ini', function () { self.clear(); }, 'C');
+    btn(ICON.png, 'Simpan layar + coretan (PNG)', function () { self.exportPNG(); }, 'E');
+    this.tmEl = document.createElement('div');
+    this.tmEl.className = 'al-tm';
+    this.tmEl.textContent = '00:00';
+    this.tmEl.title = 'Timer — klik: mulai/pause, klik ganda: reset';
+    this.tmEl.addEventListener('click', function () { self.toggleTimer(); });
+    this.tmEl.addEventListener('dblclick', function () { self.resetTimer(); });
+    bar.appendChild(this.tmEl);
+    btn(ICON.full, 'Fullscreen', function () { self.fullscreen(); }, 'F');
+    btn(ICON.help, 'Bantuan shortcut', function () { self.help(); }, '?');
+
+    this._paintStep();
+  };
+
+  // ------------------------------------------------------------------- bind
+  P._bind = function () {
+    var self = this;
+    this._on = [];
+    function on(el, ev, fn, o) { el.addEventListener(ev, fn, o); self._on.push([el, ev, fn, o]); }
+
+    // toolbar auto-hide
+    var hideT = 0;
+    this._show = function () {
+      if (self.dock) return;
+      self.bar.classList.remove('hid');
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        if (!self.bar.matches(':hover')) self.bar.classList.add('hid');
+      }, 2600);
+    };
+    on(this.bar, 'mouseenter', function () { clearTimeout(hideT); });
+    on(this.bar, 'mouseleave', this._show);
+
+    // posisi kursor global (canvas fx boleh pointer-events:none)
+    on(window, 'pointermove', function (e) {
+      var r = self.target.getBoundingClientRect();
+      self.mouse.x = e.clientX - r.left;
+      self.mouse.y = e.clientY - r.top;
+      if (self.tool === 'laser') self.trail.push({ x: self.mouse.x, y: self.mouse.y, t: performance.now() });
+      if (self.shutterDrag) self.shutterY = Math.min(0.99, Math.max(0.01, self.mouse.y / r.height));
+      // toolbar muncul saat kursor mendekati tepi bawah (tanpa elemen penghalang)
+      if (self.mouse.x > 0 && self.mouse.x < self.W &&
+          self.mouse.y > self.H - 78 && self.mouse.y < self.H + 30 && !self.cur) self._show();
+    }, { passive: true });
+
+    on(window, 'wheel', function (e) {
+      if (self.tool === 'spot') { self.spotR = Math.min(420, Math.max(50, self.spotR - e.deltaY * 0.3)); }
+      else if (self.tool === 'lens') { self.lens.r = Math.min(260, Math.max(60, self.lens.r - e.deltaY * 0.2)); }
+    }, { passive: true });
+
+    // gambar
+    on(this.annoCv, 'pointerdown', function (e) { self._down(e); });
+    on(window, 'pointermove', function (e) { self._move(e); });
+    on(window, 'pointerup', function (e) { self._up(e); });
+
+    // shutter: tarik tepi (canvas fx tidak menangkap pointer, jadi pakai target)
+    on(this.target, 'pointerdown', function (e) {
+      if (self.tool !== 'shutter') return;
+      var r = self.target.getBoundingClientRect();
+      var y = e.clientY - r.top;
+      if (Math.abs(y - self.shutterY * r.height) < 34) { self.shutterDrag = true; }
+    });
+    on(window, 'pointerup', function () { self.shutterDrag = false; });
+
+    // resize
+    this._ro = (typeof ResizeObserver !== 'undefined')
+      ? new ResizeObserver(function () { self._resize(); })
+      : null;
+    if (this._ro) this._ro.observe(this.target);
+    on(window, 'resize', function () { self._resize(); });
+    if (this.dock && !this.page) on(window, 'scroll', function () { self._fitDock(); }, { passive: true });
+
+    // keyboard
+    on(window, 'keydown', function (e) { self._key(e); });
+
+    // fullscreen: baris kendali ikut masuk ke dalam target agar tetap terlihat
+    on(document, 'fullscreenchange', function () {
+      if (!self.ctl) return;
+      if (document.fullscreenElement === self.target) {
+        self.ctl.classList.add('fs');
+        self.root.appendChild(self.ctl);
+      } else {
+        self.ctl.classList.remove('fs');
+        if (self.target.parentNode) self.target.parentNode.insertBefore(self.ctl, self.target.nextSibling);
+      }
+      self._resize();
+    });
+  };
+
+  P._key = function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key, kl = k.toLowerCase(), self = this, hit = true;
+
+    if (!this.page && (k === ' ' || k === 'ArrowRight')) this.setStep(this.step + 1);
+    else if (!this.page && k === 'ArrowLeft') this.setStep(this.step - 1);
+    else if (kl === 'l') this.setTool(this.tool === 'laser' ? null : 'laser');
+    else if (kl === 'p') this.setTool(this.tool === 'pen' ? null : 'pen');
+    else if (kl === 'h') this.setTool(this.tool === 'hl' ? null : 'hl');
+    else if (kl === 't') this.setTool(this.tool === 'text' ? null : 'text');
+    else if (kl === 'r') this._shape('rect');
+    else if (kl === 'o') this._shape('ellipse');
+    else if (kl === 'a') this._shape('arrow');
+    else if (kl === 'g') this._shape('line');
+    else if (kl === 'd') this._shape('dline');
+    else if (kl === 's') this.setTool(this.tool === 'spot' ? null : 'spot');
+    else if (kl === 'k') this.setTool(this.tool === 'shutter' ? null : 'shutter');
+    else if (kl === 'z') this.setTool(this.tool === 'lens' ? null : 'lens');
+    else if (kl === 'b') this.toggleBoard();
+    else if (kl === 'u') this.undo();
+    else if (kl === 'c') this.clear();
+    else if (kl === 'n') this.toggleLabels();
+    else if (kl === 'e') this.exportPNG();
+    else if (kl === 'f') this.fullscreen();
+    else if (k === '?' || k === '/') this.help();
+    else if (k >= '1' && k <= '4') this.setColor(+k - 1);
+    else if (kl === 'x') this.setWidth(1 - this.wi);
+    else if (k === 'Escape') { this.setTool(null); this._closeHelp(); }
+    else hit = false;
+
+    if (hit) { e.preventDefault(); this._show(); }
+  };
+
+  P._shape = function (name) {
+    this.shapeName = name;
+    this.tb.shape.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[name];
+    this.setTool(name);
+  };
+
+  // ----------------------------------------------------------------- resize
+  P._resize = function () {
+    var r = this.target.getBoundingClientRect();
+    this.W = Math.max(1, Math.round(r.width));
+    this.H = Math.max(1, Math.round(r.height));
+    var dpr = this.dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    [this.annoCv, this.fxCv].forEach(function (c) {
+      c.width = Math.round(r.width * dpr);
+      c.height = Math.round(r.height * dpr);
+    });
+    this.actx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this._fitDock();
+    this._redraw();
+  };
+
+  // bilah vertikal: bagi tombol ke beberapa kolom bila layar pendek
+  P._fitDock = function () {
+    if (!this.dock) return;
+    var kids = [].filter.call(this.bar.children, function (n) { return !n.classList.contains('al-sep'); });
+    var n = kids.length, r = this.target.getBoundingClientRect();
+    // bagian target yang sedang terlihat di layar (bilah berada di tengahnya)
+    var vt = Math.max(0, -r.top), vb = Math.min(this.H, window.innerHeight - r.top);
+    if (vb - vt < 120) { vt = 0; vb = this.H; }
+    var vis = vb - vt;
+    var rows = Math.max(4, Math.floor((vis - 28) / 32));
+    if (rows > n) rows = n;
+    this.bar.style.gridTemplateRows = 'repeat(' + rows + ',30px)';
+    this.bar.style.top = ((vt + vb) / 2) + 'px';
+  };
+
+  // ------------------------------------------------------------ model & I/O
+  P._page = function () {
+    if (!this.pages[this.step]) this.pages[this.step] = [];
+    return this.pages[this.step];
+  };
+
+  P.setTool = function (name) {
+    this.tool = name || null;
+    var drawing = ['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(this.tool) >= 0;
+    this.annoCv.classList.toggle('draw', drawing);
+    for (var k in this.tb) {
+      if (this.tb[k] && ['play', 'labels', 'board', 'shape'].indexOf(k) < 0) {
+        this.tb[k].classList.toggle('on', k === this.tool);
+      }
+    }
+    if (this.tb.shape) {
+      this.tb.shape.classList.toggle('on', ['rect', 'ellipse', 'arrow', 'line', 'dline'].indexOf(this.tool) >= 0);
+    }
+    if (this.tool !== 'laser') this.trail.length = 0;
+    this._show();
+    return this;
+  };
+
+  P.setColor = function (i) {
+    this.ci = i % COLORS.length;
+    var self = this;
+    this.swatches.forEach(function (b, j) { b.classList.toggle('on', j === self.ci); });
+    this._paintWidth();
+    return this;
+  };
+
+  P.setWidth = function (i) {
+    this.wi = i ? 1 : 0;
+    this._paintWidth();
+    return this;
+  };
+
+  P._paintWidth = function () {
+    var h = this.wi ? 6 : 3;
+    this.wBtn.firstChild.style.height = h + 'px';
+    this.wBtn.style.color = COLORS[this.ci].ink;
+  };
+
+  P.setStep = function (i) {
+    var n = this.steps;
+    i = Math.max(0, Math.min(n - 1, i));
+    if (i === this.step) return this;
+    this.step = i;
+    this._paintStep();
+    this._redraw();
+    if (this.o.onStep) this.o.onStep(i);
+    return this;
+  };
+
+  P._paintStep = function () {
+    if (this.stLbl) this.stLbl.textContent = (this.step + 1) + '/' + this.steps;
+  };
+
+  P.togglePlay = function () {
+    this.playing = !this.playing;
+    if (this.tb.play) {
+      this.tb.play.innerHTML = this.playing ? ICON.pause : ICON.play;
+      this.tb.play.classList.toggle('on', this.playing);
+    }
+    if (this.o.onPlay) this.o.onPlay(this.playing);
+    return this;
+  };
+
+  P.cycleSpeed = function () {
+    this.speedIdx = (this.speedIdx + 1) % this.speeds.length;
+    var s = this.speeds[this.speedIdx];
+    if (this.spBtn) this.spBtn.textContent = (s === 0.5 ? '0,5' : s) + '×';
+    if (this.o.onSpeed) this.o.onSpeed(s);
+    return this;
+  };
+
+  P.toggleLabels = function () {
+    if (!this.o.onLabels) return this;
+    this.labelsHidden = !this.labelsHidden;
+    if (this.tb.labels) {
+      this.tb.labels.innerHTML = this.labelsHidden ? ICON.eyeoff : ICON.eye;
+      this.tb.labels.classList.toggle('on', this.labelsHidden);
+    }
+    this.o.onLabels(this.labelsHidden);
+    this._flash(this.labelsHidden ? 'label disembunyikan' : 'label ditampilkan');
+    return this;
+  };
+
+  P.toggleBoard = function () {
+    this.board = !this.board;
+    if (this.tb.board) this.tb.board.classList.toggle('on', this.board);
+    if (this.board && !this.tool) this.setTool('pen');
+    this._redraw();
+    return this;
+  };
+
+  P.undo = function () {
+    this._page().pop();
+    this._redraw();
+    return this;
+  };
+
+  P.clear = function () {
+    this.pages[this.step] = [];
+    this._redraw();
+    return this;
+  };
+
+  P.clearAll = function () {
+    this.pages = {};
+    this._redraw();
+    return this;
+  };
+
+  // ------------------------------------------------------------ input gambar
+  P._pt = function (e) {
+    var r = this.target.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+
+  P._down = function (e) {
+    var t = this.tool;
+    if (['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(t) < 0) return;
+    e.preventDefault();
+    var p = this._pt(e);
+    if (t === 'text') { this._textInput(p); return; }
+    var o = { type: t, ci: this.ci, w: WIDTHS[this.wi] };
+    if (t === 'pen' || t === 'hl') { o.pts = [p]; if (t === 'hl') o.w = WIDTHS[this.wi] * 3.6; }
+    else { o.x1 = p.x; o.y1 = p.y; o.x2 = p.x; o.y2 = p.y; }
+    this.cur = o;
+    try { this.annoCv.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+
+  P._move = function (e) {
+    if (!this.cur) return;
+    var p = this._pt(e);
+    if (this.cur.pts) {
+      var last = this.cur.pts[this.cur.pts.length - 1];
+      if ((p.x - last.x) * (p.x - last.x) + (p.y - last.y) * (p.y - last.y) > 2.2) this.cur.pts.push(p);
+    } else { this.cur.x2 = p.x; this.cur.y2 = p.y; }
+  };
+
+  P._up = function () {
+    if (!this.cur) return;
+    var o = this.cur;
+    this.cur = null;
+    var tiny = o.pts ? o.pts.length < 2
+      : (Math.abs(o.x2 - o.x1) < 4 && Math.abs(o.y2 - o.y1) < 4);
+    if (!tiny) { this._page().push(o); this._redraw(); }
+  };
+
+  P._textInput = function (p) {
+    var self = this, size = TEXT_SIZES[this.wi];
+    var inp = document.createElement('input');
+    inp.className = 'al-in';
+    inp.style.left = p.x + 'px';
+    inp.style.top = (p.y - size * 0.9) + 'px';
+    inp.style.font = '600 ' + size + 'px ' + FONT;
+    inp.style.color = COLORS[this.ci].ink;
+    inp.style.minWidth = '120px';
+    this.root.appendChild(inp);
+    inp.focus();
+    var done = false;
+    function commit() {
+      if (done) return;
+      done = true;
+      var v = inp.value.trim();
+      if (v) {
+        self._page().push({ type: 'text', x: p.x, y: p.y, str: v, size: size, ci: self.ci });
+        self._redraw();
+      }
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+    }
+    inp.addEventListener('keydown', function (e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { commit(); self.annoCv.focus(); }
+      else if (e.key === 'Escape') { done = true; if (inp.parentNode) inp.parentNode.removeChild(inp); }
+    });
+    inp.addEventListener('blur', commit);
+  };
+
+  // -------------------------------------------------------------- menggambar
+  P._redraw = function () {
+    var c = this.actx;
+    c.clearRect(0, 0, this.W, this.H);
+    if (this.board) {
+      c.fillStyle = '#0d1420';
+      c.fillRect(0, 0, this.W, this.H);
+      c.strokeStyle = 'rgba(255,255,255,.055)';
+      c.lineWidth = 1;
+      for (var gy = 34; gy < this.H; gy += 34) {
+        c.beginPath(); c.moveTo(0, gy); c.lineTo(this.W, gy); c.stroke();
+      }
+    }
+    var page = this.pages[this.step] || [];
+    for (var i = 0; i < page.length; i++) this._drawObj(c, page[i]);
+  };
+
+  P._drawObj = function (c, o) {
+    var col = COLORS[o.ci] || COLORS[0];
+    c.save();
+    c.lineCap = 'round';
+    c.lineJoin = 'round';
+    c.shadowBlur = 0;
+    c.setLineDash([]);
+
+    if (o.type === 'text') {
+      c.font = '600 ' + o.size + 'px ' + FONT;
+      c.textBaseline = 'alphabetic';
+      c.fillStyle = 'rgba(0,0,0,.55)';
+      c.fillText(o.str, o.x + 1.2, o.y + 1.2);
+      c.fillStyle = col.ink;
+      c.fillText(o.str, o.x, o.y);
+      c.restore();
+      return;
+    }
+
+    c.strokeStyle = (o.type === 'hl') ? col.hl : col.ink;
+    c.lineWidth = o.w;
+    if (o.type === 'hl') { c.lineCap = 'butt'; }
+
+    if (o.pts) {
+      c.beginPath();
+      c.moveTo(o.pts[0].x, o.pts[0].y);
+      for (var i = 1; i < o.pts.length - 1; i++) {
+        var a = o.pts[i], b = o.pts[i + 1];
+        c.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      }
+      var L = o.pts[o.pts.length - 1];
+      c.lineTo(L.x, L.y);
+      c.stroke();
+    } else if (o.type === 'rect') {
+      var x = Math.min(o.x1, o.x2), y = Math.min(o.y1, o.y2);
+      var w = Math.abs(o.x2 - o.x1), h = Math.abs(o.y2 - o.y1);
+      var rr = Math.min(7, w / 2, h / 2);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(x, y, w, h, rr); else c.rect(x, y, w, h);
+      c.stroke();
+    } else if (o.type === 'ellipse') {
+      c.beginPath();
+      c.ellipse((o.x1 + o.x2) / 2, (o.y1 + o.y2) / 2,
+        Math.abs(o.x2 - o.x1) / 2, Math.abs(o.y2 - o.y1) / 2, 0, 0, Math.PI * 2);
+      c.stroke();
+    } else if (o.type === 'line' || o.type === 'dline') {
+      if (o.type === 'dline') c.setLineDash([o.w * 3, o.w * 2.6]);
+      c.beginPath(); c.moveTo(o.x1, o.y1); c.lineTo(o.x2, o.y2); c.stroke();
+    } else if (o.type === 'arrow') {
+      var ang = Math.atan2(o.y2 - o.y1, o.x2 - o.x1);
+      var hl = Math.max(11, o.w * 3.6);
+      c.beginPath();
+      c.moveTo(o.x1, o.y1);
+      c.lineTo(o.x2 - Math.cos(ang) * hl * 0.72, o.y2 - Math.sin(ang) * hl * 0.72);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(o.x2, o.y2);
+      c.lineTo(o.x2 - Math.cos(ang - 0.42) * hl, o.y2 - Math.sin(ang - 0.42) * hl);
+      c.lineTo(o.x2 - Math.cos(ang + 0.42) * hl, o.y2 - Math.sin(ang + 0.42) * hl);
+      c.closePath();
+      c.fillStyle = col.ink;
+      c.fill();
+    }
+    c.restore();
+  };
+
+  // --------------------------------------------------------- loop efek (fx)
+  P._loop = function () {
+    var self = this;
+    function frame(now) {
+      self.raf = requestAnimationFrame(frame);
+      var c = self.fctx, W = self.W, H = self.H;
+      c.clearRect(0, 0, W, H);
+
+      // kerai
+      if (self.tool === 'shutter') {
+        var sy = self.shutterY * H;
+        c.fillStyle = 'rgba(8,11,17,.97)';
+        c.fillRect(0, sy, W, H - sy);
+        c.fillStyle = 'rgba(255,255,255,.16)';
+        c.fillRect(0, sy - 2, W, 3);
+        c.shadowBlur = 0;
+        c.fillStyle = 'rgba(255,255,255,.5)';
+        c.font = '600 10px ' + FONT;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText('tarik untuk membuka', W / 2, sy + 13);
+        c.textAlign = 'left';
+      }
+
+      // spotlight
+      if (self.tool === 'spot') {
+        c.save();
+        c.beginPath();
+        c.rect(0, 0, W, H);
+        c.moveTo(self.mouse.x + self.spotR, self.mouse.y);
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2, true);
+        c.fillStyle = 'rgba(6,9,14,.74)';
+        c.fill('evenodd');
+        c.restore();
+        var g = c.createRadialGradient(self.mouse.x, self.mouse.y, self.spotR * 0.86, self.mouse.x, self.mouse.y, self.spotR);
+        g.addColorStop(0, 'rgba(6,9,14,0)');
+        g.addColorStop(1, 'rgba(6,9,14,.74)');
+        c.fillStyle = g;
+        c.beginPath();
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      // lensa zoom
+      if (self.tool === 'lens') self._drawLens(c);
+
+      // laser
+      if (self.tool === 'laser') self._drawLaser(c, now);
+
+      // preview objek yang sedang digambar
+      if (self.cur) self._drawObj(c, self.cur);
+
+      // timer
+      if (self.timer.run) self._paintTimer();
+    }
+    this.raf = requestAnimationFrame(frame);
+  };
+
+  P._drawLaser = function (c, now) {
+    var tr = this.trail, LIFE = 620;
+    while (tr.length && now - tr[0].t > LIFE) tr.shift();
+    if (tr.length > 1) {
+      for (var i = 1; i < tr.length; i++) {
+        var a = tr[i - 1], b = tr[i];
+        var age = (now - b.t) / LIFE;
+        c.strokeStyle = 'rgba(255,60,52,' + (0.75 * (1 - age)).toFixed(3) + ')';
+        c.lineWidth = 3.4 * (1 - age) + 1;
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+      }
+    }
+    var m = this.mouse;
+    if (m.x < -1000) return;
+    c.save();
+    c.shadowColor = 'rgba(255,60,52,.95)';
+    c.shadowBlur = 16;
+    c.fillStyle = '#ff3b30';
+    c.beginPath(); c.arc(m.x, m.y, 5.2, 0, Math.PI * 2); c.fill();
+    c.restore();
+    c.shadowBlur = 0;
+    c.fillStyle = 'rgba(255,255,255,.9)';
+    c.beginPath(); c.arc(m.x, m.y, 1.9, 0, Math.PI * 2); c.fill();
+  };
+
+  P._hostCanvases = function () {
+    var out = [], all = (this.page ? document : this.target).querySelectorAll('canvas');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] !== this.annoCv && all[i] !== this.fxCv) out.push(all[i]);
+    }
+    return out;
+  };
+
+  P._drawLens = function (c) {
+    var m = this.mouse, R = this.lens.r, M = this.lens.m;
+    if (m.x < -1000) return;
+    var tr = this.target.getBoundingClientRect();
+    c.save();
+    c.beginPath();
+    c.arc(m.x, m.y, R, 0, Math.PI * 2);
+    c.clip();
+    c.fillStyle = '#0b0f17';
+    c.fillRect(m.x - R, m.y - R, R * 2, R * 2);
+    c.translate(m.x, m.y);
+    c.scale(M, M);
+    c.translate(-m.x, -m.y);
+    var srcs = this._hostCanvases().concat([this.annoCv]);
+    for (var i = 0; i < srcs.length; i++) {
+      var cv = srcs[i], b = cv.getBoundingClientRect();
+      try { c.drawImage(cv, b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.restore();
+    c.shadowBlur = 0;
+    c.strokeStyle = 'rgba(255,255,255,.75)';
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(m.x, m.y, R, 0, Math.PI * 2); c.stroke();
+    c.strokeStyle = 'rgba(0,0,0,.45)';
+    c.lineWidth = 4;
+    c.beginPath(); c.arc(m.x, m.y, R + 3, 0, Math.PI * 2); c.stroke();
+  };
+
+  // ------------------------------------------------------------------ timer
+  P.toggleTimer = function () {
+    var t = this.timer;
+    if (t.run) { t.acc += performance.now() - t.t0; t.run = false; }
+    else { t.t0 = performance.now(); t.run = true; }
+    this.tmEl.classList.toggle('run', t.run);
+    this._paintTimer();
+    return this;
+  };
+  P.resetTimer = function () {
+    this.timer = { t0: performance.now(), acc: 0, run: this.timer.run };
+    this._paintTimer();
+    return this;
+  };
+  P._paintTimer = function () {
+    var t = this.timer;
+    var ms = t.acc + (t.run ? performance.now() - t.t0 : 0);
+    var s = Math.floor(ms / 1000);
+    this.tmEl.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  };
+
+  // ----------------------------------------------------------------- ekspor
+  P.exportPNG = function () {
+    var dpr = this.dpr, tr = this.target.getBoundingClientRect();
+    var out = document.createElement('canvas');
+    out.width = Math.round(this.W * dpr);
+    out.height = Math.round(this.H * dpr);
+    var c = out.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var bg = getComputedStyle(this.target).backgroundColor;
+    c.fillStyle = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0e1320' : bg;
+    c.fillRect(0, 0, this.W, this.H);
+
+    var hosts = this._hostCanvases();
+    for (var i = 0; i < hosts.length; i++) {
+      var b = hosts[i].getBoundingClientRect();
+      try { c.drawImage(hosts[i], b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.drawImage(this.annoCv, 0, 0, this.W, this.H);
+
+    var a = document.createElement('a');
+    a.download = 'anotasi-tahap-' + (this.step + 1) + '.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+    this._flash('PNG disimpan');
+    return this;
+  };
+
+  P.fullscreen = function () {
+    var el = this.page ? document.documentElement : this.target;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+    return this;
+  };
+
+  // ------------------------------------------------------------ bantuan/toast
+  P._flash = function (msg) {
+    var self = this;
+    this.toast.textContent = msg;
+    this.toast.classList.add('on');
+    clearTimeout(this._ft);
+    this._ft = setTimeout(function () { self.toast.classList.remove('on'); }, 1100);
+  };
+
+  P._closeHelp = function () {
+    if (this._helpEl && this._helpEl.parentNode) this._helpEl.parentNode.removeChild(this._helpEl);
+    this._helpEl = null;
+  };
+
+  P.help = function () {
+    if (this._helpEl) { this._closeHelp(); return this; }
+    var rows = [
+      ['Spasi / →', 'tahap berikut'],
+      ['←', 'tahap sebelumnya'],
+      ['L / P / H / T', 'laser · pen · stabilo · teks'],
+      ['R / O / A / G / D', 'kotak · bulat · panah · garis · garis putus'],
+      ['S / K / B / Z', 'spotlight · kerai · papan kosong · lensa zoom'],
+      ['1 – 4', 'warna'],
+      ['X', 'ganti ketebalan'],
+      ['U / C', 'undo · bersihkan tahap ini'],
+      ['N', 'sembunyikan / tampilkan label'],
+      ['E / F', 'ekspor PNG · fullscreen'],
+      ['Roda mouse', 'ubah radius spotlight / lensa'],
+      ['Esc', 'lepas alat']
+    ];
+    var d = document.createElement('div');
+    d.className = 'al-help';
+    d.innerHTML = '<button class="x" title="Tutup">&times;</button><h4>Shortcut presenter</h4><table>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
+      '</table>';
+    var self = this;
+    d.querySelector('.x').addEventListener('click', function () { self._closeHelp(); });
+    this.root.appendChild(d);
+    this._helpEl = d;
+    return this;
+  };
+
+  // ---------------------------------------------------------------- destroy
+  P.destroy = function () {
+    cancelAnimationFrame(this.raf);
+    this._on.forEach(function (a) { a[0].removeEventListener(a[1], a[2], a[3]); });
+    if (this._ro) this._ro.disconnect();
+    if (this.ctl && this.ctl.parentNode) this.ctl.parentNode.removeChild(this.ctl);
+    if (this.root.parentNode) this.root.parentNode.removeChild(this.root);
+  };
+
+  global.AnnotationLayer = AnnotationLayer;
+  if (typeof module !== 'undefined' && module.exports) module.exports = AnnotationLayer;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>window.anno=new AnnotationLayer({target:'#anno-screen',page:true,dock:'right'});</script>
+<script>(function(){
+  var TEXT='Unverified', SIZE=70;
+  var st=document.createElement('style');
+  st.textContent='#wm-diag{position:fixed;left:0;top:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;z-index:8000;user-select:none}'
+   +'#wm-diag span{position:absolute;left:50%;top:50%;white-space:nowrap;font:300 '+SIZE+'px/1 "Segoe UI Light","Segoe UI",system-ui,Arial,sans-serif;'
+   +'letter-spacing:.14em;color:rgb(115,132,165);opacity:.62;transform-origin:50% 50%}'
+   +'@media print{#wm-diag{position:fixed}}';
+  document.head.appendChild(st);
+  var box=document.createElement('div');box.id='wm-diag';box.setAttribute('aria-hidden','true');
+  var sp=document.createElement('span');sp.textContent=TEXT;box.appendChild(sp);
+  document.body.appendChild(box);
+  function fit(){
+    var vv=window.visualViewport,w=vv?vv.width:window.innerWidth,h=vv?vv.height:window.innerHeight;
+    var ang=-Math.atan2(h,w)*180/Math.PI;          /* mengikuti diagonal layar */
+    var diag=Math.sqrt(w*w+h*h),fs=SIZE;
+    sp.style.fontSize=fs+'px';
+    var tw=sp.getBoundingClientRect().width; /* lebar sebelum rotasi */
+    sp.style.transform='translate(-50%,-50%)';
+    tw=sp.offsetWidth;
+    if(tw>diag*0.8){fs=Math.max(24,Math.floor(fs*diag*0.8/tw));sp.style.fontSize=fs+'px';}
+    sp.style.transform='translate(-50%,-50%) rotate('+ang.toFixed(3)+'deg)';
+  }
+  fit();
+  ['resize','orientationchange','fullscreenchange'].forEach(function(e){window.addEventListener(e,fit);});
+  document.addEventListener('fullscreenchange',fit);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',fit);
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(document.documentElement);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body></html>

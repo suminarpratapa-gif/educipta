@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mekanika Bahan: Respons Elemen Struktur terhadap Beban</title>
+<style>
+:root{
+  --ink:#14202b; --ink2:#43525f; --line:#b9c5d1; --paper:#eaeff4; --white:#fbfcfd;
+  --accent:#0b6b78; --ten:#1a8fb3; --com:#cf4a39; --stage:#07080f; --amber:#8a5a00;
+  --serif:'Cambria Math','STIX Two Math','Cambria','Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans)}
+a{color:var(--accent)}
+.toc{position:fixed;left:0;top:0;bottom:0;width:272px;padding:22px 18px;overflow:auto;background:var(--white);border-right:1.5px solid var(--ink);z-index:20}
+.toc h1{font-size:15px;line-height:1.3;margin:0 0 4px;font-weight:700}
+.toc p{margin:0 0 14px;font-size:13px;color:var(--ink2);line-height:1.4}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 8px;text-decoration:none;color:var(--ink);font-size:14px;line-height:1.35;border-left:3px solid transparent}
+.toc li a b{font-variant-numeric:tabular-nums;color:var(--ink2)}
+.toc li a:hover{background:var(--paper)}
+.toc li a.on{border-left-color:var(--accent);background:var(--paper);font-weight:600}
+.toc li a.seen b::after{content:"\2713";color:var(--accent);margin-left:2px}
+main{margin-left:272px;padding:0 40px 80px}
+.wrap{max-width:900px;margin:0 auto}
+.cover{padding:56px 0 34px;border-bottom:1.5px solid var(--ink)}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 18px;font-size:14px;color:var(--ink2)}
+.cover h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;margin:0 0 14px;letter-spacing:-.01em}
+.cover h1 span{display:block;font-size:.5em;font-weight:500;color:var(--ink2);letter-spacing:0;margin-top:10px}
+.cover p{max-width:62ch;margin:0}
+section{padding:46px 0 10px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.tb{display:grid;grid-template-columns:74px 1fr 1fr;border:1.5px solid var(--ink);background:var(--white);margin:0 0 26px}
+.tb>div{padding:10px 14px}
+.tb small{display:block;font-size:12.5px;color:var(--ink2);line-height:1.3;margin-bottom:2px}
+.tb .no{grid-row:1/3;border-right:1.5px solid var(--ink);text-align:center;display:flex;flex-direction:column;justify-content:center}
+.tb .no b{font-size:34px;line-height:1}
+.tb .ttl{grid-column:2/4;border-bottom:1.5px solid var(--ink)}
+.tb h2{margin:0;font-size:clamp(20px,2.6vw,27px);line-height:1.25}
+.tb .c1{border-right:1.5px solid var(--ink)}
+.tb .c1,.tb .c2{font-size:14.5px;line-height:1.45}
+h3{font-size:19px;margin:30px 0 8px;line-height:1.3}
+p,li{max-width:70ch}
+ul,ol{padding-left:1.3em}
+li{margin:.25em 0}
+.eq{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);font:italic 20px/1.9 var(--serif);text-align:center;overflow-x:auto}
+.eq i,p i,li i,td i,dd i{font-family:var(--serif);font-size:1.06em}
+.eq .u,.eq .n{font-style:normal}
+.eq .sp{display:inline-block;width:2em}
+fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .2em;line-height:1.25}
+fr>n{border-bottom:1.3px solid currentColor;padding:0 .3em}
+fr>d{padding:0 .3em}
+sub,sup{line-height:0;font-size:.7em}
+.note{margin:18px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--white);font-size:15.5px}
+.note b{display:block;margin-bottom:2px}
+.warn{border-left-color:#b76e00}
+blockquote{margin:16px 0;padding:10px 18px;border-left:4px solid var(--ink);background:var(--white);font-size:16px}
+blockquote p{margin:0}
+table.dt{border-collapse:collapse;margin:14px 0;font-size:15px;background:var(--white);width:100%;max-width:70ch}
+table.dt th,table.dt td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+table.dt th{background:#e2e9f0}
+.sim{margin:22px 0 26px;border:1.5px solid var(--ink);background:var(--white)}
+.sim .stage{background:var(--stage);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sim canvas{display:block;width:100%;min-width:760px;height:auto;aspect-ratio:16/9}
+.sim canvas.clk{cursor:pointer}
+.sim .tray{padding:14px 16px 12px;border-top:1.5px solid var(--ink)}
+.ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 26px}
+.row{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:center;font-size:14.5px}
+.row .lab{grid-column:1;line-height:1.3}
+.row output{grid-column:2;font-variant-numeric:tabular-nums;font-weight:600;font-size:14.5px}
+.row input[type=range]{grid-column:1/3;width:100%;margin:2px 0 0;accent-color:var(--accent);min-height:26px}
+.row select{grid-column:1/3;width:100%;padding:6px 8px;font:inherit;font-size:14.5px;background:#fff;border:1px solid var(--ink2);color:var(--ink);min-height:36px}
+.row.dis{opacity:.4}
+.row button,.bar button,.mapbtn button,.qbtn{font:inherit;font-size:14.5px;padding:7px 14px;background:var(--ink);color:#fff;border:0;cursor:pointer;min-height:36px}
+.row button:hover,.bar button:hover{background:var(--accent)}
+.reads{display:flex;flex-wrap:wrap;gap:8px 26px;margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--line)}
+.reads div{min-width:120px}
+.reads dt{font-size:12.5px;color:var(--ink2);line-height:1.3}
+.reads dd{margin:0;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.reads dd.bad{color:var(--com)}
+.reads dd.ok{color:var(--accent)}
+.bar{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.legend{display:flex;gap:16px;margin:0 0 6px;font-size:14px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.legend .t::before{background:#56c4e6}.legend .c::before{background:#ff7060}
+.mapbtn{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.mapbtn button{background:var(--white);color:var(--ink);border:1.5px solid var(--ink)}
+.mapbtn button.on{background:var(--ink);color:#fff}
+.detail{background:var(--white);border:1px solid var(--line);padding:12px 16px;font-size:15.5px}
+.detail h4{margin:0 0 4px;font-size:17px}
+.detail p{margin:4px 0}
+.chips a{display:inline-block;margin:2px 6px 2px 0;padding:1px 9px;border:1px solid var(--accent);text-decoration:none;font-size:14px}
+.pre .it{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.pre .opt{display:flex;gap:6px;flex-wrap:wrap}
+.pre .opt button{font:inherit;font-size:14px;padding:5px 11px;border:1.5px solid var(--ink);background:var(--white);cursor:pointer;min-height:34px}
+.pre .opt button.on{background:var(--ink);color:#fff}
+.q{background:var(--white);border:1px solid var(--line);padding:14px 18px;margin:14px 0}
+.q h4{margin:0 0 8px;font-size:16.5px;line-height:1.45;font-weight:600}
+.q label{display:block;padding:5px 0;cursor:pointer;line-height:1.45}
+.q input[type=text]{font:inherit;padding:6px 8px;width:9em;border:1px solid var(--ink2)}
+.q .fb{margin-top:8px;padding:8px 12px;font-size:15px;border-left:4px solid var(--line)}
+.q .fb.ok{border-left-color:var(--accent);background:#e4f1f2}
+.q .fb.no{border-left-color:var(--com);background:#f7e6e3}
+.sub2{margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+textarea{width:100%;max-width:70ch;min-height:110px;font:inherit;padding:10px;border:1px solid var(--ink2);background:#fff}
+.score{font-size:19px;font-weight:700;margin:10px 0}
+.closing{margin:34px 0 0;padding:22px 26px;background:var(--ink);color:#f2f6fa;font-size:19px;line-height:1.55}
+footer{margin-top:34px;padding-top:14px;border-top:1.5px solid var(--ink);font-size:13.5px;color:var(--ink2)}
+@media (max-width:980px){
+  .toc{position:sticky;top:0;width:auto;bottom:auto;padding:8px 10px;border-right:0;border-bottom:1.5px solid var(--ink);display:flex;gap:10px;align-items:center;overflow-x:auto}
+  .toc h1,.toc p{display:none}
+  .toc ol{display:flex;gap:2px}
+  .toc li a{grid-template-columns:auto;padding:6px 10px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .toc li a span{display:none}
+  .toc li a.on{border-bottom-color:var(--accent)}
+  main{margin-left:0;padding:0 16px 60px}
+  html{scroll-padding-top:60px}
+  .tb{grid-template-columns:60px 1fr}
+  .tb .ttl{grid-column:2}
+  .tb .c1{grid-column:1/3;border-right:0;border-top:0;border-bottom:1.5px solid var(--ink)}
+  .tb .c2{grid-column:1/3}
+  .tb .no{grid-row:auto}
+  .tb .c1,.tb .c2{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc{display:none}main{margin:0}.sim .tray{display:none}}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Daftar submateri">
+  <h1>Mekanika Bahan</h1>
+  <p>Respons elemen struktur terhadap beban</p>
+  <ol id="toc">
+    <li><a href="#s1"><b>1</b><span>Deskripsi, tujuan, referensi</span></a></li>
+    <li><a href="#s2"><b>2</b><span>Tegangan dan regangan normal</span></a></li>
+    <li><a href="#s3"><b>3</b><span>Hubungan tegangan-regangan</span></a></li>
+    <li><a href="#s4"><b>4</b><span>Deformasi batang aksial</span></a></li>
+    <li><a href="#s5"><b>5</b><span>Torsi pada poros</span></a></li>
+    <li><a href="#s6"><b>6</b><span>Tegangan lentur pada balok</span></a></li>
+    <li><a href="#s7"><b>7</b><span>Tegangan geser pada balok</span></a></li>
+    <li><a href="#s8"><b>8</b><span>Lendutan dan kemiringan</span></a></li>
+    <li><a href="#s9"><b>9</b><span>Tegangan gabungan dan tekuk</span></a></li>
+    <li><a href="#s10"><b>10</b><span>Kesimpulan</span></a></li>
+  </ol>
+</nav>
+<main><div class="wrap">
+
+<div class="cover">
+  <div class="meta"><span>Program studi: Teknik Sipil</span><span>Mata kuliah: Mekanika Bahan</span><span>Sasaran: mahasiswa tingkat awal</span></div>
+  <h1>Mekanika Bahan<span>Respons elemen struktur terhadap beban</span></h1>
+  <p>Modul ini mengikuti satu alur: beban luar menimbulkan gaya dalam, gaya dalam menghasilkan tegangan, tegangan menimbulkan regangan dan deformasi, lalu semuanya diperiksa terhadap kekuatan, kekakuan, dan kestabilan. Setiap submateri memiliki satu animasi yang dapat Anda ubah parameternya.</p>
+</div>
+
+<!-- ===== 1 ===== -->
+<section id="s1">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>1</b></div>
+    <div class="ttl"><h2>Deskripsi Mata Kuliah, Tujuan Pembelajaran, Referensi, dan Disklaimer</h2></div>
+    <div class="c1"><small>Animasi utama</small>Peta konsep Mekanika Bahan</div>
+    <div class="c2"><small>Interaksi peserta</small>Menjelajahi peta materi dan melakukan asesmen awal</div>
+  </header>
+
+  <h3>Deskripsi mata kuliah</h3>
+  <p>Mekanika Bahan mempelajari respons elemen struktur terhadap beban, termasuk tegangan, regangan, deformasi aksial, torsi, lentur, geser, lendutan, tegangan gabungan, dan tekuk. Materi ini menjadi dasar untuk memahami perilaku serta keamanan elemen struktur dalam bidang teknik sipil.</p>
+
+  <h3>Peta konsep</h3>
+  <p>Tekan salah satu kotak pada peta untuk melihat contoh elemen struktur dan submateri yang membahasnya.</p>
+  <div class="sim" id="sim-map"></div>
+  <div class="mapbtn" id="mapbtn" aria-label="Pilih bagian peta konsep"></div>
+  <div class="detail" id="mapdetail" aria-live="polite"></div>
+
+  <h3>Tujuan pembelajaran</h3>
+  <p>Setelah mempelajari modul, mahasiswa mampu:</p>
+  <ol>
+    <li>menjelaskan hubungan antara beban, gaya dalam, tegangan, regangan, dan deformasi;</li>
+    <li>menghitung tegangan dan deformasi pada batang akibat beban aksial;</li>
+    <li>menjelaskan perilaku mekanik material melalui kurva tegangan-regangan;</li>
+    <li>menganalisis tegangan dan deformasi pada poros akibat torsi;</li>
+    <li>menghitung tegangan lentur dan tegangan geser pada balok;</li>
+    <li>menjelaskan pengaruh beban dan kekakuan terhadap lendutan balok;</li>
+    <li>menganalisis tegangan gabungan sederhana;</li>
+    <li>memperkirakan beban kritis tekuk pada kolom ideal;</li>
+    <li>menggunakan hasil analisis sebagai dasar penilaian keamanan elemen struktur.</li>
+  </ol>
+
+  <h3>Asesmen awal</h3>
+  <p>Nilai kesiapan Anda pada tiap topik. Hasilnya hanya untuk membantu memilih urutan belajar dan tidak disimpan.</p>
+  <div class="pre" id="pre"></div>
+  <div class="detail" id="preres" aria-live="polite" style="margin-top:10px">Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.</div>
+
+  <h3>Referensi utama</h3>
+  <ul>
+    <li>R. C. Hibbeler, <i>Mechanics of Materials</i>.</li>
+    <li>Ferdinand P. Beer, E. Russell Johnston Jr., John T. DeWolf, dan David F. Mazurek, <i>Mechanics of Materials</i>.</li>
+    <li>James M. Gere dan Barry J. Goodno, <i>Mechanics of Materials</i>.</li>
+    <li>Andrew Pytel dan Jaan Kiusalaas, <i>Mechanics of Materials</i>.</li>
+    <li>Standar dan peraturan perencanaan struktur yang relevan.</li>
+  </ul>
+  <p>Edisi dan standar yang digunakan perlu dicantumkan oleh dosen sesuai kurikulum serta ketentuan yang berlaku.</p>
+
+  <h3>Disklaimer akademik</h3>
+  <blockquote><p>Modul ini merupakan media pendamping pembelajaran dan tidak menggantikan buku teks, penjelasan dosen, standar perencanaan, maupun analisis teknik yang lengkap. Animasi dapat memperbesar deformasi agar perilaku elemen terlihat dengan jelas dan tidak selalu menggambarkan skala deformasi sebenarnya. Persamaan hanya berlaku berdasarkan asumsi dan batas penggunaan yang dijelaskan pada setiap bagian.</p></blockquote>
+
+  <h3>Pernyataan bantuan kecerdasan buatan</h3>
+  <blockquote><p>Modul dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya.</p></blockquote>
+</section>
+
+<!-- ===== 2 ===== -->
+<section id="s2">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>2</b></div>
+    <div class="ttl"><h2>Tegangan dan Regangan Normal</h2></div>
+    <div class="c1"><small>Animasi utama</small>Batang mengalami tarik dan tekan</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah gaya, luas penampang, dan panjang batang</div>
+  </header>
+  <p>Gaya aksial yang bekerja tegak lurus penampang dibagi rata pada seluruh luas penampang. Hasil bagi itu adalah tegangan normal <i>&sigma;</i>. Perubahan panjang dibagi panjang awal adalah regangan normal <i>&epsilon;</i>.</p>
+  <div class="eq"><i>&sigma;</i> = <fr><n><i>P</i></n><d><i>A</i></d></fr> <span class="sp"></span> <i>&epsilon;</i> = <fr><n><i>&Delta;L</i></n><d><i>L</i><sub>0</sub></d></fr></div>
+  <p>Satuan tegangan yang praktis adalah MPa (1 MPa = 1 N/mm&sup2;). Regangan tidak memiliki satuan. Tarik diberi tanda positif dan tekan negatif. Pada daerah elastis, tegangan dan regangan berbanding lurus: <i>&sigma;</i> = <i>E&epsilon;</i>. Animasi memakai baja dengan <i>E</i> = 200 GPa dan tegangan luluh 250 MPa.</p>
+  <div class="note"><b>Asumsi dan batas penggunaan</b>Gaya bekerja tepat pada titik berat penampang, batang prismatik dan homogen, letak yang ditinjau cukup jauh dari titik tumpu dan titik beban, serta material masih elastis.</div>
+  <div class="legend"><span class="t">Tarik (positif)</span><span class="c">Tekan (negatif)</span></div>
+  <div class="sim" id="sim-normal"></div>
+</section>
+
+<!-- ===== 3 ===== -->
+<section id="s3">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>3</b></div>
+    <div class="ttl"><h2>Hubungan Tegangan&ndash;Regangan Material</h2></div>
+    <div class="c1"><small>Animasi utama</small>Uji tarik dan pembentukan kurva tegangan&ndash;regangan</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengatur pembebanan dan pelepasan beban</div>
+  </header>
+  <p>Pada uji tarik, spesimen ditarik perlahan sambil gaya dan pertambahan panjangnya dicatat. Kurva yang terbentuk memperlihatkan bagaimana material merespons beban, dan menjadi dasar penentuan kekuatan serta keuletannya.</p>
+  <ul>
+    <li><b>Daerah elastis:</b> beban dilepas, spesimen kembali ke bentuk semula. Tegangan sebanding dengan regangan (<i>&sigma;</i> = <i>E&epsilon;</i>).</li>
+    <li><b>Batas proporsional:</b> tegangan tertinggi yang masih menjaga hubungan linear.</li>
+    <li><b>Tegangan luluh:</b> regangan bertambah cepat tanpa tambahan tegangan berarti.</li>
+    <li><b>Deformasi plastis:</b> sebagian deformasi menetap setelah beban dilepas.</li>
+    <li><b>Tegangan maksimum:</b> puncak kurva tegangan teknik.</li>
+    <li><b>Penyempitan dan patah:</b> luas penampang menyempit setempat (<i>necking</i>) sebelum spesimen putus.</li>
+    <li><b>Material ulet dan getas:</b> material ulet mengalami regangan plastis besar sebelum patah, material getas patah dengan regangan kecil dan tanpa luluh yang jelas.</li>
+  </ul>
+  <div class="note"><b>Cara memakai animasi</b>Geser pembebanan ke kanan sampai melewati luluh, lalu geser kembali ke kiri. Garis pelepasan beban sejajar dengan garis elastis awal, sehingga titik akhirnya berada pada regangan sisa (permanen). Sumbu regangan pada grafik digambar skematis: daerah elastis diperbesar agar terlihat.</div>
+  <div class="legend"><span class="t">Tarik</span><span class="c">Pelepasan beban</span></div>
+  <div class="sim" id="sim-tensile"></div>
+</section>
+
+<!-- ===== 4 ===== -->
+<section id="s4">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>4</b></div>
+    <div class="ttl"><h2>Deformasi Batang Aksial</h2></div>
+    <div class="c1"><small>Animasi utama</small>Deformasi batang seragam dan bertingkat</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengganti material, panjang, dan luas penampang</div>
+  </header>
+  <p>Untuk batang seragam dengan gaya aksial konstan, perubahan panjangnya adalah:</p>
+  <div class="eq"><i>&Delta;L</i> = <fr><n><i>PL</i></n><d><i>AE</i></d></fr></div>
+  <p>Untuk batang dengan beberapa segmen, gaya dalam, luas, panjang, atau material dapat berbeda pada tiap segmen. Perubahan panjang total adalah jumlah perubahan tiap segmen:</p>
+  <div class="eq"><i>&Delta;L</i><sub>total</sub> = <span class="n">&Sigma;</span><sub><i>i</i></sub> <fr><n><i>P<sub>i</sub>L<sub>i</sub></i></n><d><i>A<sub>i</sub>E<sub>i</sub></i></d></fr></div>
+  <p><i>P<sub>i</sub></i> adalah gaya dalam pada segmen <i>i</i>, diperoleh dengan memotong batang dan menyeimbangkan gaya di salah satu sisi potongan. Animasi ini memakai satu jenis material untuk semua segmen. Warna menunjukkan tegangan tiap segmen.</p>
+  <div class="note"><b>Coba amati</b>Letakkan gaya tambahan <i>Q</i> pada simpul 1 dengan arah berlawanan dari <i>P</i>. Gaya dalam segmen pertama dan segmen berikutnya menjadi berbeda, dan segmen dengan luas terkecil tidak selalu menjadi segmen dengan perpanjangan terbesar.</div>
+  <div class="legend"><span class="t">Tarik</span><span class="c">Tekan</span></div>
+  <div class="sim" id="sim-axial"></div>
+</section>
+
+<!-- ===== 5 ===== -->
+<section id="s5">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>5</b></div>
+    <div class="ttl"><h2>Torsi pada Poros</h2></div>
+    <div class="c1"><small>Animasi utama</small>Poros berputar dan mengalami puntiran</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah torsi, diameter, panjang, dan material</div>
+  </header>
+  <div class="eq"><i>&tau;</i> = <fr><n><i>Tr</i></n><d><i>J</i></d></fr> <span class="sp"></span> <i>&phi;</i> = <fr><n><i>TL</i></n><d><i>JG</i></d></fr></div>
+  <p><i>T</i> adalah torsi, <i>r</i> jarak radial dari pusat, <i>J</i> momen inersia polar, <i>G</i> modulus geser, dan <i>&phi;</i> sudut puntir (radian). Untuk poros pejal <i>J</i> = <i>&pi;d</i><sup>4</sup>/32, dan untuk poros berongga <i>J</i> = <i>&pi;</i>(<i>d</i><sub>o</sub><sup>4</sup> &minus; <i>d</i><sub>i</sub><sup>4</sup>)/32.</p>
+  <p>Garis lurus pada permukaan poros berubah menjadi heliks. Tegangan geser nol di pusat dan bertambah sebanding dengan jarak radial hingga maksimum di permukaan luar. Pada poros berongga, bahan di dekat pusat hampir tidak menahan torsi, sehingga bahan dipakai lebih efisien.</p>
+  <div class="note"><b>Asumsi</b>Penampang lingkaran, poros prismatik, material elastis linear, penampang tetap datar dan tegak lurus sumbu setelah dipuntir. Sudut puntir pada animasi diperbesar 12 kali agar terlihat. Poros berongga memakai diameter dalam 0,6 kali diameter luar.</div>
+  <div class="sim" id="sim-torsion"></div>
+</section>
+
+<!-- ===== 6 ===== -->
+<section id="s6">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>6</b></div>
+    <div class="ttl"><h2>Tegangan Lentur pada Balok</h2></div>
+    <div class="c1"><small>Animasi utama</small>Serat balok mengalami tarik dan tekan</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah beban, posisi beban, dan bentuk penampang</div>
+  </header>
+  <div class="eq"><i>&sigma;</i> = <fr><n><i>My</i></n><d><i>I</i></d></fr></div>
+  <p><i>M</i> adalah momen lentur pada penampang yang ditinjau, <i>y</i> jarak serat dari sumbu netral, dan <i>I</i> momen inersia penampang terhadap sumbu netral. Tegangan terbesar berada di serat terjauh, <i>&sigma;</i><sub>maks</sub> = <i>Mc</i>/<i>I</i> = <i>M</i>/<i>S</i>, dengan <i>S</i> = <i>I</i>/<i>c</i> modulus penampang.</p>
+  <p>Ketika balok melentur ke bawah, serat atas memendek (tekan) dan serat bawah memanjang (tarik). Sumbu netral berada di antaranya dan tidak mengalami regangan longitudinal. Penampang yang lebih tinggi menahan lentur lebih baik karena <i>I</i> tumbuh cepat terhadap tinggi.</p>
+  <div class="note"><b>Asumsi</b>Balok prismatik dengan bidang simetri, beban bekerja pada bidang simetri, material elastis linear, penampang datar tetap datar. Bentang 4 m, sendi-rol, baja (<i>E</i> = 200 GPa). Lendutan pada gambar diperbesar.</div>
+  <div class="legend"><span class="t">Tarik</span><span class="c">Tekan</span></div>
+  <div class="sim" id="sim-bending"></div>
+</section>
+
+<!-- ===== 7 ===== -->
+<section id="s7">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>7</b></div>
+    <div class="ttl"><h2>Tegangan Geser pada Balok</h2></div>
+    <div class="c1"><small>Animasi utama</small>Distribusi tegangan geser pada penampang</div>
+    <div class="c2"><small>Interaksi peserta</small>Membandingkan penampang persegi, lingkaran, dan profil I</div>
+  </header>
+  <div class="eq"><i>&tau;</i> = <fr><n><i>VQ</i></n><d><i>Ib</i></d></fr></div>
+  <p><i>V</i> adalah gaya geser pada penampang, <i>Q</i> momen statis luas penampang di atas (atau di bawah) serat yang ditinjau terhadap sumbu netral, <i>I</i> momen inersia, dan <i>b</i> lebar penampang pada serat tersebut.</p>
+  <ul>
+    <li>Persegi: tegangan geser nol di serat luar dan maksimum di sumbu netral, <i>&tau;</i><sub>maks</sub> = 1,5 <i>V</i>/<i>A</i>.</li>
+    <li>Lingkaran: maksimum di sumbu netral, <i>&tau;</i><sub>maks</sub> = (4/3) <i>V</i>/<i>A</i>.</li>
+    <li>Profil I: sebagian besar geser dipikul badan, dan tegangan melompat pada pertemuan badan dengan sayap karena lebar <i>b</i> berubah mendadak.</li>
+  </ul>
+  <p>Lapisan balok yang tidak saling terikat akan cenderung bergeser satu terhadap yang lain. Perekat, paku, atau kesatuan bahan menahan pergeseran itu, dan gaya penahannya per satuan luas inilah tegangan geser.</p>
+  <div class="note"><b>Ukuran penampang</b>Persegi 100 &times; 200 mm, lingkaran <i>d</i> = 160 mm, profil I setinggi 200 mm (sayap 150 &times; 20 mm, badan 10 &times; 160 mm). Ketiganya menerima gaya geser <i>V</i> yang sama.</div>
+  <div class="sim" id="sim-shear"></div>
+</section>
+
+<!-- ===== 8 ===== -->
+<section id="s8">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>8</b></div>
+    <div class="ttl"><h2>Lendutan dan Kemiringan Balok</h2></div>
+    <div class="c1"><small>Animasi utama</small>Kurva elastik balok</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah jenis tumpuan, beban, bentang, <i>E</i>, dan <i>I</i></div>
+  </header>
+  <ul>
+    <li><b>Kurva elastik:</b> bentuk sumbu balok setelah melendut.</li>
+    <li><b>Kemiringan:</b> sudut singgung kurva elastik, <i>&theta;</i> = d<i>v</i>/d<i>x</i>.</li>
+    <li><b>Lendutan maksimum:</b> simpangan vertikal terbesar, <i>&delta;</i><sub>maks</sub>.</li>
+    <li><b>Pengaruh <i>E</i> dan <i>I</i>:</b> lendutan berbanding terbalik dengan kekakuan lentur <i>EI</i>.</li>
+    <li><b>Pengaruh tumpuan dan beban:</b> tumpuan yang lebih kaku (jepit) dan beban yang lebih kecil memberi lendutan lebih kecil.</li>
+  </ul>
+  <p>Hubungan dasarnya menghubungkan kelengkungan dengan momen:</p>
+  <div class="eq"><i>EI</i> <fr><n>d<sup>2</sup><i>v</i></n><d>d<i>x</i><sup>2</sup></d></fr> = <i>M</i>(<i>x</i>)</div>
+  <p>Beberapa hasil yang sering dipakai: balok sendi-rol dengan beban terpusat di tengah, <i>&delta;</i><sub>maks</sub> = <i>PL</i><sup>3</sup>/48<i>EI</i>; beban merata, <i>&delta;</i><sub>maks</sub> = 5<i>qL</i><sup>4</sup>/384<i>EI</i>; kantilever dengan beban di ujung, <i>&delta;</i> = <i>PL</i><sup>3</sup>/3<i>EI</i>. Batas lendutan izin bergantung peraturan dan fungsi struktur; nilai <i>L</i>/360 pada animasi hanyalah contoh.</p>
+  <div class="note warn"><b>Bedakan dua gambar</b>Diagram momen lentur (oranye, di bawah) memperlihatkan besar momen di tiap titik, bukan bentuk balok. Bentuk balok yang melendut (biru, di atas) adalah kurva elastik. Momen positif digambar di sisi serat tarik.</div>
+  <div class="sim" id="sim-deflect"></div>
+</section>
+
+<!-- ===== 9 ===== -->
+<section id="s9">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>9</b></div>
+    <div class="ttl"><h2>Tegangan Gabungan dan Tekuk Kolom</h2></div>
+    <div class="c1"><small>Animasi utama</small>Distribusi tegangan gabungan dan tekuk kolom</div>
+    <div class="c2"><small>Interaksi peserta</small>Mengubah eksentrisitas, panjang, penampang, dan kondisi tumpuan</div>
+  </header>
+  <h3>Tegangan gabungan</h3>
+  <div class="eq"><i>&sigma;</i> = <fr><n><i>P</i></n><d><i>A</i></d></fr> &plusmn; <fr><n><i>My</i></n><d><i>I</i></d></fr></div>
+  <p>Gaya aksial yang bekerja dengan eksentrisitas <i>e</i> dari titik berat sama dengan gaya aksial di titik berat ditambah momen <i>M</i> = <i>Pe</i>. Tegangannya dijumlahkan (superposisi). Untuk penampang persegi setinggi <i>h</i>, seluruh penampang tetap tertekan selama <i>e</i> &le; <i>h</i>/6 (daerah kern). Bila <i>e</i> melewati batas itu, muncul tegangan tarik pada sisi yang jauh dari beban dan sumbu netral bergeser masuk ke penampang.</p>
+  <div class="legend"><span class="t">Tarik</span><span class="c">Tekan</span></div>
+  <div class="sim" id="sim-combined"></div>
+
+  <h3>Tekuk kolom</h3>
+  <div class="eq"><i>P</i><sub>cr</sub> = <fr><n><i>&pi;</i><sup>2</sup><i>EI</i></n><d>(<i>KL</i>)<sup>2</sup></d></fr></div>
+  <p>Kolom langsing dapat kehilangan kestabilan sebelum materialnya mencapai tegangan luluh. <i>P</i><sub>cr</sub> adalah beban kritis Euler, <i>K</i> faktor panjang efektif menurut kondisi tumpuan, dan <i>KL</i> panjang efektif. Memperpanjang kolom dua kali menurunkan <i>P</i><sub>cr</sub> menjadi seperempatnya.</p>
+  <table class="dt"><tr><th>Kondisi tumpuan</th><th><i>K</i></th></tr>
+  <tr><td>Sendi&ndash;sendi</td><td>1,0</td></tr><tr><td>Jepit&ndash;bebas</td><td>2,0</td></tr><tr><td>Jepit&ndash;sendi</td><td>0,7</td></tr><tr><td>Jepit&ndash;jepit</td><td>0,5</td></tr></table>
+  <div class="note"><b>Batas penggunaan</b>Rumus Euler berlaku untuk kolom ideal (lurus sempurna, beban tepat sumbu, material homogen) yang cukup langsing sehingga tegangan kritisnya masih di bawah batas proporsional. Kolom nyata memiliki ketidaklurusan awal, sehingga gambar memperlihatkan lendutan yang membesar tajam ketika beban mendekati <i>P</i><sub>cr</sub>. Kolom berbahan baja (<i>E</i> dapat diganti).</div>
+  <div class="sim" id="sim-buckle"></div>
+</section>
+
+<!-- ===== 10 ===== -->
+<section id="s10">
+  <header class="tb">
+    <div class="no"><small>Submateri</small><b>10</b></div>
+    <div class="ttl"><h2>Kesimpulan</h2></div>
+    <div class="c1"><small>Animasi utama</small>Peta konsep akhir dan respons struktur terpadu</div>
+    <div class="c2"><small>Interaksi peserta</small>Kuis akhir dan refleksi pembelajaran</div>
+  </header>
+  <h3>Ringkasan konsep</h3>
+  <ul>
+    <li>Beban luar menimbulkan gaya dalam pada elemen struktur.</li>
+    <li>Gaya dalam menghasilkan tegangan.</li>
+    <li>Tegangan menimbulkan regangan dan deformasi.</li>
+    <li>Respons elemen bergantung pada jenis pembebanan, material, geometri, dan kondisi tumpuan.</li>
+    <li>Elemen struktur harus diperiksa terhadap kekuatan, kekakuan, dan kestabilan.</li>
+    <li>Nilai tegangan yang rendah belum selalu menjamin keamanan apabila elemen rentan terhadap lendutan berlebihan atau tekuk.</li>
+  </ul>
+
+  <h3>Respons struktur terpadu</h3>
+  <p>Sebuah rangka sederhana menerima beban. Pilih setiap elemen untuk melihat respons dominannya.</p>
+  <div class="legend"><span class="t">Tarik</span><span class="c">Tekan</span></div>
+  <div class="sim" id="sim-frame"></div>
+  <div class="mapbtn" id="framebtn" aria-label="Pilih elemen rangka"></div>
+  <div class="detail" id="framedetail" aria-live="polite"></div>
+
+  <h3>Evaluasi akhir</h3>
+  <p>Terdiri atas delapan soal konseptual, empat soal numerik, dan satu studi kasus sederhana. Setiap soal memiliki umpan balik dan pembahasan. Untuk soal numerik, isikan angka dengan koma atau titik desimal; toleransi jawaban 3%.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score" aria-live="polite"></div>
+
+  <h3>Refleksi</h3>
+  <blockquote><p>Mengapa perancang struktur harus mempertimbangkan kekuatan, kekakuan, dan kestabilan secara bersamaan?</p></blockquote>
+  <textarea id="refl" aria-label="Jawaban refleksi" placeholder="Tuliskan jawaban Anda dengan kalimat sendiri."></textarea>
+  <p style="font-size:14px;color:var(--ink2)" id="reflst">Jawaban disimpan di peramban ini bila penyimpanan tersedia.</p>
+
+  <div class="closing">Mekanika Bahan membantu kita memahami bukan hanya apakah suatu elemen akan patah, tetapi juga bagaimana elemen tersebut berubah bentuk, kehilangan kestabilan, dan menjalankan fungsinya secara aman.</div>
+</section>
+
+<footer>
+  <p>Modul ini dikembangkan oleh penulis dengan bantuan teknologi kecerdasan buatan dalam proses penyusunan, visualisasi, animasi, dan pengembangan interaktivitas. Penulis telah menelaah dan bertanggung jawab atas ketepatan isi, sumber rujukan, kesesuaian pembelajaran, serta produk akhirnya. Animasi bersifat ilustrasi dan bukan analisis untuk keputusan keselamatan profesional.</p>
+</footer>
+</div></main>
+<script>
+(function(){
+'use strict';
+/* ===== Konstanta tipografi (satu tempat) ===== */
+var SCALE=2, F_LABEL=8*SCALE, F_SEC=9*SCALE, F_TITLE=10*SCALE, F_CAP=Math.round(9*SCALE*1.2);
+var FONT="'Segoe UI', system-ui, Arial, sans-serif";
+var W=1280, H=720;
+var ctx=null;
+var reduce=false;
+try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+
+function rgba(r,g,b,a){return 'rgba('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+','+(a==null?1:a)+')';}
+var C={bg:'#07080f',t1:rgba(232,238,248,.94),t2:rgba(232,238,248,.55),t3:rgba(232,238,248,.30),yel:rgba(255,206,84,1),
+ ten:[86,196,230],com:[255,112,96],neu:[58,66,90],org:[255,170,80],grn:[110,220,160]};
+function cc(c,a){return rgba(c[0],c[1],c[2],a);}
+function mixc(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function stressColor(s,a){s=clamp(s,-1,1);var t=Math.abs(s);var c=s>=0?mixc(C.neu,C.ten,t):mixc(C.neu,C.com,t);return cc(c,a==null?1:a);}
+function nf(v,d){if(!isFinite(v))return '-';var s=(Math.abs(v)<Math.pow(10,-d)/2?0:v).toFixed(d);return s.replace('.',',');}
+function ease(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+
+/* ===== Helper gambar ===== */
+function txt(s,x,y,size,col,al,bl,wt){ctx.shadowBlur=0;ctx.font=(wt||400)+' '+size+'px '+FONT;ctx.fillStyle=col;ctx.textAlign=al||'left';ctx.textBaseline=bl||'middle';ctx.fillText(s,x,y);}
+function fitSize(str,size,maxW,wt){var s=size;while(s>6){ctx.font=(wt||400)+' '+s+'px '+FONT;if(ctx.measureText(str).width<=maxW)break;s-=1;}return s;}
+function ftxt(s,x,y,size,col,al,bl,wt,maxW){if(maxW)size=fitSize(s,size,maxW,wt);txt(s,x,y,size,col,al,bl,wt);}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+/* kotak berlabel: tinggi = baris x (font + spasi) + padding; teks dicentrasi vertikal */
+function labelBox(lines,cx,cy,o){o=o||{};var size=o.size||F_LABEL,gap=o.gap==null?5:o.gap,pad=o.pad==null?12:o.pad,maxW=o.maxW||400,wt=o.wt||400,i;
+  for(i=0;i<lines.length;i++){var fs=fitSize(lines[i],size,maxW-2*pad,i===0&&o.head?700:wt);if(fs<size)size=fs;}
+  var w=0;for(i=0;i<lines.length;i++){ctx.font=((i===0&&o.head)?700:wt)+' '+size+'px '+FONT;w=Math.max(w,ctx.measureText(lines[i]).width);}
+  w=Math.max(w+2*pad,o.minW||0);var h=lines.length*(size+gap)+pad;var x=o.left?cx:cx-w/2,y=cy-h/2;
+  ctx.shadowBlur=0;rr(x,y,w,h,6);ctx.fillStyle=o.fill||'rgba(20,26,44,.92)';ctx.fill();ctx.lineWidth=o.lw||1.5;ctx.strokeStyle=o.stroke||C.t3;ctx.stroke();
+  for(i=0;i<lines.length;i++){var ty=y+pad/2+(i+.5)*(size+gap);txt(lines[i],x+w/2,ty,size,(i===0&&o.head)?(o.hcol||C.t1):(o.col||C.t2),'center','middle',(i===0&&o.head)?700:wt);}
+  return {x:x,y:y,w:w,h:h};}
+function arrow(x1,y1,x2,y2,col,lw,head){var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);if(len<3)return;var a=Math.atan2(dy,dx),h=head||13;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw||3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-Math.cos(a)*h*.6,y2-Math.sin(a)*h*.6);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-Math.cos(a-.42)*h,y2-Math.sin(a-.42)*h);ctx.lineTo(x2-Math.cos(a+.42)*h,y2-Math.sin(a+.42)*h);ctx.closePath();ctx.fill();ctx.restore();}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();}
+function bgClear(){ctx.setTransform(ctx.dpr,0,0,ctx.dpr,0,0);ctx.shadowBlur=0;ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(232,238,248,.035)';ctx.lineWidth=1;ctx.beginPath();for(var x=40;x<W;x+=40){ctx.moveTo(x,0);ctx.lineTo(x,H);}for(var y=40;y<H;y+=40){ctx.moveTo(0,y);ctx.lineTo(W,y);}ctx.stroke();}
+function head(title,sub){txt(title,40,34,F_CAP,C.t1,'left','middle',700);if(sub)txt(sub,40,62,F_SEC,C.t1,'left','middle',400);}
+function foot(narr,note){if(note)ftxt(note,40,672,F_SEC,C.t3,'left','middle',400,W-80);ftxt(narr,40,700,F_CAP,C.yel,'left','middle',700,W-80);}
+function legendT(x,y){ctx.fillStyle=cc(C.ten,1);ctx.fillRect(x,y-7,14,14);txt('Tarik',x+22,y,F_SEC,C.t2,'left','middle');ctx.fillStyle=cc(C.com,1);ctx.fillRect(x+90,y-7,14,14);txt('Tekan',x+112,y,F_SEC,C.t2,'left','middle');}
+function hatchWall(x,y1,y2,side){ctx.save();ctx.fillStyle='rgba(150,165,190,.18)';ctx.fillRect(side>0?x:x-34,y1,34,y2-y1);ctx.strokeStyle='rgba(232,238,248,.4)';ctx.lineWidth=1.5;ctx.beginPath();for(var yy=y1;yy<y2;yy+=14){if(side>0){ctx.moveTo(x,yy+14);ctx.lineTo(x+34,yy);}else{ctx.moveTo(x-34,yy+14);ctx.lineTo(x,yy);}}ctx.stroke();line(x,y1,x,y2,C.t1,2);ctx.restore();}
+function tri(x,y,w,h,col){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-w/2,y+h);ctx.lineTo(x+w/2,y+h);ctx.closePath();ctx.fillStyle=col||'rgba(150,165,190,.35)';ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();}
+
+/* ===== Data bersama ===== */
+var MAT={steel:{n:'Baja',E:200,G:79},alu:{n:'Aluminium',E:70,G:27},brass:{n:'Kuningan',E:100,G:39},wood:{n:'Kayu (contoh)',E:12,G:0.75}};
+var SEC={
+ rectV:{n:'Persegi 100 x 200 (tegak)',h:200,w:function(y){return 100;},I:100*Math.pow(200,3)/12,A:20000},
+ rectH:{n:'Persegi 200 x 100 (rebah)',h:100,w:function(y){return 200;},I:200*Math.pow(100,3)/12,A:20000},
+ circ:{n:'Lingkaran d = 160',h:160,w:function(y){return 2*Math.sqrt(Math.max(0,6400-y*y));},I:Math.PI*Math.pow(160,4)/64,A:Math.PI*6400},
+ I:{n:'Profil I (h = 200)',h:200,w:function(y){return Math.abs(y)>80?150:10;},I:(150*Math.pow(200,3)-140*Math.pow(160,3))/12,A:2*150*20+160*10}
+};
+/* tegangan geser pada serat y (mm dari sumbu netral), V dalam kN -> MPa */
+function shearTau(sec,V,y){var yy=Math.abs(y),h2=sec.h/2;if(yy>=h2)return 0;var n=240,dy=(h2-yy)/n,Q=0,i;for(i=0;i<n;i++){var e=yy+(i+.5)*dy;Q+=sec.w(e)*e*dy;}var b=sec.w(yy+1e-6);return V*1000*Q/(sec.I*b);}
+
+/* ===== Mesin simulasi ===== */
+var sims=[];
+function Sim(o){
+  var self=this;this.o=o;this.el=document.getElementById(o.id);if(!this.el)return;
+  this.p={};this.s={};this.st={};this.t=0;this.dt=0.016;this.f=1;this.vis=true;this.inputs={};this.rows={};this.lastRead='';
+  this.play=!o.noCycle&&!reduce;
+  var el=this.el;el.innerHTML='<div class="stage"><canvas width="'+W+'" height="'+H+'" role="img" aria-label="'+(o.label||'Animasi interaktif')+'"></canvas></div><div class="tray"><div class="ctls"></div><dl class="reads"></dl><div class="bar"></div></div>';
+  this.cv=el.querySelector('canvas');this.ctx=this.cv.getContext('2d');
+  var ctls=el.querySelector('.ctls');
+  (o.controls||[]).forEach(function(c){
+    var row=document.createElement('div');row.className='row';
+    if(c.btn){var b=document.createElement('button');b.textContent=c.btn;b.type='button';b.addEventListener('click',function(){c.act(self);});row.appendChild(b);ctls.appendChild(row);return;}
+    var lab=document.createElement('label');lab.className='lab';lab.textContent=c.label;var id=o.id+'-'+c.k;lab.htmlFor=id;row.appendChild(lab);
+    if(c.options){var sel=document.createElement('select');sel.id=id;c.options.forEach(function(op){var oo=document.createElement('option');oo.value=op[0];oo.textContent=op[1];sel.appendChild(oo);});sel.value=c.val;self.p[c.k]=c.val;
+      sel.addEventListener('change',function(){self.p[c.k]=sel.value;self.changed(c.k);});row.appendChild(sel);self.inputs[c.k]=sel;}
+    else{var out=document.createElement('output');out.htmlFor=id;row.appendChild(out);var inp=document.createElement('input');inp.type='range';inp.id=id;inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.val;self.p[c.k]=+c.val;self.s[c.k]=+c.val;
+      var dec=c.dec!=null?c.dec:(c.step<1?1:0);
+      var upd=function(){out.textContent=nf(+inp.value,dec)+(c.unit?' '+c.unit:'');};upd();
+      inp.addEventListener('input',function(){self.p[c.k]=+inp.value;upd();self.changed(c.k);});row.appendChild(inp);self.inputs[c.k]=inp;inp._upd=upd;}
+    self.rows[c.k]=row;ctls.appendChild(row);});
+  var bar=el.querySelector('.bar');
+  if(!o.noCycle){var pb=document.createElement('button');pb.type='button';pb.textContent=this.play?'Jeda animasi beban':'Putar animasi beban';pb.addEventListener('click',function(){self.play=!self.play;pb.textContent=self.play?'Jeda animasi beban':'Putar animasi beban';});bar.appendChild(pb);
+    var nt=document.createElement('span');nt.textContent='Angka di bawah adalah nilai pada beban penuh.';bar.appendChild(nt);}
+  if(o.init)o.init(this);
+  this.applyDis();
+  if(o.click){this.cv.classList.add('clk');this.cv.addEventListener('click',function(ev){var r=self.cv.getBoundingClientRect();o.click((ev.clientX-r.left)/r.width*W,(ev.clientY-r.top)/r.height*H,self);});}
+  this.resize();
+  if('IntersectionObserver' in window){new IntersectionObserver(function(en){self.vis=en[0].isIntersecting;},{rootMargin:'120px'}).observe(el);}
+  sims.push(this);
+}
+Sim.prototype.resize=function(){var dpr=window.devicePixelRatio||1;this.ctx.dpr=dpr;this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);};
+Sim.prototype.applyDis=function(){if(!this.o.dis)return;var d=this.o.dis(this.p),k;for(k in this.rows){this.rows[k].classList.toggle('dis',!!d[k]);if(this.inputs[k])this.inputs[k].disabled=!!d[k];}};
+Sim.prototype.changed=function(k){if(this.o.onChange)this.o.onChange(k,this);this.applyDis();};
+Sim.prototype.setVal=function(k,v){this.p[k]=v;this.s[k]=v;var i=this.inputs[k];if(i){i.value=v;if(i._upd)i._upd();}};
+Sim.prototype.tick=function(dt){
+  var self=this;this.dt=dt;this.t+=dt;
+  var k;for(k in this.p){if(typeof this.p[k]==='number'){var d=this.p[k]-this.s[k];this.s[k]+=Math.abs(d)<1e-6?d:d*(1-Math.exp(-dt*9));}else this.s[k]=this.p[k];}
+  if(this.o.noCycle||!this.play){this.f=1;}else{var T=5.5,c=(this.t%T)/T;this.f=c<.38?ease(c/.38):c<.6?1:c<.92?1-ease((c-.6)/.32):0;}
+  ctx=this.ctx;bgClear();this.o.draw(this.s,this.t,this.f,this);
+  if(this.o.reads){var r=this.o.reads(this.p,this),key=JSON.stringify(r);if(key!==this.lastRead){this.lastRead=key;this.el.querySelector('.reads').innerHTML=r.map(function(x){return '<div><dt>'+x[0]+'</dt><dd'+(x[2]?' class="'+x[2]+'"':'')+'>'+x[1]+'</dd></div>';}).join('');}}
+};
+var last=0;
+function loop(ts){var dt=Math.min(.05,(ts-last)/1000||.016);last=ts;for(var i=0;i<sims.length;i++){if(sims[i].vis||!sims[i].drawn){sims[i].tick(dt);sims[i].drawn=true;}}requestAnimationFrame(loop);}
+window.__sims=sims;
+window.addEventListener('resize',function(){sims.forEach(function(s){s.resize();});});
+
+var G={Sim:Sim,rgba:rgba,C:C,cc:cc,mixc:mixc,clamp:clamp,stressColor:stressColor,nf:nf,ease:ease,txt:txt,fitSize:fitSize,ftxt:ftxt,rr:rr,labelBox:labelBox,arrow:arrow,line:line,head:head,foot:foot,legendT:legendT,hatchWall:hatchWall,tri:tri,
+  MAT:MAT,SEC:SEC,shearTau:shearTau,W:W,H:H,F:{LABEL:F_LABEL,SEC:F_SEC,TITLE:F_TITLE,CAP:F_CAP},setCtx:function(c){ctx=c;},start:function(){requestAnimationFrame(loop);}};
+window.__G=G;
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,legendT=G.legendT,hatchWall=G.hatchWall,stressColor=G.stressColor,rgba=G.rgba,ease=G.ease,MAT=G.MAT,F=G.F,W=G.W,H=G.H;
+var ctx=null;
+
+/* ---------- 1. Peta konsep ---------- */
+var MAP=[
+ {t:'Beban luar',s:'P, q, W',ex:'Berat sendiri dan beban hidup pada lantai, angin pada kolom, gaya kendaraan pada jembatan.',mat:[2,6,8],nar:'Beban luar adalah sebab awal: struktur harus menyalurkannya sampai ke tumpuan.'},
+ {t:'Gaya dalam',s:'N, V, M, T',ex:'Gaya normal pada batang rangka, gaya geser dan momen pada balok lantai, torsi pada poros mesin.',mat:[2,5,6,7],nar:'Gaya dalam adalah jawaban elemen terhadap beban, muncul pada setiap potongan imajiner.'},
+ {t:'Tegangan',s:'\u03C3, \u03C4',ex:'Tegangan normal pada kolom dan batang tarik, tegangan lentur di serat balok, tegangan geser pada poros dan badan balok.',mat:[2,5,6,7,9],nar:'Tegangan adalah intensitas gaya dalam per satuan luas, dasar penilaian kekuatan.'},
+ {t:'Regangan',s:'\u03B5, \u03B3',ex:'Perpanjangan relatif batang tarik, regangan serat balok, perubahan sudut elemen yang tergeser.',mat:[2,3],nar:'Regangan adalah ukuran deformasi bahan itu sendiri, tidak bergantung ukuran benda.'},
+ {t:'Deformasi',s:'\u0394L, \u03C6, v',ex:'Pemanjangan batang, sudut puntir poros, lendutan balok lantai dan jembatan.',mat:[4,5,8],nar:'Deformasi adalah akumulasi regangan sepanjang elemen, dasar penilaian kekakuan.'},
+ {t:'Keamanan struktur',s:'kuat, kaku, stabil',ex:'Pemeriksaan tegangan terhadap batas luluh, lendutan terhadap batas layan, dan beban terhadap beban kritis tekuk.',mat:[3,8,9,10],nar:'Struktur aman bila kuat, kaku, dan stabil sekaligus.'}
+];
+var mapSim=new Sim({id:'sim-map',label:'Peta konsep Mekanika Bahan',noCycle:true,controls:[],
+ init:function(sim){sim.st.sel=0;
+  var bw=document.getElementById('mapbtn'),dt=document.getElementById('mapdetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-pressed',j===i?'true':'false');});var m=MAP[i];
+   dt.innerHTML='<h4>'+m.t+' <small>('+m.s+')</small></h4><p>'+m.ex+'</p><p class="chips">Dibahas pada submateri: '+m.mat.map(function(n){return '<a href="#s'+n+'">'+n+'</a>';}).join('')+'</p>';}
+  MAP.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.t;b.addEventListener('click',function(){show(i);});bw.appendChild(b);});
+  sim.st.show=show;show(0);},
+ click:function(x,y,sim){var r=sim.st.rects||[];for(var i=0;i<r.length;i++){if(x>=r[i].x&&x<=r[i].x+r[i].w&&y>=r[i].y&&y<=r[i].y+r[i].h){sim.st.show(i);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Peta konsep Mekanika Bahan','Tekan kotak untuk memilih bagian');
+  var n=MAP.length,bw=160,gap=(W-80-n*bw)/(n-1),cy=150,i,rects=[];
+  for(i=0;i<n;i++){var cx=40+bw/2+i*(bw+gap);var sel=i===sim.st.sel;
+   var b=labelBox([MAP[i].t,MAP[i].s],cx,cy,{head:true,size:F.LABEL,maxW:bw,minW:bw,fill:sel?'rgba(60,52,20,.95)':'rgba(20,26,44,.92)',stroke:sel?C.yel:C.t3,lw:sel?3:1.5,hcol:sel?C.yel:C.t1});rects.push(b);
+   if(i<n-1){var x1=b.x+b.w+6,x2=x1+gap-12;arrow(x1,cy,x2,cy,'rgba(232,238,248,.45)',2.5,11);var ph=((t*.5)+i*.16)%1;ctx.beginPath();ctx.arc(x1+(x2-x1)*ph,cy,4,0,7);ctx.fillStyle=cc(C.yel,.5+.5*Math.sin(ph*3.14));ctx.fill();}}
+  sim.st.rects=rects;
+  var m=MAP[sim.st.sel];
+  var ax=140,ax2=W-140,yb=470,k=sim.st.sel,ph2=0.5-0.5*Math.cos(t*1.8);
+  txt('Contoh pada elemen struktur: '+m.t.toLowerCase(),W/2,262,F.TITLE,C.t1,'center','middle',700);
+  var bx0=380,bx1=900;
+  if(k===0){ctx.fillStyle='rgba(150,165,190,.5)';ctx.fillRect(bx0,yb-12,bx1-bx0,24);G.tri(bx0+10,yb+12,30,30);G.tri(bx1-10,yb+12,30,30);for(i=0;i<4;i++){var xx=bx0+90+i*110,L=50+30*ph2;arrow(xx,yb-14-L,xx,yb-14,cc(C.org,1),3,12);}txt('beban luar',W/2,yb-118,F.SEC,C.t2,'center');}
+  if(k===1){ctx.fillStyle='rgba(150,165,190,.5)';ctx.fillRect(bx0,yb-12,bx1-bx0,24);line(640,yb-70,640,yb+70,C.yel,2,[6,5]);var a=30+22*ph2;arrow(640,yb,640+a+30,yb,cc(C.ten,1),4,13);arrow(640,yb,640-a-30,yb,cc(C.ten,1),4,13);arrow(650,yb+8,650,yb+8+a+10,cc(C.org,1),4,13);txt('N',640+a+42,yb-14,F.SEC,C.t2,'center');txt('V',668,yb+a+34,F.SEC,C.t2,'center');txt('M',640,yb-84,F.SEC,C.t2,'center');ctx.beginPath();ctx.arc(640,yb-34,26,3.6,6.0);ctx.strokeStyle=cc(C.com,1);ctx.lineWidth=3.5;ctx.stroke();}
+  if(k===2){var sw=110,sh=190,sx=W/2-70,sy=yb-95;ctx.fillStyle='rgba(150,165,190,.35)';ctx.fillRect(sx,sy,sw,sh);for(i=0;i<20;i++){var yy=sy+i*sh/20,v=(i+.5)/20*2-1;ctx.fillStyle=stressColor(v*ph2,.9);ctx.fillRect(sx,yy,sw,sh/20+.5);}line(sx-20,yb,sx+sw+90,yb,C.t2,1.5,[5,5]);var pw=80;ctx.beginPath();ctx.moveTo(sx+sw+10,yb);ctx.lineTo(sx+sw+10-pw*ph2,sy);ctx.lineTo(sx+sw+10-pw*ph2,sy);ctx.moveTo(sx+sw+10,yb);ctx.lineTo(sx+sw+10+pw*ph2,sy+sh);ctx.strokeStyle=C.t1;ctx.lineWidth=2.5;ctx.stroke();txt('\u03C3',sx+sw+70,yb-60,F.TITLE,C.yel,'center','middle',700);txt('penampang',sx-40,sy-14,F.SEC,C.t2,'left');}
+  if(k===3){var L0=300,ex=90*ph2;ctx.fillStyle='rgba(150,165,190,.35)';ctx.fillRect(500,yb-25,L0,50);ctx.fillStyle=stressColor(.7*ph2,.9);ctx.fillRect(500,yb-25,L0+ex,50);for(i=1;i<8;i++)line(500+i*(L0+ex)/8,yb-25,500+i*(L0+ex)/8,yb+25,'rgba(255,255,255,.4)',1.5);hatchWall(500,yb-50,yb+50,-1);line(500,yb+62,800,yb+62,C.t2,1.5);txt('L\u2080',650,yb+82,F.SEC,C.t2,'center');txt('\u0394L = '+nf(ex/L0*100,0)+' % dari L\u2080 (\u03B5 = \u0394L / L\u2080)',W/2,yb-70,F.SEC,C.yel,'center','middle',700);}
+  if(k===4){var pts=[];ctx.beginPath();for(i=0;i<=60;i++){var u=i/60,px=bx0+u*(bx1-bx0),py=yb-70+ph2*90*Math.sin(Math.PI*u);if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.strokeStyle=C.t1;ctx.lineWidth=14;ctx.lineCap='butt';ctx.stroke();line(bx0,yb-70,bx1,yb-70,C.t2,1.5,[6,5]);G.tri(bx0,yb-62,30,30);G.tri(bx1,yb-62,30,30);arrow(W/2,yb-70,W/2,yb-70+ph2*90,cc(C.yel,1),3,11);txt('lendutan v',W/2+18,yb-70+ph2*45,F.SEC,C.yel,'left','middle',700);}
+  if(k===5){var lab=['Kekuatan: tegangan \u2264 tegangan izin','Kekakuan: lendutan \u2264 batas layan','Kestabilan: beban < beban kritis'],vals=[.55,.72,.38];for(i=0;i<3;i++){var yy2=yb-70+i*70,bw2=420,xx2=W/2-210;ctx.fillStyle='rgba(150,165,190,.2)';ctx.fillRect(xx2,yy2,bw2,22);var v2=vals[i]*(0.65+.35*ph2);ctx.fillStyle=cc(v2>.85?C.com:C.grn,.85);ctx.fillRect(xx2,yy2,bw2*v2,22);line(xx2+bw2,yy2-6,xx2+bw2,yy2+28,C.t1,2.5);txt(lab[i],xx2,yy2-14,F.SEC,C.t2,'left');}}
+  foot(m.nar);}
+});
+
+/* ---------- Batang aksial (dipakai submateri 2 dan 4) ---------- */
+function drawBars(segs,o){
+  var n=segs.length,Lt=0,i;for(i=0;i<n;i++)Lt+=segs[i].L;
+  var pxm=o.px/Lt,raw=[0],sig=[];
+  for(i=0;i<n;i++){var sg=segs[i],sgm=sg.N*1000/(sg.A*100);sig.push(sgm);raw.push(raw[i]+sgm/(sg.E*1000)*sg.L*1000);}
+  var mg=o.mag,maxd=Math.abs(raw[n]);if(maxd*mg>o.maxpx)mg=o.maxpx/maxd;if(maxd<1e-9)mg=o.mag;
+  var xa=o.x0,nodeX=[o.x0],hMax=0;
+  for(i=0;i<n;i++){var h=30+9*Math.sqrt(segs[i].A);if(h>hMax)hMax=h;}
+  hatchWall(o.x0,o.yc-hMax/2-16,o.yc+hMax/2+16,-1);
+  for(i=0;i<n;i++){var sg2=segs[i],h2=30+9*Math.sqrt(sg2.A),xb=xa+sg2.L*pxm,dxa=raw[i]*mg,dxb=raw[i+1]*mg;
+    ctx.save();ctx.setLineDash([6,5]);ctx.strokeStyle=C.t3;ctx.lineWidth=1.5;ctx.strokeRect(xa,o.yc-h2/2,xb-xa,h2);ctx.restore();
+    ctx.fillStyle=stressColor(sig[i]/(o.cref||o.sref),.92);ctx.fillRect(xa+dxa,o.yc-h2/2,(xb-xa)+(dxb-dxa),h2);ctx.strokeStyle=Math.abs(sig[i])>o.sref?rgba(255,60,60,1):C.t2;ctx.lineWidth=Math.abs(sig[i])>o.sref?3:1.5;ctx.strokeRect(xa+dxa,o.yc-h2/2,(xb-xa)+(dxb-dxa),h2);
+    for(var k=1;k<6;k++){var u=k/6,tx=xa+u*(xb-xa)+dxa+u*(dxb-dxa);line(tx,o.yc-h2/2,tx,o.yc+h2/2,'rgba(255,255,255,.3)',1.2);}
+    nodeX.push(xb+dxb);xa=xb;}
+  return {nodeX:nodeX,mg:mg,pxm:pxm,exag:mg/(pxm/1000),raw:raw,sig:sig,hMax:hMax};
+}
+function forceArrow(x,y,val,col,len,label){if(Math.abs(val)<1e-9)return;var l=len;if(val>0){arrow(x+2,y,x+l,y,col,5,16);txt(label,x+l+12,y,F.SEC,col,'left','middle',700);}else{arrow(x+l,y,x+2,y,col,5,16);txt(label,x+l+12,y,F.SEC,col,'left','middle',700);}}
+
+/* ---------- 2. Tegangan dan regangan normal ---------- */
+new Sim({id:'sim-normal',label:'Batang mengalami tarik dan tekan',
+ controls:[{k:'P',label:'Gaya aksial P (negatif = tekan)',unit:'kN',min:-200,max:200,step:10,val:100,dec:0},
+  {k:'A',label:'Luas penampang A',unit:'cm\u00B2',min:5,max:50,step:1,val:10,dec:0},
+  {k:'L0',label:'Panjang awal L\u2080',unit:'m',min:.5,max:4,step:.1,val:2}],
+ reads:function(p){var sg=p.P*1000/(p.A*100),ep=sg/200000,dL=ep*p.L0*1000;return [['Tegangan \u03C3',nf(sg,1)+' MPa',Math.abs(sg)>250?'bad':''],['Regangan \u03B5',nf(ep*1e6,0)+' \u00D7 10\u207B\u2076'],['Perubahan panjang \u0394L',nf(dL,2)+' mm']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Batang mengalami tarik dan tekan','Baja, elastis linear, E = 200 GPa, tegangan luluh 250 MPa');legendT(W-260,34);
+  var P=s.P*f,A=s.A,L=s.L0,sg=P*1000/(A*100),ep=sg/200000,dL=ep*L*1000,yc=250;
+  var r=drawBars([{L:L,A:A,N:P,E:200}],{x0:150,yc:yc,px:200+120*L,mag:22,maxpx:230,sref:250,cref:150});
+  var xe=r.nodeX[1],pl=60+Math.abs(P)/200*70;
+  forceArrow(xe,yc,P,cc(C.org,1),pl,'P');
+  var x0=150,xe0=150+200+120*L,dy=yc-r.hMax/2-46;
+  line(x0,dy,xe0,dy,C.t2,1.5);line(x0,dy-8,x0,dy+8,C.t2,1.5);line(xe0,dy-8,xe0,dy+8,C.t2,1.5);txt('L\u2080 = '+nf(L,1)+' m',(x0+xe0)/2,dy-16,F.SEC,C.t2,'center');
+  txt('penampang: A = '+nf(A,0)+' cm\u00B2',x0,yc+r.hMax/2+44,F.SEC,C.t2,'left');
+  var by=470;
+  labelBox(['Tegangan normal','\u03C3 = P / A','= '+nf(sg,1)+' MPa'],300,by,{head:true,size:F.LABEL+2,minW:260,stroke:stressColor(sg/250,1)});
+  labelBox(['Regangan normal','\u03B5 = \u0394L / L\u2080','= '+nf(ep*1e6,0)+' \u00D7 10\u207B\u2076'],640,by,{head:true,size:F.LABEL+2,minW:260});
+  labelBox(['Perubahan panjang','\u0394L = \u03B5 L\u2080','= '+nf(dL,2)+' mm'],980,by,{head:true,size:F.LABEL+2,minW:260});
+  var over=Math.abs(s.P*1000/(A*100))>250;
+  txt('Deformasi diperbesar sekitar \u00D7'+nf(r.exag,0)+' agar terlihat',W-40,650,F.SEC,C.t3,'right');
+  foot(over?'Tegangan melewati luluh (250 MPa): hubungan elastis \u03C3 = E\u03B5 tidak berlaku lagi.':(P>=0?'Tarik memanjangkan batang; menambah luas penampang menurunkan tegangan.':'Tekan memendekkan batang; tanda tegangan dan regangan menjadi negatif.'));}
+});
+
+/* ---------- 3. Uji tarik ---------- */
+var TM={
+ duct:{n:'Baja lunak (ulet)',E:200000,epsF:.24,sigTop:450,el:.18,pts:[[0,0],[.00125,250],[.02,255],[.05,330],[.12,400],[.24,320]],
+   marks:[[.00125,'Luluh 250 MPa'],[.12,'Tegangan maksimum 400 MPa'],[.24,'Patah']]},
+ brit:{n:'Besi cor (getas)',E:100000,epsF:.002,sigTop:260,el:.9,pts:[[0,0],[.002,200]],marks:[[.002,'Patah tanpa luluh, 200 MPa']]}
+};
+function envSig(m,e){if(e>m.epsF)return 0;var p=m.pts,i;for(i=1;i<p.length;i++){if(e<=p[i][0]){var u=(e-p[i-1][0])/(p[i][0]-p[i-1][0]);return p[i-1][1]+u*(p[i][1]-p[i-1][1]);}}return p[p.length-1][1];}
+function tState(m,eMax,eNow){var frac=eMax>m.epsF,sig;if(frac)sig=0;else if(eNow>=eMax-1e-12)sig=envSig(m,eNow);else sig=Math.max(0,envSig(m,eMax)-m.E*(eMax-eNow));
+  var epsP=frac?eMax-envSig(m,m.epsF*.999)/m.E:eNow-sig/m.E;return {sig:sig,epsP:Math.max(0,epsP),frac:frac};}
+function tXY(m,st,X0,Y0,Wp,Hp){var x=X0+(m.el*st.sig/m.sigTop+(1-m.el)*st.epsP/m.epsF)*Wp,y=Y0-Hp*st.sig/m.sigTop;return [x,y];}
+function tEps(m,u){return m.epsF*1.03*Math.pow(u/1000,3);}
+new Sim({id:'sim-tensile',label:'Uji tarik dan kurva tegangan-regangan',noCycle:true,
+ controls:[{k:'mat',label:'Material',options:[['duct','Baja lunak (ulet)'],['brit','Besi cor (getas)']],val:'duct'},
+  {k:'u',label:'Pembebanan (geser ke kanan untuk menarik, ke kiri untuk melepas)',min:0,max:1000,step:1,val:0,dec:0,unit:'\u2030'},
+  {btn:'Kembalikan spesimen ke awal',act:function(sim){sim.st.eMax=0;sim.setVal('u',0);}}],
+ init:function(sim){sim.st.eMax=0;},
+ onChange:function(k,sim){if(k==='mat'){sim.st.eMax=0;sim.setVal('u',0);}},
+ reads:function(p,sim){var m=TM[p.mat],e=tEps(m,p.u),eM=Math.max(sim.st.eMax||0,e),st=tState(m,eM,e);return [['Regangan diberikan \u03B5',nf(e*100,3)+' %'],['Tegangan \u03C3',nf(st.sig,0)+' MPa'],['Regangan sisa (permanen)',nf(st.epsP*100,3)+' %',st.epsP>1e-4?'bad':'ok'],['Kondisi',st.frac?'Patah':(st.sig<1e-9&&eM===0?'Belum dibebani':'Utuh')]];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var m=TM[sim.p.mat],e=tEps(m,sim.p.u);sim.st.eMax=Math.max(sim.st.eMax||0,e);var eM=sim.st.eMax,st=tState(m,eM,e);
+  head('Uji tarik dan kurva tegangan\u2013regangan',m.n);
+  /* spesimen */
+  var cx=210,top=150,Lg=250*(1+e),gx=st.frac?28:0;
+  ctx.fillStyle='rgba(150,165,190,.3)';ctx.fillRect(cx-70,top-60,140,60);txt('penjepit tetap',cx,top-30,F.SEC,C.t2,'center');
+  var ym=top+Lg/2,neck=(m.epsF>.1&&e>.12&&!st.frac)?clamp((e-.12)/.12,0,1):0,hw=24,col=stressColor(st.sig/m.sigTop,.95);
+  function half(y,ymid){return hw*(1-.55*neck*Math.exp(-Math.pow((y-ymid)/45,2)));}
+  if(!st.frac){ctx.beginPath();var yy;for(yy=top;yy<=top+Lg;yy+=4)ctx.lineTo(cx-half(yy,ym),yy);for(yy=top+Lg;yy>=top;yy-=4)ctx.lineTo(cx+half(yy,ym),yy);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();
+   for(var k=1;k<8;k++)line(cx-hw,top+k*Lg/8,cx+hw,top+k*Lg/8,'rgba(255,255,255,.35)',1.2);
+   ctx.fillStyle='rgba(150,165,190,.3)';ctx.fillRect(cx-70,top+Lg,140,60);ftxt('penjepit bergerak',cx,top+Lg+30,F.SEC,C.t2,'center','middle',400,124);arrow(cx,top+Lg+64,cx,top+Lg+64+40,cc(C.org,1),4,14);}
+  else{var Lp=250*(1+st.epsP*.5),h1=top+Lp*.5-6,jag=m.epsF>.1;ctx.fillStyle=stressColor(0,.95);ctx.beginPath();ctx.moveTo(cx-hw*.6,top);ctx.lineTo(cx+hw*.6,top);ctx.lineTo(cx+hw*.4,h1);if(jag){ctx.lineTo(cx,h1+14);}ctx.lineTo(cx-hw*.4,h1);ctx.closePath();ctx.fill();ctx.strokeStyle=C.t2;ctx.stroke();
+   var y2=h1+gx+4;ctx.beginPath();ctx.moveTo(cx-hw*.4,y2+(jag?14:0));if(jag)ctx.lineTo(cx,y2);ctx.lineTo(cx+hw*.4,y2+(jag?14:0));ctx.lineTo(cx+hw*.6,top+Lp+gx);ctx.lineTo(cx-hw*.6,top+Lp+gx);ctx.closePath();ctx.fill();ctx.stroke();txt('patah',cx+70,h1+gx/2,F.SEC,C.com,'left','middle',700);}
+  txt('L\u2080',cx-104,top+125,F.SEC,C.t3,'right');line(cx-92,top,cx-92,top+250,C.t3,1.2,[4,4]);
+  /* grafik */
+  var X0=520,Y0=560,Wp=680,Hp=400;
+  line(X0,Y0,X0+Wp+10,Y0,C.t1,2);line(X0,Y0,X0,Y0-Hp-10,C.t1,2);
+  txt('regangan \u03B5 (skematis, daerah elastis diperbesar)',X0+Wp,Y0+26,F.SEC,C.t2,'right');txt('tegangan \u03C3 (MPa)',X0-4,Y0-Hp-26,F.SEC,C.t2,'left');
+  var i,N=240;ctx.beginPath();for(i=0;i<=N;i++){var uu=i/N,ee=m.epsF*Math.pow(uu,3),sE=envSig(m,ee),stt={sig:sE,epsP:Math.max(0,ee-sE/m.E)},xy=tXY(m,stt,X0,Y0,Wp,Hp);if(i===0)ctx.moveTo(xy[0],xy[1]);else ctx.lineTo(xy[0],xy[1]);}ctx.strokeStyle='rgba(232,238,248,.32)';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.beginPath();var first=true;for(i=0;i<=N;i++){var e3=Math.min(eM,m.epsF)*i/N;e3=Math.min(eM,m.epsF)*Math.pow(i/N,3);var s3=envSig(m,e3),xy3=tXY(m,{sig:s3,epsP:Math.max(0,e3-s3/m.E)},X0,Y0,Wp,Hp);if(first){ctx.moveTo(xy3[0],xy3[1]);first=false;}else ctx.lineTo(xy3[0],xy3[1]);}ctx.strokeStyle=cc(C.ten,1);ctx.lineWidth=4;ctx.stroke();
+  if(e<eM-1e-9&&!st.frac){var pm=tXY(m,{sig:envSig(m,eM),epsP:Math.max(0,eM-envSig(m,eM)/m.E)},X0,Y0,Wp,Hp),pn=tXY(m,st,X0,Y0,Wp,Hp);line(pm[0],pm[1],pn[0],pn[1],cc(C.com,1),4,[8,6]);}
+  m.marks.forEach(function(mk,j){var ee=mk[0],sE=envSig(m,ee>=m.epsF?m.epsF:ee),xy=tXY(m,{sig:sE,epsP:Math.max(0,ee-sE/m.E)},X0,Y0,Wp,Hp);ctx.beginPath();ctx.arc(xy[0],xy[1],5,0,7);ctx.fillStyle=C.t1;ctx.fill();var lx=xy[0]+(j===0&&m===TM.duct?16:-10),al=(j===0&&m===TM.duct)?'left':'right';txt(mk[1],lx,xy[1]+(j===2?-22:-18),F.SEC,C.t2,al,'middle');});
+  var pos=tXY(m,st,X0,Y0,Wp,Hp);ctx.beginPath();ctx.arc(pos[0],pos[1],9,0,7);ctx.fillStyle=C.yel;ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
+  var reg;if(st.frac)reg='Patah';else if(m===TM.brit)reg=e>0?'Elastis, getas':'Awal';else if(eM<=.00125)reg='Daerah elastis';else if(eM<=.02)reg='Luluh';else if(eM<=.12)reg='Pengerasan regangan';else reg='Penyempitan (necking)';
+  labelBox([reg],X0+Wp-110,Y0-Hp-30,{size:F.LABEL,minW:220});
+  var nar;if(st.frac)nar='Spesimen patah dan tidak dapat kembali. Tekan tombol kembalikan untuk mengulang.';
+  else if(e<eM-1e-9)nar=st.epsP>1e-4?'Beban dilepas: spesimen tidak kembali ke panjang awal, tersisa regangan permanen '+nf(st.epsP*100,2)+' %.':'Beban dilepas: spesimen kembali ke panjang semula, deformasinya elastis.';
+  else if(m===TM.brit)nar=e>0?'Material getas patah tiba-tiba setelah regangan yang sangat kecil.':'Tarik spesimen dengan menggeser pembebanan ke kanan.';
+  else if(eM>.00125)nar='Sudah melewati luluh: sebagian deformasi akan menetap. Geser ke kiri untuk melepas beban.';
+  else nar=eM>0?'Daerah elastis: bila beban dilepas, spesimen kembali ke bentuk awal.':'Tarik spesimen dengan menggeser pembebanan ke kanan.';
+  foot(nar,'Panjang spesimen digambar sesuai regangan sebenarnya; sumbu regangan pada grafik dipetakan secara skematis.');}
+});
+
+/* ---------- 4. Deformasi batang aksial ---------- */
+function axSegs(p){var n=+p.n,L=p.L/n,E=MAT[p.mat].E,A=[p.A1,p.A2,p.A3],kq=Math.min(+p.kq,n-1),Q=n>1?p.Q:0,segs=[],j;for(j=1;j<=n;j++){segs.push({L:L,A:A[j-1],N:p.P+(kq>=j?Q:0),E:E});}return {segs:segs,kq:kq,Q:Q,n:n};}
+new Sim({id:'sim-axial',label:'Deformasi batang aksial seragam dan bertingkat',
+ controls:[{k:'mat',label:'Material',options:[['steel','Baja (E = 200 GPa)'],['brass','Kuningan (E = 100 GPa)'],['alu','Aluminium (E = 70 GPa)'],['wood','Kayu (E = 12 GPa)']],val:'steel'},
+  {k:'n',label:'Jumlah segmen',options:[['1','1 segmen (seragam)'],['2','2 segmen'],['3','3 segmen']],val:'3'},
+  {k:'L',label:'Panjang total L',unit:'m',min:1,max:6,step:.5,val:3},
+  {k:'A1',label:'Luas segmen 1 (dekat tumpuan)',unit:'cm\u00B2',min:5,max:40,step:1,val:24,dec:0},
+  {k:'A2',label:'Luas segmen 2',unit:'cm\u00B2',min:5,max:40,step:1,val:16,dec:0},
+  {k:'A3',label:'Luas segmen 3',unit:'cm\u00B2',min:5,max:40,step:1,val:8,dec:0},
+  {k:'P',label:'Gaya P di ujung bebas (negatif = tekan)',unit:'kN',min:-150,max:150,step:10,val:60,dec:0},
+  {k:'Q',label:'Gaya tambahan Q',unit:'kN',min:-150,max:150,step:10,val:0,dec:0},
+  {k:'kq',label:'Posisi gaya Q',options:[['1','Simpul 1'],['2','Simpul 2']],val:'1'}],
+ dis:function(p){return {A2:+p.n<2,A3:+p.n<3,Q:+p.n<2,kq:+p.n<2};},
+ reads:function(p){var a=axSegs(p),tot=0,txtS=[],i;a.segs.forEach(function(sg,i){var sgm=sg.N*1000/(sg.A*100),dl=sgm/(sg.E*1000)*sg.L*1000;tot+=dl;txtS.push(['Segmen '+(i+1),'N = '+nf(sg.N,0)+' kN, \u03C3 = '+nf(sgm,1)+' MPa, \u0394L = '+nf(dl,2)+' mm',Math.abs(sgm)>250&&p.mat==='steel'?'bad':'']);});txtS.push(['\u0394L total',nf(tot,2)+' mm']);return txtS;},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,a=axSegs({mat:p.mat,n:p.n,L:s.L,A1:s.A1,A2:s.A2,A3:s.A3,P:s.P*f,Q:s.Q*f,kq:p.kq});
+  head('Deformasi batang aksial: '+(a.n===1?'seragam':'bertingkat ('+a.n+' segmen)'),MAT[p.mat].n+', E = '+MAT[p.mat].E+' GPa, warna: 0 sampai 120 MPa');legendT(W-260,34);
+  var yc=330,x0=150,r=drawBars(a.segs,{x0:x0,yc:yc,px:260+80*s.L,mag:20,maxpx:200,sref:250,cref:120});
+  var i,xa=x0,pxm=r.pxm,tot=0;
+  for(i=0;i<a.n;i++){var sg=a.segs[i],sgm=sg.N*1000/(sg.A*100),dl=sgm/(sg.E*1000)*sg.L*1000;tot+=dl;var cxm=(r.nodeX[i]+r.nodeX[i+1])/2;
+    labelBox(['Segmen '+(i+1),'N = '+nf(sg.N,0)+' kN','\u03C3 = '+nf(sgm,1)+' MPa','\u0394L = '+nf(dl,2)+' mm'],cxm,yc-r.hMax/2-100,{head:true,maxW:196,fill:'rgba(20,26,44,.92)',stroke:stressColor(sgm/250,1)});xa+=sg.L*pxm;}
+  var xe=r.nodeX[a.n];forceArrow(xe,yc,s.P*f,cc(C.org,1),70,'P');
+  if(a.n>1&&Math.abs(a.Q)>1e-9){var xq=r.nodeX[a.kq],yq=yc+r.hMax/2+34;forceArrow(xq,yq,a.Q*f>=0?1:-1,cc(C.grn,1),70,'Q');line(xq,yc+r.hMax/2,xq,yq,cc(C.grn,.6),1.5,[4,4]);}
+  var by=520;labelBox(['\u0394L total = \u03A3 N\u1D62 L\u1D62 / (A\u1D62 E\u1D62)','= '+nf(tot,2)+' mm'],640,by,{head:true,size:F.LABEL+2,minW:380});
+  txt('Deformasi diperbesar sekitar \u00D7'+nf(r.exag,0)+' agar terlihat',W-40,650,F.SEC,C.t3,'right');
+  var mxI=0,mxS=0;a.segs.forEach(function(sg,i2){var sv=Math.abs(sg.N*10/sg.A);if(sv>mxS){mxS=sv;mxI=i2;}});
+  foot(a.n===1?'Batang seragam: gaya dalam dan luas sama di seluruh panjang, sehingga tegangan dan regangan merata.':'Segmen '+(mxI+1)+' paling tegang ('+nf(mxS,1)+' MPa); perubahan panjang total adalah jumlah perubahan tiap segmen.');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,legendT=G.legendT,hatchWall=G.hatchWall,stressColor=G.stressColor,rgba=G.rgba,ease=G.ease,mixc=G.mixc,MAT=G.MAT,SEC=G.SEC,shearTau=G.shearTau,F=G.F,W=G.W,H=G.H;
+var ctx=null;
+
+/* rumus lendutan (mm, positif ke bawah) dan momen (N.mm, positif = sagging) */
+function beamV(sup,ld,x,L,a,P,q,EI){
+  if(sup==='ss'){if(ld==='udl')return q*x*(L*L*L-2*L*x*x+x*x*x)/(24*EI);var b=L-a;if(x<=a)return P*b*x*(L*L-b*b-x*x)/(6*EI*L);var xr=L-x;return P*a*xr*(L*L-a*a-xr*xr)/(6*EI*L);}
+  if(sup==='cant'){if(ld==='udl')return q*x*x*(6*L*L-4*L*x+x*x)/(24*EI);if(x<=a)return P*x*x*(3*a-x)/(6*EI);return P*a*a*(3*x-a)/(6*EI);}
+  if(ld==='udl')return q*x*x*(L-x)*(L-x)/(24*EI);
+  var bb=L-a;if(x<=a)return P*bb*bb*x*x*(3*a*L-3*a*x-bb*x)/(6*EI*L*L*L);var x2=L-x;return P*a*a*x2*x2*(3*bb*L-3*bb*x2-a*x2)/(6*EI*L*L*L);
+}
+function beamM(sup,ld,x,L,a,P,q){
+  if(sup==='ss'){if(ld==='udl')return q*x*(L-x)/2;var b=L-a;return x<=a?P*b*x/L:P*a*(L-x)/L;}
+  if(sup==='cant'){if(ld==='udl')return -q*(L-x)*(L-x)/2;return x<=a?-P*(a-x):0;}
+  if(ld==='udl')return q*(6*L*x-6*x*x-L*L)/12;
+  var bb=L-a,RA=P*bb*bb*(3*a+bb)/(L*L*L),MA=-P*a*bb*bb/(L*L),m=RA*x+MA;if(x>a)m-=P*(x-a);return m;
+}
+function shapeFill(sec,cx,cy,sc,colFn,N){N=N||60;var j,h=sec.h,dy=h/N;for(j=0;j<N;j++){var y=-h/2+(j+.5)*dy,w=sec.w(y)*sc;ctx.fillStyle=colFn(y);ctx.fillRect(cx-w/2,cy+(y-dy/2)*sc,w,dy*sc+.6);}
+  ctx.beginPath();for(j=0;j<=N;j++){var yy=-h/2+j*dy;ctx.lineTo(cx-sec.w(Math.min(h/2-1e-6,Math.max(-h/2+1e-6,yy)))*sc/2,cy+yy*sc);}for(j=N;j>=0;j--){var y3=-h/2+j*dy;ctx.lineTo(cx+sec.w(Math.min(h/2-1e-6,Math.max(-h/2+1e-6,y3)))*sc/2,cy+y3*sc);}ctx.closePath();ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.stroke();}
+
+/* ---------- 5. Torsi ---------- */
+function torCalc(p){var d=p.d,di=+p.hol?.6*d:0,J=Math.PI/32*(Math.pow(d,4)-Math.pow(di,4)),T=p.T*1e6,G_=MAT[p.mat].G*1000,tau=T*(d/2)/J,phi=T*p.L*1000/(J*G_);return {d:d,di:di,J:J,tau:tau,phi:phi};}
+new Sim({id:'sim-torsion',label:'Poros berputar dan mengalami puntiran',
+ controls:[{k:'T',label:'Torsi T',unit:'kN\u00B7m',min:.5,max:10,step:.5,val:3},
+  {k:'d',label:'Diameter luar d',unit:'mm',min:30,max:120,step:5,val:80,dec:0},
+  {k:'L',label:'Panjang poros L',unit:'m',min:.5,max:3,step:.1,val:2},
+  {k:'mat',label:'Material (modulus geser G)',options:[['steel','Baja (G = 79 GPa)'],['brass','Kuningan (G = 39 GPa)'],['alu','Aluminium (G = 27 GPa)']],val:'steel'},
+  {k:'hol',label:'Bentuk poros',options:[['0','Pejal'],['1','Berongga (d dalam = 0,6 d luar)']],val:'0'}],
+ reads:function(p){var c=torCalc(p);return [['Momen inersia polar J',nf(c.J/1e6,2)+' \u00D7 10\u2076 mm\u2074'],['Tegangan geser maks \u03C4',nf(c.tau,1)+' MPa'],['Sudut puntir \u03C6',nf(c.phi,4)+' rad = '+nf(c.phi*180/Math.PI,2)+'\u00B0']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,c=torCalc({T:s.T,d:s.d,L:s.L,mat:p.mat,hol:p.hol});
+  head('Poros berputar dan mengalami puntiran',MAT[p.mat].n+', '+(+p.hol?'poros berongga':'poros pejal')+', G = '+MAT[p.mat].G+' GPa');
+  var Rpx=20+.9*s.d,hs=Rpx*.75,yc=290,x0=140,Lpx=200+120*s.L,xe=x0+Lpx,phiD=clamp(c.phi*12*f,0,1.25),i,k;
+  hatchWall(x0,yc-hs-30,yc+hs+30,-1);
+  var gr=ctx.createLinearGradient(0,yc-hs,0,yc+hs);gr.addColorStop(0,'#2b3550');gr.addColorStop(.5,'#8e9bb8');gr.addColorStop(1,'#2b3550');ctx.fillStyle=gr;ctx.fillRect(x0,yc-hs,Lpx,hs*2);ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.strokeRect(x0,yc-hs,Lpx,hs*2);
+  for(k=0;k<8;k++){var th=k*Math.PI/4+.15,hi=k===0;for(i=0;i<60;i++){var u1=i/60,u2=(i+1)/60,a1=th+phiD*u1,a2=th+phiD*u2,vis=Math.cos(a1)>0;ctx.beginPath();ctx.moveTo(x0+u1*Lpx,yc+hs*Math.sin(a1));ctx.lineTo(x0+u2*Lpx,yc+hs*Math.sin(a2));ctx.strokeStyle=hi?(vis?cc([255,206,84],1):'rgba(255,206,84,.12)'):(vis?'rgba(15,20,35,.75)':'rgba(15,20,35,.12)');ctx.lineWidth=hi?4:2;ctx.stroke();}}
+  line(x0,yc+hs*Math.sin(.15),xe,yc+hs*Math.sin(.15),'rgba(255,255,255,.45)',1.5,[7,6]);
+  ctx.beginPath();ctx.ellipse(xe,yc,hs*.28,hs,0,0,Math.PI*2);ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.stroke();
+  var ax=xe+52,ay=hs+30;ctx.beginPath();ctx.ellipse(ax,yc,16,ay,0,-1.15,1.05);ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=4;ctx.stroke();arrow(ax+16*Math.cos(1.0),yc+ay*Math.sin(1.0),ax+16*Math.cos(1.2),yc+ay*Math.sin(1.2),cc(C.org,1),4,16);txt('T',ax+30,yc-ay+6,F.SEC,cc(C.org,1),'left','middle',700);
+  txt('garis lurus di permukaan menjadi heliks',x0+Lpx/2,yc-hs-26,F.SEC,C.yel,'center','middle',700);
+  txt('L = '+nf(s.L,1)+' m',x0+Lpx/2,yc+hs+34,F.SEC,C.t2,'center');line(x0,yc+hs+14,xe,yc+hs+14,C.t2,1.2);
+  /* penampang */
+  var cx=1040,cy=250,R=Rpx,ri=c.di/s.d*R,N=36;
+  txt('Penampang di ujung bebas',cx,cy-R-30,F.SEC,C.t2,'center');
+  for(i=0;i<N;i++){var r=ri+(R-ri)*(i+.5)/N;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.lineWidth=(R-ri)/N+1.2;ctx.strokeStyle=cc(mixc(C.neu,C.org,r/R),.95);ctx.stroke();}
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.stroke();if(ri>1){ctx.beginPath();ctx.arc(cx,cy,ri,0,Math.PI*2);ctx.fillStyle=C.bg;ctx.fill();ctx.strokeStyle=C.t1;ctx.stroke();}
+  line(cx,cy,cx+R+22,cy,'rgba(255,255,255,.5)',1.5,[6,5]);var aa=-phiD;line(cx,cy,cx+(R+22)*Math.cos(aa),cy+(R+22)*Math.sin(aa),C.yel,3);
+  if(phiD>.03){ctx.beginPath();ctx.arc(cx,cy,Math.max(24,R*.45),aa,0);ctx.strokeStyle=C.yel;ctx.lineWidth=2;ctx.stroke();txt('\u03C6',cx+Math.max(24,R*.45)+14,cy-8-Math.max(0,phiD*10),F.SEC,C.yel,'left','middle',700);}
+  var prog=ease(((t*.35)%1)),rc=ri+(R-ri)*prog,ns=8;for(i=0;i<=ns;i++){var rj=ri+(R-ri)*i/ns;if(rj<=rc+1){var len=8+62*rj/R;arrow(cx+rj,cy+3,cx+rj,cy+3+len,'#0b1020',3.5,11);}}
+  line(cx+ri,cy+3,cx+R,cy+3+70,'rgba(255,255,255,.4)',1.5,[5,4]);
+  txt('\u03C4 maks',cx+R+14,cy+80,F.SEC,C.t1,'left','middle',700);txt('\u03C4 = 0 di pusat',cx,cy+R+34,F.SEC,C.t2,'center');
+  var by=530;
+  labelBox(['Momen inersia polar','J = \u03C0 (d\u2074 \u2212 d\u1D62\u2074) / 32','= '+nf(c.J/1e6,2)+' \u00D7 10\u2076 mm\u2074'],300,by,{head:true,size:F.LABEL+1,minW:290});
+  labelBox(['Tegangan geser maksimum','\u03C4 = T r / J','= '+nf(c.tau,1)+' MPa'],640,by,{head:true,size:F.LABEL+1,minW:290});
+  labelBox(['Sudut puntir','\u03C6 = T L / (J G)','= '+nf(c.phi,4)+' rad = '+nf(c.phi*180/Math.PI,2)+'\u00B0'],980,by,{head:true,size:F.LABEL+1,minW:290});
+  txt('Sudut puntir diperbesar \u00D712 agar terlihat',W-40,650,F.SEC,C.t3,'right');
+  foot(+p.hol?'Poros berongga memikul torsi hampir sama efisiennya dengan massa yang jauh lebih kecil, karena bahan berada di tempat tegangan terbesar.':'Tegangan geser nol di pusat dan bertambah sebanding dengan jarak radial sampai maksimum di permukaan.');}
+});
+
+/* ---------- 6. Tegangan lentur ---------- */
+new Sim({id:'sim-bending',label:'Serat balok mengalami tarik dan tekan',
+ controls:[{k:'P',label:'Beban terpusat P',unit:'kN',min:10,max:100,step:5,val:50,dec:0},
+  {k:'a',label:'Posisi beban dari tumpuan kiri',unit:'m',min:.5,max:3.5,step:.25,val:2,dec:2},
+  {k:'sec',label:'Bentuk dan orientasi penampang',options:[['rectV','Persegi 100 \u00D7 200 mm (tegak)'],['rectH','Persegi 200 \u00D7 100 mm (rebah)'],['circ','Lingkaran d = 160 mm'],['I','Profil I setinggi 200 mm']],val:'rectV'}],
+ reads:function(p){var sc=SEC[p.sec],Lm=4,b=Lm-p.a,M=p.P*p.a*b/Lm,sg=M*1e6*(sc.h/2)/sc.I;return [['Momen maksimum M',nf(M,1)+' kN\u00B7m'],['Momen inersia I',nf(sc.I/1e6,1)+' \u00D7 10\u2076 mm\u2074'],['\u03C3 maksimum (tarik dan tekan)',nf(sg,1)+' MPa']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,sec=SEC[p.sec],Lm=4,Lmm=4000,a=s.a,b=Lm-a,Mmax=s.P*a*b/Lm,EI=200000*sec.I,Pn=s.P*1000;
+  head('Serat balok mengalami tarik dan tekan','Balok sendi-rol, bentang 4 m, baja. Penampang: '+sec.n);legendT(W-260,34);
+  var x0=120,Lpx=1000,yc=210,dp=64,xs=Lpx/Lmm,i,k,vmax=0;
+  for(i=0;i<=40;i++){vmax=Math.max(vmax,beamV('ss','pt',i*Lmm/40,Lmm,a*1000,Pn,0,EI));}
+  var mg=14;if(vmax*mg>80)mg=80/vmax;
+  function vv(x){return beamV('ss','pt',x,Lmm,a*1000,Pn,0,EI)*mg*f;}
+  function sl(x){var h=Lmm/2000,x1=Math.max(0,x-h),x2=Math.min(Lmm,x+h);return (vv(x2)-vv(x1))/(x2-x1)/xs;}
+  var nfb=7;
+  ctx.beginPath();for(i=0;i<=80;i++){var x=i/80*Lmm,px=x0+i/80*Lpx-(-dp/2)*sl(x);ctx.lineTo(px,yc-dp/2+vv(x));}for(i=80;i>=0;i--){var x2=i/80*Lmm,px2=x0+i/80*Lpx-(dp/2)*sl(x2);ctx.lineTo(px2,yc+dp/2+vv(x2));}ctx.closePath();ctx.fillStyle='rgba(150,165,190,.2)';ctx.fill();
+  for(k=0;k<nfb;k++){var yf=-dp/2+k*dp/(nfb-1),yn=yf/(dp/2);for(i=0;i<80;i++){var xa1=i/80*Lmm,xa2=(i+1)/80*Lmm,pa=x0+i/80*Lpx-yf*sl(xa1),pb=x0+(i+1)/80*Lpx-yf*sl(xa2),Mloc=beamM('ss','pt',(xa1+xa2)/2,Lmm,a*1000,Pn,0);
+    ctx.beginPath();ctx.moveTo(pa,yc+yf+vv(xa1));ctx.lineTo(pb,yc+yf+vv(xa2));ctx.strokeStyle=(k===3)?'rgba(255,255,255,.75)':stressColor(yn*Mloc/(Mmax*1e6+1e-9)*f+0*yn,1);ctx.lineWidth=(k===3)?2:5;if(k===3)ctx.setLineDash([8,6]);ctx.stroke();ctx.setLineDash([]);}}
+  txt('sumbu netral',x0+Lpx+30,yc,F.SEC,C.t2,'left');
+  G.tri(x0,yc+dp/2+2,36,34);G.tri(x0+Lpx,yc+dp/2+2,36,34);
+  var xa=x0+a*250,ytop=yc-dp/2+vv(a*1000);arrow(xa,ytop-90,xa,ytop-3,cc(C.org,1),5,16);txt('P = '+nf(s.P,0)+' kN',xa+16,ytop-88,F.SEC,cc(C.org,1),'left','middle',700);
+  line(xa,yc-dp/2-24,xa,yc+dp/2+62,C.yel,1.5,[5,5]);txt('penampang kritis (M maks)',xa,yc+dp/2+80,F.SEC,C.yel,'center','middle',700);
+  txt('serat atas memendek (tekan)',x0+20,yc-dp/2-60,F.SEC,cc(C.com,1),'left');txt('serat bawah memanjang (tarik)',x0+20,yc+dp/2+80,F.SEC,cc(C.ten,1),'left');
+  /* penampang kritis */
+  var cx=230,cy=480,sc2=.7,axX=560,ks=1.15,sig=function(y){return Mmax*1e6*y/sec.I;};
+  txt('Penampang kritis',cx,cy-sec.h/2*sc2-34,F.SEC,C.t2,'center');
+  shapeFill(sec,cx,cy,sc2,function(y){return stressColor(sig(y)/150*f,.95);},60);
+  line(cx-90,cy,axX+200,cy,'rgba(255,255,255,.6)',1.5,[7,6]);txt('sumbu netral',70,cy+20,F.SEC,C.t2,'left');
+  var ht=sec.h/2*sc2,sT=sig(-sec.h/2)*f,sB=sig(sec.h/2)*f;
+  line(axX,cy-ht,axX,cy+ht,C.t1,2);
+  ctx.beginPath();ctx.moveTo(axX,cy-ht);ctx.lineTo(axX+ks*sT,cy-ht);ctx.lineTo(axX+ks*sB,cy+ht);ctx.lineTo(axX,cy+ht);ctx.closePath();ctx.fillStyle='rgba(255,255,255,.08)';ctx.fill();ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(axX,cy);ctx.lineTo(axX+ks*sT,cy-ht);ctx.lineTo(axX,cy-ht);ctx.closePath();ctx.fillStyle=cc(C.com,.45);ctx.fill();ctx.beginPath();ctx.moveTo(axX,cy);ctx.lineTo(axX+ks*sB,cy+ht);ctx.lineTo(axX,cy+ht);ctx.closePath();ctx.fillStyle=cc(C.ten,.45);ctx.fill();
+  var sm=Mmax*1e6*(sec.h/2)/sec.I;
+  txt('tekan \u03C3 = \u2212'+nf(sm,1)+' MPa',axX-14,cy-ht-16,F.SEC,cc(C.com,1),'right','middle',700);txt('tarik \u03C3 = +'+nf(sm,1)+' MPa',axX+14,cy+ht+18,F.SEC,cc(C.ten,1),'left','middle',700);
+  labelBox(['Momen maksimum','M = P a b / L','= '+nf(Mmax,1)+' kN\u00B7m'],930,440,{head:true,size:F.LABEL+1,minW:250});
+  labelBox(['Tegangan lentur maksimum','\u03C3 = M c / I','= '+nf(sm,1)+' MPa'],930,560,{head:true,size:F.LABEL+1,minW:250,stroke:cc(C.org,1)});
+  txt('Lendutan diperbesar agar terlihat',W-40,650,F.SEC,C.t3,'right');
+  foot('Serat atas memendek, serat bawah memanjang, sumbu netral tidak berubah panjang; tegangan terbesar ada di serat terjauh.');}
+});
+
+/* ---------- 7. Tegangan geser ---------- */
+new Sim({id:'sim-shear',label:'Distribusi tegangan geser pada penampang',
+ controls:[{k:'V',label:'Gaya geser V',unit:'kN',min:10,max:200,step:10,val:60,dec:0},
+  {k:'lay',label:'Penampang untuk animasi lapisan',options:[['rectV','Persegi 100 \u00D7 200'],['circ','Lingkaran d = 160'],['I','Profil I']],val:'rectV'}],
+ reads:function(p){var out=[];[['rectV','Persegi'],['circ','Lingkaran'],['I','Profil I']].forEach(function(e){var sc=SEC[e[0]],mx=0,j;for(j=0;j<=100;j++){mx=Math.max(mx,shearTau(sc,p.V,j/100*sc.h/2));}out.push(['\u03C4 maks '+e[1],nf(mx,2)+' MPa ('+nf(mx/(p.V*1000/sc.A),2)+' V/A)']);});return out;},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,V=s.V*f,keys=['rectV','circ','I'],names=['Persegi','Lingkaran','Profil I'],i,j;
+  head('Distribusi tegangan geser pada penampang','Gaya geser V yang sama bekerja pada ketiga penampang');
+  var tm=[],tAll=1e-9;keys.forEach(function(k2,ix){var sc=SEC[k2],mx=0,my=0;for(j=0;j<=100;j++){var y=j/100*sc.h/2,tv=shearTau(sc,s.V,y);if(tv>mx){mx=tv;my=y;}}tm.push([mx,my]);tAll=Math.max(tAll,mx);});
+  /* lapisan */
+  var sec=SEC[sim.p.lay],NL=21,yc=280,dpx=210,lx=70,lw=380,cum=[],acc=0,kx=.05;
+  for(j=0;j<NL;j++){var yl=-sec.h/2+(j+.5)*sec.h/NL,tl=shearTau(sec,V,yl);acc+=tl*sec.h/NL;cum.push(acc);}
+  txt('Lapisan balok cenderung bergeser',lx+lw/2,100,F.TITLE,C.t1,'center','middle',700);
+  for(j=0;j<NL;j++){var yl2=-sec.h/2+(j+.5)*sec.h/NL,tl2=shearTau(sec,s.V,yl2),off=kx*(cum[j]-acc/2),ly=yc-dpx/2+j*dpx/NL;ctx.fillStyle=cc(mixc(C.neu,C.org,clamp(tl2/Math.max(tm[keys.indexOf(sim.p.lay)][0],1e-9),0,1)),.95);ctx.fillRect(lx+off,ly,lw,dpx/NL-1.5);}
+  line(lx-30,yc,lx+lw+50,yc,'rgba(255,255,255,.45)',1.2,[6,5]);ftxt('sumbu netral',lx+lw+54,yc,F.SEC,C.t2,'left','middle',400,84);
+  arrow(lx-26,yc+70,lx-26,yc-40,cc(C.ten,1),4,14);arrow(lx+lw+26,yc-70,lx+lw+26,yc+40,cc(C.ten,1),4,14);txt('V',lx-42,yc+70,F.SEC,cc(C.ten,1),'right','middle',700);txt('V',lx+lw+42,yc-70,F.SEC,cc(C.ten,1),'left','middle',700);
+  ftxt('Pergeseran antar lapisan terbesar di sekitar sumbu netral.',lx+lw/2,yc+dpx/2+34,F.SEC,C.t2,'center','middle',400,470);
+  /* tiga penampang */
+  var sc2=.55,cy=270,kt=92/tAll;
+  keys.forEach(function(k2,ix){var sc=SEC[k2],px0=580+ix*220,xs=px0+52,axX=px0+114,tau=function(y){return shearTau(sc,s.V,y)*f;};
+    shapeFill(sc,xs,cy,sc2,function(y){return cc(mixc(C.neu,C.org,clamp(tau(y)/tAll,0,1)),.95);},50);
+    line(xs-52,cy,axX+100,cy,'rgba(255,255,255,.4)',1.2,[6,5]);line(axX,cy-sc.h/2*sc2-6,axX,cy+sc.h/2*sc2+6,C.t1,1.5);
+    ctx.beginPath();var n2=80,q;for(q=0;q<=n2;q++){var y=-sc.h/2+q/n2*sc.h;ctx.lineTo(axX+kt*tau(y),cy+y*sc2);}ctx.lineTo(axX,cy+sc.h/2*sc2);ctx.lineTo(axX,cy-sc.h/2*sc2);ctx.closePath();ctx.fillStyle=cc(C.org,.3);ctx.fill();ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=2.5;ctx.stroke();
+    var my2=tm[ix][1],mx2=tm[ix][0]*f;ctx.beginPath();ctx.arc(axX+kt*mx2,cy+my2*sc2,5,0,7);ctx.fillStyle=C.t1;ctx.fill();
+    labelBox([names[ix],'\u03C4 maks = '+nf(tm[ix][0]*f,2)+' MPa','= '+nf(tm[ix][0]/(s.V*1000/sc.A),2)+' V / A'],px0+105,470,{head:true,maxW:214,fill:'rgba(20,26,44,.92)'});});
+  txt('Persegi dan lingkaran: maksimum di sumbu netral. Profil I: badan memikul hampir seluruh geser.',40,610,F.SEC,C.t2,'left','middle',400);
+  foot('Tegangan geser nol di serat luar dan terbesar dekat sumbu netral; pada profil I ia melompat di pertemuan badan dan sayap.');}
+});
+
+/* ---------- 8. Lendutan dan kemiringan ---------- */
+function defCalc(p){var Lmm=p.L*1000,a=p.a*Lmm,P=p.P*1000,q=p.q,EI=MAT[p.mat].E*1000*p.I*1e6,i,vmax=0,xm=0,Mmx=0,Mmn=0;
+  for(i=0;i<=400;i++){var x=i/400*Lmm,v=beamV(p.sup,p.ld,x,Lmm,a,P,q,EI),m=beamM(p.sup,p.ld,x,Lmm,a,P,q);if(Math.abs(v)>Math.abs(vmax)){vmax=v;xm=x;}Mmx=Math.max(Mmx,m);Mmn=Math.min(Mmn,m);}
+  function V(x){return beamV(p.sup,p.ld,x,Lmm,a,P,q,EI);}
+  var xt=p.xt*Lmm,h=Lmm/4000,x1=Math.max(0,xt-h),x2=Math.min(Lmm,xt+h),th=(V(x2)-V(x1))/(x2-x1);
+  return {Lmm:Lmm,a:a,P:P,q:q,EI:EI,vmax:vmax,xm:xm,Mmx:Mmx,Mmn:Mmn,xt:xt,th:th,vt:V(xt)};}
+new Sim({id:'sim-deflect',label:'Kurva elastik balok',
+ controls:[{k:'sup',label:'Jenis tumpuan',options:[['ss','Sendi-rol (kedua ujung)'],['cant','Kantilever (jepit di kiri)'],['ff','Jepit-jepit']],val:'ss'},
+  {k:'ld',label:'Jenis beban',options:[['pt','Terpusat P'],['udl','Merata q']],val:'pt'},
+  {k:'L',label:'Panjang bentang L',unit:'m',min:2,max:8,step:.5,val:4},
+  {k:'P',label:'Beban terpusat P',unit:'kN',min:5,max:100,step:5,val:40,dec:0},
+  {k:'a',label:'Posisi beban P (a / L)',min:.1,max:.9,step:.05,val:.5,dec:2},
+  {k:'q',label:'Beban merata q',unit:'kN/m',min:5,max:50,step:5,val:20,dec:0},
+  {k:'mat',label:'Modulus elastisitas E',options:[['steel','Baja (200 GPa)'],['alu','Aluminium (70 GPa)'],['wood','Kayu (12 GPa)']],val:'steel'},
+  {k:'I',label:'Momen inersia I',unit:'\u00D710\u2076 mm\u2074',min:10,max:200,step:5,val:60,dec:0},
+  {k:'xt',label:'Titik yang ditinjau (x / L)',min:0,max:1,step:.05,val:.5,dec:2}],
+ dis:function(p){return {P:p.ld==='udl',a:p.ld==='udl',q:p.ld==='pt'};},
+ reads:function(p){var c=defCalc(p),lim=c.Lmm/360,ok=Math.abs(c.vmax)<=lim;return [['Lendutan maksimum \u03B4',nf(Math.abs(c.vmax),2)+' mm (di x = '+nf(c.xm/c.Lmm*p.L,2)+' m)'],['Kemiringan \u03B8 di titik ditinjau',nf(c.th,5)+' rad = '+nf(c.th*180/Math.PI,3)+'\u00B0'],['Lendutan v di titik ditinjau',nf(c.vt,2)+' mm'],['Batas contoh L/360',nf(lim,1)+' mm: '+(ok?'terpenuhi':'terlampaui'),ok?'ok':'bad']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,c=defCalc({sup:p.sup,ld:p.ld,L:s.L,a:s.a,P:s.P,q:s.q,mat:p.mat,I:s.I,xt:s.xt}),Lmm=c.Lmm;
+  head('Kurva elastik balok','Kurva biru adalah bentuk balok; diagram oranye adalah momen lentur');
+  var x0=140,Lpx=1000,yc=200,xs=Lpx/Lmm,mg=10,i;if(Math.abs(c.vmax)*mg>110)mg=110/Math.abs(c.vmax);if(Math.abs(c.vmax)<1e-9)mg=10;
+  var vfun=function(x){return beamV(p.sup,p.ld,x,Lmm,c.a,c.P,c.q,c.EI)*mg*f;};
+  line(x0,yc,x0+Lpx,yc,C.t3,1.5,[7,6]);
+  if(p.sup==='ss'){G.tri(x0,yc+8,36,32);G.tri(x0+Lpx,yc+8,36,32);}else if(p.sup==='cant'){hatchWall(x0,yc-50,yc+50,-1);}else{hatchWall(x0,yc-50,yc+50,-1);hatchWall(x0+Lpx,yc-50,yc+50,1);}
+  ctx.beginPath();for(i=0;i<=120;i++){var x=i/120*Lmm;var px=x0+i/120*Lpx,py=yc+vfun(x);if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.strokeStyle=cc([120,190,255],1);ctx.lineWidth=13;ctx.lineJoin='round';ctx.stroke();
+  if(p.ld==='pt'){var xa=x0+c.a*xs,ya=yc+vfun(c.a)-9;arrow(xa,ya-80,xa,ya,cc(C.org,1),5,16);txt('P = '+nf(s.P,0)+' kN',xa+16,ya-78,F.SEC,cc(C.org,1),'left','middle',700);}
+  else{var n=13;line(x0,yc-78,x0+Lpx,yc-78,cc(C.org,1),3);for(i=0;i<=n;i++){var xq=i/n*Lmm,ax=x0+i/n*Lpx,ay=yc+vfun(xq)-9;arrow(ax,yc-78,ax,ay,cc(C.org,1),3,11);}txt('q = '+nf(s.q,0)+' kN/m',x0+Lpx/2,yc-96,F.SEC,cc(C.org,1),'center','middle',700);}
+  /* titik ditinjau */
+  var xt=x0+s.xt*Lpx,yt=yc+vfun(c.xt),th=c.th*mg*f/xs;var ang=Math.atan(th);line(xt-70*Math.cos(ang),yt-70*Math.sin(ang),xt+70*Math.cos(ang),yt+70*Math.sin(ang),C.yel,2.5);ctx.beginPath();ctx.arc(xt,yt,7,0,7);ctx.fillStyle=C.yel;ctx.fill();
+  labelBox(['x = '+nf(s.xt*s.L,2)+' m','v = '+nf(c.vt,2)+' mm','\u03B8 = '+nf(c.th,4)+' rad'],xt,yc+160,{maxW:200});line(xt,yt+40,xt,yc+120,cc(C.yel,.5),1.5,[4,4]);
+  var xm=x0+c.xm/Lmm*Lpx,ym=yc+vfun(c.xm);ctx.beginPath();ctx.arc(xm,ym,6,0,7);ctx.strokeStyle=C.t1;ctx.lineWidth=2.5;ctx.stroke();txt('\u03B4 maks = '+nf(Math.abs(c.vmax),2)+' mm',xm,ym+(c.vmax>=0?30:-30),F.SEC,C.t1,'center','middle',700);
+  txt('Kurva elastik v(x): bentuk balok setelah melendut',40,100,F.SEC,cc([120,190,255],1),'left','middle',700);
+  /* diagram momen */
+  var yb=520,Mabs=Math.max(Math.abs(c.Mmx),Math.abs(c.Mmn),1e-9),ms=85/Mabs,base=x0;
+  txt('Diagram momen lentur M(x): bukan bentuk balok. Momen positif di sisi serat tarik.',40,412,F.SEC,cc(C.org,1),'left','middle',700);
+  line(x0,yb,x0+Lpx,yb,C.t2,1.5);ctx.beginPath();ctx.moveTo(x0,yb);for(i=0;i<=200;i++){var xx=i/200*Lmm,m=beamM(p.sup,p.ld,xx,Lmm,c.a,c.P,c.q);ctx.lineTo(x0+i/200*Lpx,yb+m*ms*f);}ctx.lineTo(x0+Lpx,yb);ctx.closePath();ctx.fillStyle=cc(C.org,.3);ctx.fill();ctx.strokeStyle=cc(C.org,1);ctx.lineWidth=2.5;ctx.stroke();
+  var Mt=beamM(p.sup,p.ld,c.xt,Lmm,c.a,c.P,c.q);line(xt,yb,xt,yb+Mt*ms*f,C.yel,3);
+  if(c.Mmx>1)txt('M maks = '+nf(c.Mmx/1e6,1)+' kN\u00B7m',x0+Lpx+8,yb+Math.min(70,c.Mmx*ms)+6,F.SEC,C.t2,'right','middle');
+  if(c.Mmn<-1)txt('M min = '+nf(c.Mmn/1e6,1)+' kN\u00B7m',x0+Lpx+8,yb+Math.max(-100,c.Mmn*ms)-14,F.SEC,C.t2,'right','middle');
+  txt('Bentang L = '+nf(s.L,1)+' m',W-40,34,F.SEC,C.t1,'right');
+  txt('Lendutan diperbesar sekitar \u00D7'+nf(mg/xs,0),W-40,650,F.SEC,C.t3,'right');
+  var lim=Lmm/360;foot(Math.abs(c.vmax)<=lim?'Lendutan maksimum masih di bawah batas contoh L/360; kekakuan EI menentukan besar lendutan.':'Lendutan melewati batas contoh L/360: tegangan boleh aman, tetapi kekakuan balok belum memadai.');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G,Sim=G.Sim,C=G.C,cc=G.cc,nf=G.nf,clamp=G.clamp,txt=G.txt,ftxt=G.ftxt,labelBox=G.labelBox,arrow=G.arrow,line=G.line,head=G.head,foot=G.foot,legendT=G.legendT,hatchWall=G.hatchWall,stressColor=G.stressColor,ease=G.ease,mixc=G.mixc,MAT=G.MAT,F=G.F,W=G.W,H=G.H;
+var ctx=null;
+
+/* ---------- 9a. Tegangan gabungan ---------- */
+function cmbCalc(p,e){var A=p.b*p.h,I=p.b*Math.pow(p.h,3)/12,P=p.P*1000,sa=-P/A,sm=P*e*(p.h/2)/I;return {A:A,I:I,sa:sa,sLoad:sa-sm,sFar:sa+sm,yna:e>1e-9?-I/(A*e):-1e9,kern:p.h/6,M:P*e/1e6};}
+new Sim({id:'sim-combined',label:'Distribusi tegangan gabungan',
+ controls:[{k:'P',label:'Gaya tekan P',unit:'kN',min:50,max:1000,step:10,val:400,dec:0},
+  {k:'e',label:'Eksentrisitas e',unit:'mm',min:0,max:150,step:5,val:60,dec:0},
+  {k:'h',label:'Tinggi penampang h (arah eksentrisitas)',unit:'mm',min:200,max:400,step:10,val:300,dec:0},
+  {k:'b',label:'Lebar penampang b',unit:'mm',min:150,max:300,step:10,val:200,dec:0}],
+ reads:function(p){var c=cmbCalc(p,p.e);return [['\u03C3 tepi dekat beban',nf(c.sLoad,2)+' MPa'],['\u03C3 tepi jauh',nf(c.sFar,2)+' MPa',c.sFar>0?'bad':''],['Batas kern h/6',nf(c.kern,0)+' mm'],['Kondisi',p.e<=c.kern?'Seluruhnya tekan':'Ada daerah tarik',p.e<=c.kern?'ok':'bad']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var e=s.e*f,c=cmbCalc({P:s.P,h:s.h,b:s.b},e);
+  head('Distribusi tegangan gabungan','Gaya tekan dengan eksentrisitas e pada penampang persegi');legendT(W-260,34);
+  /* elevasi */
+  var ex=170,ey0=110,ey1=430,cw=44;ctx.fillStyle='rgba(150,165,190,.3)';ctx.fillRect(ex-cw,ey0+50,cw*2,ey1-ey0-50);ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.strokeRect(ex-cw,ey0+50,cw*2,ey1-ey0-50);line(ex,ey0+30,ex,ey1+16,C.t3,1.2,[6,5]);
+  var ax=ex+e/(s.h/2)*cw;arrow(ax,ey0-10,ax,ey0+50,cc(C.org,1),5,15);txt('P',ax+14,ey0+8,F.SEC,cc(C.org,1),'left','middle',700);if(e>1){line(ex,ey0+62,ax,ey0+62,C.yel,3);txt('e',(ex+ax)/2,ey0+80,F.SEC,C.yel,'center','middle',700);}
+  txt('tampak samping',ex,ey1+38,F.SEC,C.t2,'center');
+  /* penampang */
+  var sc=.75,cx=640,cy=230,wpx=s.h*sc,hpx=s.b*sc,N=60,j;
+  txt('Penampang persegi (h \u00D7 b = '+nf(s.h,0)+' \u00D7 '+nf(s.b,0)+' mm)',cx,cy-hpx/2-24,F.SEC,C.t2,'center');
+  for(j=0;j<N;j++){var y=-s.h/2+(j+.5)*s.h/N,sg=c.sa-(s.P*1000*e*y)/c.I;ctx.fillStyle=stressColor(sg/25,.95);ctx.fillRect(cx-wpx/2+j*wpx/N,cy-hpx/2,wpx/N+.6,hpx);}
+  ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.strokeRect(cx-wpx/2,cy-hpx/2,wpx,hpx);
+  ctx.save();ctx.setLineDash([6,5]);ctx.strokeStyle=C.yel;ctx.lineWidth=2;ctx.strokeRect(cx-c.kern*sc,cy-hpx/2+8,c.kern*2*sc,hpx-16);ctx.restore();txt('kern (h / 3)',cx,cy+hpx/2+22,F.SEC,C.yel,'center','middle',700);
+  ctx.beginPath();ctx.arc(cx+e*sc,cy,7,0,7);ctx.fillStyle=cc(C.org,1);ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=1.5;ctx.stroke();txt('titik beban',cx+e*sc,cy-18,F.SEC,cc(C.org,1),'center','middle',700);
+  if(e>1&&Math.abs(c.yna)<s.h/2){var nx=cx+c.yna*sc;line(nx,cy-hpx/2-8,nx,cy+hpx/2+8,'#fff',2.5,[8,5]);txt('sumbu netral',nx,cy+hpx/2+46,F.SEC,'#fff','center','middle',700);}
+  /* diagram */
+  var yb=490,ks=4,x1=cx-wpx/2,x2=cx+wpx/2;line(x1-20,yb,x2+20,yb,C.t2,1.5);
+  for(j=0;j<N;j++){var yy=-s.h/2+(j+.5)*s.h/N,sg2=c.sa-(s.P*1000*e*yy)/c.I,hh=clamp(sg2*ks,-110,110);ctx.fillStyle=cc(sg2<0?C.com:C.ten,.55);ctx.fillRect(cx-wpx/2+j*wpx/N,Math.min(yb,yb+hh),wpx/N+.6,Math.abs(hh));}
+  ctx.beginPath();ctx.moveTo(x1,yb+clamp(c.sFar*ks,-110,110));ctx.lineTo(x2,yb+clamp(c.sLoad*ks,-110,110));ctx.strokeStyle=C.t1;ctx.lineWidth=3;ctx.stroke();
+  txt('\u03C3 = '+nf(c.sFar,1)+' MPa',x1-8,yb+clamp(c.sFar*ks,-110,110)+(c.sFar<0?-16:16),F.SEC,c.sFar<0?cc(C.com,1):cc(C.ten,1),'right','middle',700);
+  txt('\u03C3 = '+nf(c.sLoad,1)+' MPa',x2+8,yb+clamp(c.sLoad*ks,-110,110)-16,F.SEC,cc(C.com,1),'left','middle',700);
+  txt('tekan di atas garis, tarik di bawah garis',cx,yb+128,F.SEC,C.t3,'center');
+  labelBox(['Superposisi','\u03C3 = P / A \u00B1 M y / I','M = P e = '+nf(c.M,1)+' kN\u00B7m'],1100,250,{head:true,size:F.LABEL+1,minW:240});
+  labelBox(['Inti penampang (kern)','e \u2264 h / 6 = '+nf(c.kern,0)+' mm',e<=c.kern+1e-9?'e = '+nf(e,0)+' mm: aman dari tarik':'e = '+nf(e,0)+' mm: ada tarik'],1100,390,{head:true,size:F.LABEL+1,minW:240,stroke:e<=c.kern+1e-9?cc(C.grn,1):cc(C.com,1)});
+  foot(e<=c.kern+1e-9?'Beban di dalam kern: seluruh penampang tetap tertekan, hanya besarnya yang tidak merata.':'Eksentrisitas melewati h/6: muncul tegangan tarik di sisi jauh dan sumbu netral masuk ke penampang.');}
+});
+
+/* ---------- 9b. Tekuk kolom ---------- */
+var KV={pp:1,fb:2,fp:.7,ff:.5};
+function bkCalc(p){var E=MAT[p.mat].E*1000,I=p.I*1e6,KL=KV[p.K]*p.L*1000,Pcr=Math.PI*Math.PI*E*I/(KL*KL)/1000;return {Pcr:Pcr,r:p.P/Pcr,K:KV[p.K]};}
+function bkShape(K,s){if(K==='pp')return Math.sin(Math.PI*s);if(K==='fb')return 1-Math.cos(Math.PI*s/2);if(K==='fp')return s*s*(1-s)/.148148;return (1-Math.cos(2*Math.PI*s))/2;}
+new Sim({id:'sim-buckle',label:'Tekuk kolom',noCycle:true,
+ controls:[{k:'L',label:'Panjang kolom L',unit:'m',min:1,max:8,step:.5,val:4},
+  {k:'mat',label:'Modulus elastisitas E',options:[['steel','Baja (200 GPa)'],['alu','Aluminium (70 GPa)'],['wood','Kayu (12 GPa)']],val:'steel'},
+  {k:'I',label:'Momen inersia minimum I',unit:'\u00D710\u2076 mm\u2074',min:2,max:100,step:1,val:20,dec:0},
+  {k:'K',label:'Kondisi tumpuan',options:[['pp','Sendi\u2013sendi (K = 1,0)'],['fb','Jepit\u2013bebas (K = 2,0)'],['fp','Jepit\u2013sendi (K = 0,7)'],['ff','Jepit\u2013jepit (K = 0,5)']],val:'pp'},
+  {k:'P',label:'Beban kerja P',unit:'kN',min:0,max:3000,step:10,val:1000,dec:0}],
+ init:function(sim){sim.st.amp=4;},
+ reads:function(p){var c=bkCalc(p);return [['Beban kritis Pcr',nf(c.Pcr,0)+' kN'],['P / Pcr',nf(c.r,2),c.r>=1?'bad':(c.r>.6?'':'ok')],['Faktor keamanan Pcr / P',p.P>0?nf(c.Pcr/p.P,2):'-'],['Panjang efektif KL',nf(c.K*p.L,2)+' m']];},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);var p=sim.p,c=bkCalc(p),cs=bkCalc({L:s.L,mat:p.mat,I:s.I,K:p.K,P:s.P}),r=c.r,i;
+  head('Tekuk kolom','Kolom ideal dengan sedikit ketidaklurusan awal; beban dibandingkan dengan beban kritis Euler');
+  var target=r>=1?150:Math.min(150,5/(1-r+.0001));sim.st.amp+=(target-sim.st.amp)*(1-Math.exp(-sim.dt*(r>=1?1.6:6)));var amp=sim.st.amp;
+  var cx=340,yb=615,yt=185,Hc=yb-yt,col=r>=1?cc(C.com,1):(r>.6?cc([255,206,84],1):cc(C.grn,1));
+  line(cx,yt-20,cx,yb,C.t3,1.2,[6,5]);
+  if(p.K==='pp'){G.tri(cx,yb,50,34);}else{ctx.fillStyle='rgba(150,165,190,.25)';ctx.fillRect(cx-50,yb,100,24);ctx.strokeStyle='rgba(232,238,248,.4)';ctx.lineWidth=1.5;ctx.beginPath();for(i=-50;i<50;i+=12){ctx.moveTo(cx+i,yb+24);ctx.lineTo(cx+i+12,yb);}ctx.stroke();line(cx-50,yb,cx+50,yb,C.t1,2.5);}
+  ctx.beginPath();for(i=0;i<=80;i++){var sv=i/80,px=cx+amp*bkShape(p.K,sv),py=yb-sv*Hc;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.strokeStyle=col;ctx.lineWidth=16;ctx.lineJoin='round';ctx.stroke();
+  var topx=cx+amp*bkShape(p.K,1);ctx.fillStyle='rgba(150,165,190,.45)';ctx.fillRect(topx-30,yt-12,60,12);
+  var al=30+40*Math.min(r,1.5);arrow(topx,yt-12-al,topx,yt-12,cc(C.org,1),6,18);txt('P = '+nf(s.P,0)+' kN',topx+34,yt-12-al/2,F.SEC,cc(C.org,1),'left','middle',700);
+  var lab={pp:'ujung atas: sendi',fb:'ujung atas: bebas bergerak',fp:'ujung atas: sendi',ff:'ujung atas: dijepit (tidak berputar)'}[p.K];txt(lab,cx,yb+58,F.SEC,C.t2,'center');
+  txt(r>=1?'kolom menekuk':(r>.85?'mendekati tekuk':'kolom stabil'),cx-125,yt+110,F.CAP,col,'center','middle',700);
+  txt('L = '+nf(s.L,1)+' m',84,(yb+yt)/2,F.SEC,C.t2,'left');line(70,yt,70,yb,C.t2,1.2);line(62,yt,78,yt,C.t2,1.2);line(62,yb,78,yb,C.t2,1.2);
+  /* gauge */
+  var gx=720,gy=180,gw=480,rng=Math.max(1.5*cs.Pcr,s.P*1.05),fx=gw*clamp(s.P/rng,0,1),mx=gw*cs.Pcr/rng;
+  txt('Beban kerja dibanding beban kritis',gx,gy-34,F.TITLE,C.t1,'left','middle',700);
+  ctx.fillStyle='rgba(150,165,190,.2)';ctx.fillRect(gx,gy,gw,34);ctx.fillStyle=col;ctx.fillRect(gx,gy,fx,34);line(gx+mx,gy-12,gx+mx,gy+46,C.t1,3);txt('Pcr = '+nf(cs.Pcr,0)+' kN',gx+mx,gy+66,F.SEC,C.t1,'center','middle',700);txt('0',gx,gy+66,F.SEC,C.t3,'left');
+  labelBox(['P / Pcr = '+nf(cs.r,2),s.P>0?'Faktor keamanan tekuk = '+nf(cs.Pcr/s.P,2):'Belum dibebani'],gx+gw/2,318,{head:true,size:F.LABEL+2,minW:300,stroke:col});
+  labelBox(['Beban kritis Euler','Pcr = \u03C0\u00B2 E I / (K L)\u00B2','= '+nf(cs.Pcr,0)+' kN'],gx+gw/2,432,{head:true,size:F.LABEL+1,minW:300});
+  var ks=[['pp','Sendi\u2013sendi','1,0'],['fb','Jepit\u2013bebas','2,0'],['fp','Jepit\u2013sendi','0,7'],['ff','Jepit\u2013jepit','0,5']];
+  for(i=0;i<4;i++){var on=ks[i][0]===p.K,yy=510+i*30;txt(ks[i][1],gx+90,yy,F.SEC,on?C.yel:C.t2,'left','middle',on?700:400);txt('K = '+ks[i][2],gx+300,yy,F.SEC,on?C.yel:C.t2,'left','middle',on?700:400);}
+  foot(r>=1?'Beban melewati Pcr: kolom kehilangan kestabilan dan lendutan samping membesar sebelum bahan luluh.':(r>.85?'Beban mendekati Pcr: lendutan samping mulai membesar tajam.':'Beban jauh di bawah Pcr: kolom tetap lurus. Perpanjang kolom atau kurangi I untuk melihat tekuk.'));}
+});
+
+/* ---------- 10. Rangka terpadu ---------- */
+var FR=[
+ {n:'Batang gantung',r:'Tegangan normal tarik',d:'Beban W ditahan sebagai gaya tarik aksial. Tegangan \u03C3 = P/A merata pada penampang dan batang memanjang sebesar \u0394L = PL/AE.',mat:[2,3,4]},
+ {n:'Balok',r:'Lentur dan geser',d:'Beban dari batang gantung membuat balok melentur: serat atas tertekan dan serat bawah tertarik (\u03C3 = My/I), geser terbesar dekat tumpuan (\u03C4 = VQ/Ib), dan tengah bentang melendut.',mat:[6,7,8]},
+ {n:'Kolom kiri',r:'Tekan aksial dan potensi tekuk',d:'Menerima reaksi balok sebagai gaya tekan. Selain memeriksa \u03C3 = P/A, kolom langsing harus diperiksa terhadap beban kritis P\u1D04\u1D63.',mat:[2,9]},
+ {n:'Kolom kanan dengan konsol',r:'Tegangan gabungan',d:'Beban pada konsol bekerja dengan eksentrisitas terhadap sumbu kolom, sehingga momen ditambahkan pada tekan aksial: \u03C3 = P/A \u00B1 My/I. Sisi dekat beban lebih tertekan, sisi jauh dapat menjadi tarik.',mat:[9]}
+];
+new Sim({id:'sim-frame',label:'Rangka sederhana menerima beban',
+ controls:[],
+ init:function(sim){sim.st.sel=1;var bw=document.getElementById('framebtn'),dt=document.getElementById('framedetail');
+  function show(i){sim.st.sel=i;[].forEach.call(bw.children,function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-pressed',j===i?'true':'false');});var m=FR[i];dt.innerHTML='<h4>'+m.n+': '+m.r+'</h4><p>'+m.d+'</p><p class="chips">Submateri terkait: '+m.mat.map(function(n){return '<a href="#s'+n+'">'+n+'</a>';}).join('')+'</p>';}
+  FR.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.n;b.addEventListener('click',function(){show(i);});bw.appendChild(b);});sim.st.show=show;show(1);},
+ click:function(x,y,sim){var R=[[610,200,60,240,0],[330,165,620,70,1],[350,230,60,380,2],[870,230,150,380,3]],i;for(i=0;i<R.length;i++){if(x>=R[i][0]&&x<=R[i][0]+R[i][2]&&y>=R[i][1]&&y<=R[i][1]+R[i][3]){sim.st.show(R[i][4]);return;}}},
+ draw:function(s,t,f,sim){ctx=sim.ctx;G.setCtx(ctx);head('Rangka sederhana menerima beban','Pilih elemen untuk melihat respons dominannya');legendT(W-260,34);
+  var sel=sim.st.sel,fl=610,cl=380,cr=900,by=200,i,vm=26*f,hl=function(k,x,y,w,h){if(sel===k){ctx.save();ctx.strokeStyle=C.yel;ctx.lineWidth=3.5;ctx.setLineDash([9,6]);ctx.strokeRect(x,y,w,h);ctx.restore();}};
+  ctx.fillStyle='rgba(150,165,190,.25)';ctx.fillRect(300,fl,700,14);line(300,fl,1000,fl,C.t1,2.5);
+  /* kolom kiri */
+  var ky=by+4*f;ctx.fillStyle=stressColor(-.75*f,.95);ctx.fillRect(cl-18,ky,36,fl-ky);ctx.strokeStyle=C.t2;ctx.lineWidth=1.5;ctx.strokeRect(cl-18,ky,36,fl-ky);hl(2,cl-30,by+10,60,fl-by-10);
+  /* kolom kanan lengkung */
+  var pts=[],n=40;for(i=0;i<=n;i++){var sv=i/n;pts.push([cr+16*f*Math.sin(Math.PI*sv),fl-sv*(fl-by-4*f)]);}
+  function strokeCol(off,col,w){ctx.beginPath();for(i=0;i<=n;i++){if(i===0)ctx.moveTo(pts[i][0]+off,pts[i][1]);else ctx.lineTo(pts[i][0]+off,pts[i][1]);}ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineCap='butt';ctx.stroke();}
+  strokeCol(-9,stressColor(.35*f,.95),18);strokeCol(9,stressColor(-.95*f,.95),18);hl(3,cr-30,by+10,140,fl-by-10);
+  /* konsol */
+  ctx.fillStyle='rgba(150,165,190,.55)';ctx.fillRect(cr+24,350,96,20);ctx.strokeStyle=C.t2;ctx.strokeRect(cr+24,350,96,20);arrow(cr+104,270+14*(1-f),cr+104,350,cc(C.org,1),5,15);txt('Q',cr+124,286,F.SEC,cc(C.org,1),'left','middle',700);
+  line(cr,300,cr,fl,C.t3,1,[5,5]);
+  /* balok */
+  var bx0=cl-30,bx1=cr+30,nb=40;function bcurve(off){ctx.beginPath();for(i=0;i<=nb;i++){var u=i/nb,x=bx0+u*(bx1-bx0),y=by+off+vm*Math.sin(Math.PI*u);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}}
+  bcurve(-8);ctx.strokeStyle=stressColor(-.95*f,.95);ctx.lineWidth=16;ctx.stroke();bcurve(8);ctx.strokeStyle=stressColor(.95*f,.95);ctx.lineWidth=16;ctx.stroke();hl(1,bx0-8,by-24,bx1-bx0+16,52+vm);
+  /* batang gantung dan beban */
+  var midY=by+vm,wy=440+vm+8*f,rx=640;ctx.beginPath();ctx.moveTo(rx,midY+10);ctx.lineTo(rx,wy);ctx.strokeStyle=stressColor(.95*f,1);ctx.lineWidth=12;ctx.stroke();hl(0,rx-22,midY+6,44,wy-midY);
+  ctx.fillStyle='rgba(150,165,190,.5)';ctx.fillRect(rx-46,wy,92,64);ctx.strokeStyle=C.t1;ctx.lineWidth=2;ctx.strokeRect(rx-46,wy,92,64);txt('W',rx,wy+32,F.TITLE,C.t1,'center','middle',700);
+  /* label */
+  var names=['batang gantung','balok','kolom kiri','kolom kanan dan konsol'],pos=[[rx+40,340],[640,132],[cl-40,fl-60],[cr+50,fl-60]],al=['left','center','right','left'];
+  for(i=0;i<4;i++){if(i!==sel)txt(names[i],pos[i][0],pos[i][1],F.SEC,C.t2,al[i],'middle');}
+  var m=FR[sel],bp=[[rx+150,390],[640,112],[190,fl-110],[1100,fl-110]];labelBox([m.n,m.r],bp[sel][0],bp[sel][1],{head:true,maxW:250,stroke:C.yel,hcol:C.yel});
+  txt('Deformasi diperbesar agar terlihat',W-40,650,F.SEC,C.t3,'right');
+  foot(sel===0?'Batang gantung: tarik aksial murni.':sel===1?'Balok: lentur dan geser, serta lendutan di tengah bentang.':sel===2?'Kolom kiri: tekan aksial, periksa juga tekuk.':'Kolom kanan: tekan aksial ditambah lentur akibat eksentrisitas.');}
+});
+})();
+(function(){
+'use strict';
+var G=window.__G;
+
+/* ---- Daftar isi: bagian aktif dan sudah dibaca ---- */
+(function(){var links=[].slice.call(document.querySelectorAll('#toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});var a=map[e.target.id];if(a){a.classList.add('on');a.classList.add('seen');}}});},{rootMargin:'-20% 0px -70% 0px'});
+  [].forEach.call(document.querySelectorAll('main section'),function(s){io.observe(s);});})();
+
+/* ---- Asesmen awal ---- */
+(function(){var host=document.getElementById('pre'),res=document.getElementById('preres');if(!host)return;
+  var items=[['Menghitung tegangan dan regangan pada batang beban aksial',[2,4]],['Membaca kurva tegangan\u2013regangan material',[3]],['Menghitung tegangan dan sudut puntir pada poros',[5]],['Menghitung tegangan lentur dan tegangan geser pada balok',[6,7]],['Menjelaskan lendutan dan kemiringan balok',[8]],['Menganalisis tegangan gabungan dan beban kritis tekuk',[9]]];
+  var val=items.map(function(){return null;}),lv=['Belum paham','Sebagian','Sudah paham'];
+  function upd(){var need=[],part=[],done=val.filter(function(v){return v!==null;}).length;items.forEach(function(it,i){if(val[i]===0)need.push(i);else if(val[i]===1)part.push(i);});
+    function lk(list){return list.map(function(i){return items[i][0].toLowerCase()+' ('+items[i][1].map(function(n){return '<a href="#s'+n+'">submateri '+n+'</a>';}).join(', ')+')';}).join('; ');}
+    var h='';if(done<items.length)h+='<p>Terjawab '+done+' dari '+items.length+'.</p>';
+    if(need.length)h+='<p><b>Mulai dari:</b> '+lk(need)+'.</p>';if(part.length)h+='<p><b>Perkuat:</b> '+lk(part)+'.</p>';
+    if(done===items.length&&!need.length&&!part.length)h+='<p>Anda merasa sudah paham di semua topik. Tetap coba tiap animasi, lalu ukur diri dengan evaluasi akhir di submateri 10.</p>';
+    res.innerHTML=h||'Pilih tingkat pemahaman pada setiap baris untuk melihat saran urutan belajar.';}
+  items.forEach(function(it,i){var row=document.createElement('div');row.className='it';var q=document.createElement('div');q.textContent=it[0];var o=document.createElement('div');o.className='opt';
+    [0,1,2].forEach(function(v){var b=document.createElement('button');b.type='button';b.textContent=lv[v];b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){val[i]=v;[].forEach.call(o.children,function(x,j){x.classList.toggle('on',j===v);x.setAttribute('aria-pressed',j===v?'true':'false');});upd();});o.appendChild(b);});
+    row.appendChild(q);row.appendChild(o);host.appendChild(row);});})();
+
+/* ---- Evaluasi akhir ---- */
+(function(){var host=document.getElementById('quiz'),sc=document.getElementById('score');if(!host)return;
+var Q=[
+{t:'mc',q:'Urutan sebab-akibat yang benar dalam analisis elemen struktur adalah',o:['beban luar, gaya dalam, tegangan, regangan, deformasi','tegangan, beban luar, regangan, gaya dalam, deformasi','regangan, tegangan, gaya dalam, beban luar, deformasi','deformasi, regangan, tegangan, gaya dalam, beban luar'],a:0,x:'Beban luar menimbulkan gaya dalam pada penampang. Gaya dalam dibagi luas menjadi tegangan, tegangan menghasilkan regangan melalui sifat material, dan regangan yang terkumpul sepanjang elemen menjadi deformasi.'},
+{t:'mc',q:'Baja lunak ditarik melewati tegangan luluh, lalu beban dilepas perlahan sampai nol. Apa yang terjadi pada spesimen?',o:['Kembali tepat ke panjang semula','Tidak kembali seluruhnya: tersisa regangan permanen','Menjadi lebih pendek daripada panjang semula','Patah seketika saat beban dilepas'],a:1,x:'Pelepasan beban mengikuti garis yang sejajar dengan garis elastis awal. Bagian regangan plastis tidak pulih, sehingga tersisa regangan permanen.'},
+{t:'mc',q:'Pada poros pejal yang dipuntir, tegangan geser maksimum terjadi di',o:['pusat penampang','permukaan luar','setengah jari-jari','seluruh penampang sama besar'],a:1,x:'\u03C4 = Tr/J sebanding dengan jarak radial r. Tegangan nol di pusat dan maksimum di permukaan luar.'},
+{t:'mc',q:'Pada balok yang melentur, regangan longitudinal sama dengan nol di',o:['serat paling atas','serat paling bawah','sumbu netral','tumpuan'],a:2,x:'Serat di satu sisi sumbu netral memendek dan serat di sisi lain memanjang. Serat yang berada tepat di sumbu netral tidak berubah panjang.'},
+{t:'mc',q:'Penampang persegi menerima gaya geser V. Di mana tegangan geser maksimum terjadi dan berapa nilainya?',o:['Di serat paling atas, V/A','Di sumbu netral, 1,5 V/A','Di sumbu netral, V/A','Di serat paling bawah, 1,5 V/A'],a:1,x:'Distribusi \u03C4 pada persegi berbentuk parabola: nol di serat luar dan maksimum di sumbu netral dengan \u03C4maks = 1,5 V/A.'},
+{t:'mc',q:'Balok sendi-rol menerima beban tetap. Momen inersia penampang dijadikan dua kali (bahan sama). Lendutan maksimumnya menjadi',o:['dua kali','setengah','seperempat','tidak berubah'],a:1,x:'Lendutan berbanding terbalik dengan kekakuan lentur EI, sehingga I dua kali memberi lendutan setengah. Diagram momen tidak berubah karena momen hanya bergantung pada beban dan tumpuan.'},
+{t:'mc',q:'Kolom persegi setinggi h menerima gaya tekan dengan eksentrisitas e pada arah h. Selama e \u2264 h/6,',o:['muncul tegangan tarik di sisi jauh dari beban','seluruh penampang tetap tertekan','sumbu netral tepat di titik berat','tegangan tekan sama di semua titik'],a:1,x:'Tegangan tekan merata P/A dikurangi oleh sisi tarik akibat lentur Pe(h/2)/I. Keduanya sama besar tepat pada e = h/6, sehingga selama e \u2264 h/6 tidak ada tegangan tarik.'},
+{t:'mc',q:'Sebuah kolom sendi-sendi diperpanjang dua kali, dengan bahan dan penampang tetap. Beban kritis Euler menjadi',o:['setengah','seperempat','dua kali','tidak berubah'],a:1,x:'Pcr = \u03C0\u00B2EI/(KL)\u00B2 berbanding terbalik dengan kuadrat panjang. L dua kali membuat Pcr menjadi seperempat.'},
+{t:'num',q:'Batang baja menerima gaya tarik P = 80 kN. Luas penampang A = 400 mm\u00B2, panjang L = 2,5 m, E = 200 GPa. Hitung perpanjangan batang.',u:'mm',v:2.5,x:'\u0394L = PL/(AE) = (80.000 N \u00D7 2.500 mm) / (400 mm\u00B2 \u00D7 200.000 MPa) = 2,5 mm.'},
+{t:'num',q:'Poros pejal baja berdiameter 60 mm menerima torsi T = 1,5 kN\u00B7m. Hitung tegangan geser maksimum.',u:'MPa',v:35.37,x:'J = \u03C0d\u2074/32 = 1,272 \u00D7 10\u2076 mm\u2074. \u03C4 = Tr/J = (1,5 \u00D7 10\u2076 N\u00B7mm \u00D7 30 mm) / 1,272 \u00D7 10\u2076 mm\u2074 = 35,4 MPa.'},
+{t:'num',q:'Balok sendi-rol dengan bentang 4 m memikul beban terpusat 30 kN di tengah bentang. Penampang persegi 100 mm \u00D7 200 mm (tinggi 200 mm). Hitung tegangan lentur maksimum.',u:'MPa',v:45,x:'M = PL/4 = 30 kN\u00B7m. I = 100 \u00D7 200\u00B3/12 = 66,67 \u00D7 10\u2076 mm\u2074. \u03C3 = Mc/I = (30 \u00D7 10\u2076 \u00D7 100) / 66,67 \u00D7 10\u2076 = 45 MPa.'},
+{t:'num',q:'Kolom baja sendi-sendi setinggi 5 m memiliki I = 8 \u00D7 10\u2076 mm\u2074 dan E = 200 GPa. Hitung beban kritis Euler.',u:'kN',v:631.65,x:'Pcr = \u03C0\u00B2EI/L\u00B2 = 9,8696 \u00D7 200.000 \u00D7 8 \u00D7 10\u2076 / 5.000\u00B2 = 631.650 N, sekitar 631,7 kN.'},
+{t:'case',q:'Studi kasus. Balok kayu sendi-rol bentang 6 m, penampang persegi 150 mm (lebar) \u00D7 300 mm (tinggi), E = 12 GPa, memikul beban merata total q = 5 kN/m (termasuk berat sendiri). Tegangan lentur izin 12 MPa dan batas lendutan L/360. Periksa balok ini.',
+ parts:[{t:'num',q:'a. Tegangan lentur maksimum (MPa)',u:'MPa',v:10,x:'M = qL\u00B2/8 = 22,5 kN\u00B7m; I = 150 \u00D7 300\u00B3/12 = 337,5 \u00D7 10\u2076 mm\u2074; \u03C3 = Mc/I = 22,5 \u00D7 10\u2076 \u00D7 150 / 337,5 \u00D7 10\u2076 = 10,0 MPa, di bawah 12 MPa.'},
+  {t:'num',q:'b. Lendutan maksimum di tengah bentang (mm)',u:'mm',v:20.83,x:'\u03B4 = 5qL\u2074/(384EI) = 5 \u00D7 5 \u00D7 6.000\u2074 / (384 \u00D7 12.000 \u00D7 337,5 \u00D7 10\u2076) = 20,8 mm. Batas L/360 = 16,7 mm.'},
+  {t:'mc',q:'c. Kesimpulan pemeriksaan',o:['Memenuhi, karena tegangan lentur 10 MPa lebih kecil dari 12 MPa','Belum memenuhi: tegangan aman, tetapi lendutan 20,8 mm melebihi L/360 = 16,7 mm','Tidak memenuhi, karena tegangan lentur melebihi tegangan izin','Memenuhi, karena lendutan lebih kecil dari L/360'],a:1,x:'Tegangan yang rendah belum menjamin keamanan. Balok harus dipertebal atau diberi I lebih besar agar kekakuannya memenuhi batas layan.'}]}
+];
+var status=[];
+function parse(s){var v=parseFloat(String(s).replace(',','.'));return isNaN(v)?null:v;}
+function ok(v,ans){return v!==null&&Math.abs(v-ans)<=Math.abs(ans)*.03;}
+function mkPart(pt,name){var d=document.createElement('div');var h=document.createElement('h4');h.textContent=pt.q;d.appendChild(h);var get;
+  if(pt.t==='mc'){pt.o.forEach(function(o,i){var l=document.createElement('label');var r=document.createElement('input');r.type='radio';r.name=name;r.value=i;l.appendChild(r);l.appendChild(document.createTextNode(' '+o));d.appendChild(l);});get=function(){var c=d.querySelector('input:checked');return c?(+c.value===pt.a?1:0):-1;};}
+  else{var i2=document.createElement('input');i2.type='text';i2.inputMode='decimal';i2.setAttribute('aria-label','Jawaban');d.appendChild(i2);d.appendChild(document.createTextNode(' '+pt.u));get=function(){var v=parse(i2.value);return v===null?-1:(ok(v,pt.v)?1:0);};}
+  var fb=document.createElement('div');d.appendChild(fb);return {el:d,get:get,fb:fb,pt:pt};}
+Q.forEach(function(q,qi){var box=document.createElement('div');box.className='q';var h=document.createElement('h4');h.textContent='Soal '+(qi+1)+'. '+q.q;box.appendChild(h);var parts=[];
+  if(q.t==='case'){q.parts.forEach(function(pt,pi){var m=mkPart(pt,'q'+qi+'_'+pi);m.el.className='sub2';parts.push(m);box.appendChild(m.el);});}
+  else{var m=mkPart({t:q.t,q:'',o:q.o,a:q.a,u:q.u,v:q.v,x:q.x},'q'+qi);m.el.removeChild(m.el.firstChild);parts.push(m);box.appendChild(m.el);}
+  var btn=document.createElement('button');btn.type='button';btn.className='qbtn';btn.textContent='Periksa jawaban';btn.style.marginTop='10px';box.appendChild(btn);
+  var main=document.createElement('div');box.appendChild(main);status[qi]=null;
+  btn.addEventListener('click',function(){var tot=0,answered=0;parts.forEach(function(p){var g=p.get();if(g>=0){answered++;tot+=g;}
+     p.fb.className='fb '+(g===1?'ok':'no');p.fb.textContent=g<0?'Isi atau pilih jawaban terlebih dahulu.':((g===1?'Benar. ':'Belum tepat. ')+(g===1||true?p.pt.x:''));if(g<0)p.fb.className='fb';});
+    if(answered===parts.length)status[qi]=tot/parts.length;else status[qi]=null;score();});
+  host.appendChild(box);});
+function score(){var s=0,n=0,sw=0;status.forEach(function(v){if(v!==null){n++;s+=v;}});var pct=Math.round(s/Q.length*100);
+  sc.textContent=n?('Skor sementara: '+pct+'% ('+n+' dari '+Q.length+' soal sudah diperiksa)'+(n===Q.length?(pct>=80?'. Pemahaman Anda sudah kuat.':'. Ulangi submateri pada soal yang belum tepat.'):'')):'';}
+})();
+
+/* ---- Refleksi ---- */
+(function(){var ta=document.getElementById('refl'),st=document.getElementById('reflst');if(!ta)return;var key='mekbah-refleksi';
+  try{var v=localStorage.getItem(key);if(v){ta.value=v;st.textContent='Jawaban sebelumnya dipulihkan dari peramban ini.';}}catch(e){st.textContent='Penyimpanan peramban tidak tersedia; jawaban hanya bertahan selama halaman terbuka.';}
+  var tm=null;ta.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){try{localStorage.setItem(key,ta.value);st.textContent='Tersimpan di peramban ini.';}catch(e){}},500);});})();
+
+G.start();
+})();
+</script>
+<div id="anno-screen" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9000;pointer-events:none"></div>
+<script>/* ============================================================================
+   annotation-layer.js  —  lapisan anotasi & alat presenter untuk modul ajar
+   Tanpa dependensi. Satu file. Tempel ke modul HTML mana pun.
+
+   PEMAKAIAN MINIMAL
+   -----------------
+     <div id="stage" style="position:relative"> ...canvas modul kamu... </div>
+     <script src="annotation-layer.js"><\/script>
+     <script> const anno = new AnnotationLayer({ target: '#stage' }); <\/script>
+
+   PEMAKAIAN DENGAN KONTROL ANIMASI (opsional — tombol muncul hanya jika di-isi)
+   ----------------------------------------------------------------------------
+   Kendali animasi (tahap, play/pause, ulang, kecepatan, label) TIDAK diletakkan
+   di toolbar anotasi. Ia dirender sebagai baris tersendiri tepat di bawah
+   elemen target, selalu terlihat, tidak ikut auto-hide.
+
+     const anno = new AnnotationLayer({
+       target: '#stage',
+       steps: 4,                          // jumlah tahap; anotasi disimpan per tahap
+       onStep:   (i) => showStep(i),      // dipanggil saat tahap berubah
+       onPlay:   (playing) => {...},      // tombol play/pause muncul jika ada
+       onSpeed:  (x) => {...},            // 0.5 / 1 / 2
+       onReplay: () => {...},             // ulangi tahap ini
+       onLabels: (hidden) => {...}        // sembunyikan/tampilkan label
+     });
+
+   API
+   ---
+     anno.setStep(i)      anno.step
+     anno.clear()         anno.undo()
+     anno.exportPNG()     anno.destroy()
+     anno.setTool('pen'|'hl'|'rect'|'ellipse'|'arrow'|'line'|'dline'|'text'
+                  |'laser'|'spot'|'shutter'|'lens'|null)
+
+   SHORTCUT
+   --------
+     Spasi / →  tahap berikut        ←  tahap sebelumnya
+     L laser   P pen   H stabilo   T teks
+     R kotak   O bulat   A panah   G garis   D garis putus
+     S spotlight   K kerai (shutter)   B papan kosong   Z lensa zoom
+     1-4 warna   X ganti ketebalan   U undo   C bersihkan
+     N sembunyikan label   E ekspor PNG   F fullscreen   ? bantuan   Esc lepas alat
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var FONT = "'Segoe UI', system-ui, -apple-system, Arial, sans-serif";
+
+  var COLORS = [
+    { name: 'merah',  ink: '#ff3b30', hl: 'rgba(255,59,48,0.30)' },
+    { name: 'kuning', ink: '#ffcc00', hl: 'rgba(255,204,0,0.35)' },
+    { name: 'biru',   ink: '#3aa0ff', hl: 'rgba(58,160,255,0.28)' },
+    { name: 'putih',  ink: '#ffffff', hl: 'rgba(255,255,255,0.25)' }
+  ];
+
+  var WIDTHS = [2.5, 5.5];          // tipis, tebal
+  var TEXT_SIZES = [18, 26];        // mengikuti indeks ketebalan
+
+  // ---------------------------------------------------------------- ikon SVG
+  function svg(d, extra) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+      d + (extra || '') + '</svg>';
+  }
+  var ICON = {
+    laser:  svg('<circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 3.5v2.6M12 17.9v2.6M3.5 12h2.6M17.9 12h2.6"/>'),
+    pen:    svg('<path d="M4 20l3.2-.8L19 7.4a2 2 0 0 0-2.8-2.8L4.4 16.3 4 20z"/>'),
+    hl:     svg('<path d="M5 19h14"/><path d="M8.5 15.5l-1.8.4.5-1.9L15.6 5.6a1.7 1.7 0 0 1 2.4 2.4L8.5 15.5z"/>'),
+    text:   svg('<path d="M5 6.5h14M12 6.5V19M9 19h6"/>'),
+    rect:   svg('<rect x="4.5" y="6.5" width="15" height="11" rx="1.4"/>'),
+    ell:    svg('<ellipse cx="12" cy="12" rx="7.6" ry="5.6"/>'),
+    arrow:  svg('<path d="M4.5 19L19 5.5M19 5.5h-6M19 5.5v6"/>'),
+    line:   svg('<path d="M4.5 19L19.5 5"/>'),
+    dline:  svg('<path d="M4.5 19l3-3M10 13.5l3-3M15.5 8l3-3" />'),
+    spot:   svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>'),
+    shut:   svg('<rect x="3.5" y="4" width="17" height="16" rx="1.6"/><path d="M3.5 12.5h17"/><path d="M10 15.6h4"/>'),
+    board:  svg('<rect x="3" y="5" width="18" height="12.5" rx="1.6"/><path d="M12 17.5V21M8.5 21h7"/>'),
+    lens:   svg('<circle cx="10.8" cy="10.8" r="6.2"/><path d="M15.4 15.4L20.5 20.5M8.4 10.8h4.8M10.8 8.4v4.8"/>'),
+    undo:   svg('<path d="M9 7.5H16a4.5 4.5 0 0 1 0 9H7"/><path d="M11.5 4.5L8.6 7.5l2.9 3"/>'),
+    clear:  svg('<path d="M7 8.5h10l-.9 10a1.6 1.6 0 0 1-1.6 1.5H9.5a1.6 1.6 0 0 1-1.6-1.5L7 8.5z"/><path d="M5.5 8.5h13M10 5.5h4"/>'),
+    png:    svg('<path d="M12 4v10"/><path d="M8.4 10.6L12 14.2l3.6-3.6"/><path d="M5 17.5v1.2A1.3 1.3 0 0 0 6.3 20h11.4a1.3 1.3 0 0 0 1.3-1.3v-1.2"/>'),
+    prev:   svg('<path d="M14.5 6l-6 6 6 6"/>'),
+    next:   svg('<path d="M9.5 6l6 6-6 6"/>'),
+    play:   svg('<path d="M8 5.5l10 6.5-10 6.5V5.5z" fill="currentColor" stroke="none"/>'),
+    pause:  svg('<path d="M9 5.5v13M15 5.5v13" stroke-width="2.6"/>'),
+    replay: svg('<path d="M4.5 12a7.5 7.5 0 1 0 2.6-5.7"/><path d="M4.2 5.2v3.6h3.6"/>'),
+    eye:    svg('<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.4"/>'),
+    eyeoff: svg('<path d="M4 4l16 16"/><path d="M9.6 6.9A9.6 9.6 0 0 1 12 6.5c6 0 9.5 5.5 9.5 5.5a17 17 0 0 1-2.7 3.2M6.2 8.4A17 17 0 0 0 2.5 12S6 17.5 12 17.5c.9 0 1.7-.1 2.5-.3"/>'),
+    full:   svg('<path d="M4 9V4.5h5M20 9V4.5h-5M4 15v4.5h5M20 15v4.5h-5"/>'),
+    help:   svg('<circle cx="12" cy="12" r="8.4"/><path d="M9.8 9.6a2.2 2.2 0 1 1 3 2.1c-.5.3-.8.8-.8 1.4v.4"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>'),
+    grip:   svg('<path d="M7 10h10M7 14h10"/>')
+  };
+
+  // -------------------------------------------------------------------- CSS
+  var CSS = [
+    '.al-root{position:absolute;inset:0;pointer-events:none;z-index:40;font-family:' + FONT + '}',
+    '.al-cv{position:absolute;inset:0;width:100%;height:100%}',
+    '.al-cv.draw{pointer-events:auto;cursor:crosshair;touch-action:none}',
+    
+    '.al-bar{position:absolute;left:9px;right:9px;bottom:12px;margin:0 auto;',
+    ' width:max-content;max-width:calc(100% - 18px);flex-wrap:wrap;justify-content:center;row-gap:2px;',
+    ' display:flex;align-items:center;gap:3px;padding:5px 7px;border-radius:12px;',
+    ' background:rgba(16,20,28,.93);border:1px solid rgba(255,255,255,.13);',
+    ' box-shadow:0 8px 26px rgba(0,0,0,.45);pointer-events:auto;',
+    ' transition:opacity .18s ease,transform .18s ease;backdrop-filter:blur(7px)}',
+    '.al-bar.hid{opacity:0;transform:translateY(130%);pointer-events:none}',
+    '.al-bar.dock{left:auto;right:8px;top:50%;bottom:auto;margin:0;transform:translateY(-50%);',
+    ' display:grid;grid-auto-flow:column;grid-auto-rows:30px;grid-auto-columns:max-content;',
+    ' justify-items:center;align-items:center;gap:2px;padding:6px;width:max-content;max-width:none;',
+    ' border-radius:14px;opacity:.94}',
+    '.al-bar.dock .al-sep{display:none}',
+    '.al-bar.dock .al-tm{min-width:36px;font-size:10px;padding:0}',
+    '.al-bar.dock.hid{transform:translate(130%,-50%)}',
+    '.al-bar.dock .al-b{width:30px;height:30px}',
+    '.al-ctl{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;',
+    ' gap:3px;row-gap:2px;margin:9px auto 0;padding:4px 7px;width:max-content;max-width:100%;',
+    ' border-radius:11px;background:rgba(16,20,28,.55);border:1px solid rgba(255,255,255,.10);',
+    ' font-family:' + FONT + '}',
+    '.al-ctl.fs{position:absolute;left:9px;right:9px;bottom:56px;margin:0 auto;z-index:45;',
+    ' background:rgba(16,20,28,.93);pointer-events:auto}',
+    '.al-b{width:29px;height:29px;display:grid;place-items:center;border:0;border-radius:8px;',
+    ' background:transparent;color:#dfe6f2;cursor:pointer;padding:0;transition:background .12s,color .12s}',
+    '.al-b svg{width:18px;height:18px}',
+    '.al-b:hover{background:rgba(255,255,255,.13);color:#fff}',
+    '.al-b.on{background:#2f6df6;color:#fff}',
+    '.al-sep{width:1px;height:20px;background:rgba(255,255,255,.16);margin:0 4px}',
+    '.al-sw{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.32);cursor:pointer;padding:0;margin:0 1px}',
+    '.al-sw.on{border-color:#fff;transform:scale(1.16)}',
+    '.al-w{width:26px;height:29px;display:grid;place-items:center;border:0;background:transparent;cursor:pointer;border-radius:8px;color:#dfe6f2}',
+    '.al-w:hover{background:rgba(255,255,255,.13)}',
+    '.al-w i{display:block;width:15px;border-radius:9px;background:currentColor}',
+    '.al-sp{min-width:31px;height:29px;border:0;background:transparent;color:#dfe6f2;',
+    ' font:600 11px/1 ' + FONT + ';border-radius:8px;cursor:pointer}',
+    '.al-sp:hover{background:rgba(255,255,255,.13)}',
+    '.al-tm{min-width:44px;text-align:center;color:#9fb0c8;font:600 11px/1 ' + FONT + ';',
+    ' letter-spacing:.4px;cursor:pointer;user-select:none;padding:0 2px}',
+    '.al-tm.run{color:#4ade80}',
+    '.al-st{color:#9fb0c8;font:600 11px/1 ' + FONT + ';min-width:34px;text-align:center;user-select:none}',
+    '.al-in{position:absolute;z-index:60;background:rgba(10,14,20,.9);color:#fff;border:1px solid #2f6df6;',
+    ' border-radius:6px;padding:3px 6px;outline:none;font-family:' + FONT + ';pointer-events:auto}',
+    '.al-help{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:70;',
+    ' width:min(430px,86%);padding:16px 18px;border-radius:14px;pointer-events:auto;',
+    ' background:rgba(14,18,26,.97);border:1px solid rgba(255,255,255,.14);color:#dfe6f2;',
+    ' box-shadow:0 18px 50px rgba(0,0,0,.6);font-size:12px;line-height:1.65}',
+    '.al-help h4{margin:0 0 9px;font-size:12.5px;letter-spacing:.3px;color:#fff}',
+    '.al-help table{width:100%;border-collapse:collapse}',
+    '.al-help td{padding:1.5px 0;vertical-align:top}',
+    '.al-help td:first-child{width:96px;color:#8fa6c4;font-weight:600}',
+    '.al-help .x{position:absolute;right:9px;top:7px;border:0;background:transparent;color:#8fa6c4;',
+    ' font-size:17px;cursor:pointer;line-height:1}',
+    '.al-toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:65;',
+    ' background:rgba(14,18,26,.92);color:#dfe6f2;border:1px solid rgba(255,255,255,.13);',
+    ' padding:5px 11px;border-radius:8px;font:600 11px/1 ' + FONT + ';letter-spacing:.3px;',
+    ' opacity:0;transition:opacity .2s ease;pointer-events:none}',
+    '.al-toast.on{opacity:1}'
+  ].join('');
+
+  function injectCSS() {
+    if (document.getElementById('al-css')) return;
+    var s = document.createElement('style');
+    s.id = 'al-css';
+    s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  // =========================================================== kelas utama
+  function AnnotationLayer(opts) {
+    opts = opts || {};
+    var t = opts.target || document.body;
+    this.target = (typeof t === 'string') ? document.querySelector(t) : t;
+    if (!this.target) throw new Error('AnnotationLayer: target tidak ditemukan');
+
+    this.o = opts;
+    this.dock = opts.dock || null;
+    this.page = !!opts.page;
+    this.steps = Math.max(1, opts.steps || 1);
+    this.step = 0;
+    this.pages = {};                 // tahap -> array objek anotasi
+    this.tool = null;
+    this.ci = 0;                     // indeks warna
+    this.wi = 0;                     // indeks ketebalan
+    this.board = false;
+    this.labelsHidden = false;
+    this.playing = false;
+    this.speedIdx = 1;
+    this.speeds = [0.5, 1, 2];
+    this.trail = [];                 // jejak laser
+    this.spotR = 130;
+    this.shutterY = 0.55;            // fraksi tinggi
+    this.shutterDrag = false;
+    this.lens = { x: 0, y: 0, on: false, r: 110, m: 2 };
+    this.cur = null;                 // objek yang sedang digambar
+    this.mouse = { x: -1e4, y: -1e4 };
+    this.timer = { t0: 0, acc: 0, run: false };
+    this.raf = 0;
+
+    injectCSS();
+    this._build();
+    this._bind();
+    this._resize();
+    this._loop();
+  }
+
+  var P = AnnotationLayer.prototype;
+
+  // ------------------------------------------------------------------ build
+  P._build = function () {
+    var self = this;
+    if (getComputedStyle(this.target).position === 'static') {
+      this.target.style.position = 'relative';
+    }
+
+    var root = this.root = document.createElement('div');
+    root.className = 'al-root';
+
+    this.annoCv = document.createElement('canvas');
+    this.annoCv.className = 'al-cv';
+    this.fxCv = document.createElement('canvas');
+    this.fxCv.className = 'al-cv';
+    this.actx = this.annoCv.getContext('2d');
+    this.fctx = this.fxCv.getContext('2d');
+    root.appendChild(this.annoCv);
+    root.appendChild(this.fxCv);
+
+    var bar = this.bar = document.createElement('div');
+    bar.className = 'al-bar' + (this.dock ? ' dock' : ' hid');
+    root.appendChild(bar);
+
+    this.toast = document.createElement('div');
+    this.toast.className = 'al-toast';
+    root.appendChild(this.toast);
+
+    this.target.appendChild(root);
+
+    // ---- tombol (host = bar anotasi, atau baris kendali animasi)
+    function btn(icon, title, fn, key, host) {
+      var b = document.createElement('button');
+      b.className = 'al-b';
+      b.innerHTML = icon;
+      b.title = title + (key ? '  (' + key + ')' : '');
+      b.addEventListener('click', function (e) { e.preventDefault(); fn(b); });
+      (host || bar).appendChild(b);
+      return b;
+    }
+    function sep(host) {
+      var d = document.createElement('div');
+      d.className = 'al-sep';
+      (host || bar).appendChild(d);
+      return d;
+    }
+    this.tb = {};
+    var toolBtn = function (name, icon, title, key) {
+      self.tb[name] = btn(icon, title, function () { self.setTool(self.tool === name ? null : name); }, key);
+    };
+
+    // --- baris kendali animasi: DI LUAR overlay, tepat di bawah animasi.
+    // Kendali animasi milik modul, bukan alat anotasi — jadi ia tetap terlihat,
+    // tidak ikut auto-hide, dan tidak menutupi gambar.
+    var hasStep = this.steps > 1 || !!this.o.onStep;
+    var needCtl = hasStep || this.o.onPlay || this.o.onReplay || this.o.onSpeed || this.o.onLabels;
+    if (needCtl) {
+      var ctl = this.ctl = document.createElement('div');
+      ctl.className = 'al-ctl';
+      if (this.target.parentNode) {
+        this.target.parentNode.insertBefore(ctl, this.target.nextSibling);
+      } else {
+        this.target.appendChild(ctl);
+      }
+      if (hasStep) {
+        btn(ICON.prev, 'Tahap sebelumnya', function () { self.setStep(self.step - 1); }, '←', ctl);
+        this.stLbl = document.createElement('div');
+        this.stLbl.className = 'al-st';
+        ctl.appendChild(this.stLbl);
+        btn(ICON.next, 'Tahap berikut', function () { self.setStep(self.step + 1); }, 'spasi', ctl);
+      }
+      if (this.o.onPlay || this.o.onReplay || this.o.onSpeed) {
+        if (hasStep) sep(ctl);
+        if (this.o.onPlay) {
+          this.tb.play = btn(ICON.play, 'Play / pause', function () { self.togglePlay(); }, '', ctl);
+        }
+        if (this.o.onReplay) {
+          btn(ICON.replay, 'Ulangi tahap ini', function () { self.o.onReplay(); }, '', ctl);
+        }
+        if (this.o.onSpeed) {
+          this.spBtn = document.createElement('button');
+          this.spBtn.className = 'al-sp';
+          this.spBtn.title = 'Kecepatan';
+          this.spBtn.textContent = '1×';
+          this.spBtn.addEventListener('click', function () { self.cycleSpeed(); });
+          ctl.appendChild(this.spBtn);
+        }
+      }
+    }
+    if (this.o.onLabels) {
+      if (needCtl && this.ctl.childNodes.length) sep(this.ctl);
+      this.tb.labels = btn(ICON.eye, 'Sembunyikan / tampilkan label',
+        function () { self.toggleLabels(); }, 'N', this.ctl);
+    }
+
+    // --- alat tunjuk & gambar
+    toolBtn('laser', ICON.laser, 'Laser pointer (memudar)', 'L');
+    toolBtn('pen', ICON.pen, 'Pen', 'P');
+    toolBtn('hl', ICON.hl, 'Stabilo', 'H');
+    this.shapeName = 'rect';
+    this.tb.shape = btn(ICON.rect, 'Bentuk — klik untuk ganti: kotak/bulat/panah/garis/putus', function (b) {
+      var order = ['rect', 'ellipse', 'arrow', 'line', 'dline'];
+      if (self.tool === self.shapeName) {
+        self.shapeName = order[(order.indexOf(self.shapeName) + 1) % order.length];
+      }
+      b.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[self.shapeName];
+      self.setTool(self.shapeName);
+      self._flash({ rect: 'kotak', ellipse: 'bulat', arrow: 'panah', line: 'garis', dline: 'garis putus' }[self.shapeName]);
+    }, 'R/O/A/G/D');
+    toolBtn('text', ICON.text, 'Teks', 'T');
+    sep();
+
+    // --- warna & ketebalan
+    this.swatches = COLORS.map(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'al-sw' + (i === 0 ? ' on' : '');
+      b.style.background = c.ink;
+      b.title = 'Warna ' + c.name + '  (' + (i + 1) + ')';
+      b.addEventListener('click', function () { self.setColor(i); });
+      bar.appendChild(b);
+      return b;
+    });
+    this.wBtn = document.createElement('button');
+    this.wBtn.className = 'al-w';
+    this.wBtn.title = 'Ketebalan  (X)';
+    this.wBtn.innerHTML = '<i></i>';
+    this.wBtn.addEventListener('click', function () { self.setWidth(1 - self.wi); });
+    bar.appendChild(this.wBtn);
+    this._paintWidth();
+    sep();
+
+    // --- fokus perhatian
+    toolBtn('spot', ICON.spot, 'Spotlight (roda mouse = ubah radius)', 'S');
+    toolBtn('shutter', ICON.shut, 'Kerai — tarik tepinya', 'K');
+    this.tb.board = btn(ICON.board, 'Papan kosong', function () { self.toggleBoard(); }, 'B');
+    toolBtn('lens', ICON.lens, 'Lensa zoom 2×', 'Z');
+    sep();
+
+    // --- utilitas
+    btn(ICON.undo, 'Undo', function () { self.undo(); }, 'U');
+    btn(ICON.clear, 'Bersihkan tahap ini', function () { self.clear(); }, 'C');
+    btn(ICON.png, 'Simpan layar + coretan (PNG)', function () { self.exportPNG(); }, 'E');
+    this.tmEl = document.createElement('div');
+    this.tmEl.className = 'al-tm';
+    this.tmEl.textContent = '00:00';
+    this.tmEl.title = 'Timer — klik: mulai/pause, klik ganda: reset';
+    this.tmEl.addEventListener('click', function () { self.toggleTimer(); });
+    this.tmEl.addEventListener('dblclick', function () { self.resetTimer(); });
+    bar.appendChild(this.tmEl);
+    btn(ICON.full, 'Fullscreen', function () { self.fullscreen(); }, 'F');
+    btn(ICON.help, 'Bantuan shortcut', function () { self.help(); }, '?');
+
+    this._paintStep();
+  };
+
+  // ------------------------------------------------------------------- bind
+  P._bind = function () {
+    var self = this;
+    this._on = [];
+    function on(el, ev, fn, o) { el.addEventListener(ev, fn, o); self._on.push([el, ev, fn, o]); }
+
+    // toolbar auto-hide
+    var hideT = 0;
+    this._show = function () {
+      if (self.dock) return;
+      self.bar.classList.remove('hid');
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        if (!self.bar.matches(':hover')) self.bar.classList.add('hid');
+      }, 2600);
+    };
+    on(this.bar, 'mouseenter', function () { clearTimeout(hideT); });
+    on(this.bar, 'mouseleave', this._show);
+
+    // posisi kursor global (canvas fx boleh pointer-events:none)
+    on(window, 'pointermove', function (e) {
+      var r = self.target.getBoundingClientRect();
+      self.mouse.x = e.clientX - r.left;
+      self.mouse.y = e.clientY - r.top;
+      if (self.tool === 'laser') self.trail.push({ x: self.mouse.x, y: self.mouse.y, t: performance.now() });
+      if (self.shutterDrag) self.shutterY = Math.min(0.99, Math.max(0.01, self.mouse.y / r.height));
+      // toolbar muncul saat kursor mendekati tepi bawah (tanpa elemen penghalang)
+      if (self.mouse.x > 0 && self.mouse.x < self.W &&
+          self.mouse.y > self.H - 78 && self.mouse.y < self.H + 30 && !self.cur) self._show();
+    }, { passive: true });
+
+    on(window, 'wheel', function (e) {
+      if (self.tool === 'spot') { self.spotR = Math.min(420, Math.max(50, self.spotR - e.deltaY * 0.3)); }
+      else if (self.tool === 'lens') { self.lens.r = Math.min(260, Math.max(60, self.lens.r - e.deltaY * 0.2)); }
+    }, { passive: true });
+
+    // gambar
+    on(this.annoCv, 'pointerdown', function (e) { self._down(e); });
+    on(window, 'pointermove', function (e) { self._move(e); });
+    on(window, 'pointerup', function (e) { self._up(e); });
+
+    // shutter: tarik tepi (canvas fx tidak menangkap pointer, jadi pakai target)
+    on(this.target, 'pointerdown', function (e) {
+      if (self.tool !== 'shutter') return;
+      var r = self.target.getBoundingClientRect();
+      var y = e.clientY - r.top;
+      if (Math.abs(y - self.shutterY * r.height) < 34) { self.shutterDrag = true; }
+    });
+    on(window, 'pointerup', function () { self.shutterDrag = false; });
+
+    // resize
+    this._ro = (typeof ResizeObserver !== 'undefined')
+      ? new ResizeObserver(function () { self._resize(); })
+      : null;
+    if (this._ro) this._ro.observe(this.target);
+    on(window, 'resize', function () { self._resize(); });
+    if (this.dock && !this.page) on(window, 'scroll', function () { self._fitDock(); }, { passive: true });
+
+    // keyboard
+    on(window, 'keydown', function (e) { self._key(e); });
+
+    // fullscreen: baris kendali ikut masuk ke dalam target agar tetap terlihat
+    on(document, 'fullscreenchange', function () {
+      if (!self.ctl) return;
+      if (document.fullscreenElement === self.target) {
+        self.ctl.classList.add('fs');
+        self.root.appendChild(self.ctl);
+      } else {
+        self.ctl.classList.remove('fs');
+        if (self.target.parentNode) self.target.parentNode.insertBefore(self.ctl, self.target.nextSibling);
+      }
+      self._resize();
+    });
+  };
+
+  P._key = function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key, kl = k.toLowerCase(), self = this, hit = true;
+
+    if (!this.page && (k === ' ' || k === 'ArrowRight')) this.setStep(this.step + 1);
+    else if (!this.page && k === 'ArrowLeft') this.setStep(this.step - 1);
+    else if (kl === 'l') this.setTool(this.tool === 'laser' ? null : 'laser');
+    else if (kl === 'p') this.setTool(this.tool === 'pen' ? null : 'pen');
+    else if (kl === 'h') this.setTool(this.tool === 'hl' ? null : 'hl');
+    else if (kl === 't') this.setTool(this.tool === 'text' ? null : 'text');
+    else if (kl === 'r') this._shape('rect');
+    else if (kl === 'o') this._shape('ellipse');
+    else if (kl === 'a') this._shape('arrow');
+    else if (kl === 'g') this._shape('line');
+    else if (kl === 'd') this._shape('dline');
+    else if (kl === 's') this.setTool(this.tool === 'spot' ? null : 'spot');
+    else if (kl === 'k') this.setTool(this.tool === 'shutter' ? null : 'shutter');
+    else if (kl === 'z') this.setTool(this.tool === 'lens' ? null : 'lens');
+    else if (kl === 'b') this.toggleBoard();
+    else if (kl === 'u') this.undo();
+    else if (kl === 'c') this.clear();
+    else if (kl === 'n') this.toggleLabels();
+    else if (kl === 'e') this.exportPNG();
+    else if (kl === 'f') this.fullscreen();
+    else if (k === '?' || k === '/') this.help();
+    else if (k >= '1' && k <= '4') this.setColor(+k - 1);
+    else if (kl === 'x') this.setWidth(1 - this.wi);
+    else if (k === 'Escape') { this.setTool(null); this._closeHelp(); }
+    else hit = false;
+
+    if (hit) { e.preventDefault(); this._show(); }
+  };
+
+  P._shape = function (name) {
+    this.shapeName = name;
+    this.tb.shape.innerHTML = { rect: ICON.rect, ellipse: ICON.ell, arrow: ICON.arrow, line: ICON.line, dline: ICON.dline }[name];
+    this.setTool(name);
+  };
+
+  // ----------------------------------------------------------------- resize
+  P._resize = function () {
+    var r = this.target.getBoundingClientRect();
+    this.W = Math.max(1, Math.round(r.width));
+    this.H = Math.max(1, Math.round(r.height));
+    var dpr = this.dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    [this.annoCv, this.fxCv].forEach(function (c) {
+      c.width = Math.round(r.width * dpr);
+      c.height = Math.round(r.height * dpr);
+    });
+    this.actx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this._fitDock();
+    this._redraw();
+  };
+
+  // bilah vertikal: bagi tombol ke beberapa kolom bila layar pendek
+  P._fitDock = function () {
+    if (!this.dock) return;
+    var kids = [].filter.call(this.bar.children, function (n) { return !n.classList.contains('al-sep'); });
+    var n = kids.length, r = this.target.getBoundingClientRect();
+    // bagian target yang sedang terlihat di layar (bilah berada di tengahnya)
+    var vt = Math.max(0, -r.top), vb = Math.min(this.H, window.innerHeight - r.top);
+    if (vb - vt < 120) { vt = 0; vb = this.H; }
+    var vis = vb - vt;
+    var rows = Math.max(4, Math.floor((vis - 28) / 32));
+    if (rows > n) rows = n;
+    this.bar.style.gridTemplateRows = 'repeat(' + rows + ',30px)';
+    this.bar.style.top = ((vt + vb) / 2) + 'px';
+  };
+
+  // ------------------------------------------------------------ model & I/O
+  P._page = function () {
+    if (!this.pages[this.step]) this.pages[this.step] = [];
+    return this.pages[this.step];
+  };
+
+  P.setTool = function (name) {
+    this.tool = name || null;
+    var drawing = ['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(this.tool) >= 0;
+    this.annoCv.classList.toggle('draw', drawing);
+    for (var k in this.tb) {
+      if (this.tb[k] && ['play', 'labels', 'board', 'shape'].indexOf(k) < 0) {
+        this.tb[k].classList.toggle('on', k === this.tool);
+      }
+    }
+    if (this.tb.shape) {
+      this.tb.shape.classList.toggle('on', ['rect', 'ellipse', 'arrow', 'line', 'dline'].indexOf(this.tool) >= 0);
+    }
+    if (this.tool !== 'laser') this.trail.length = 0;
+    this._show();
+    return this;
+  };
+
+  P.setColor = function (i) {
+    this.ci = i % COLORS.length;
+    var self = this;
+    this.swatches.forEach(function (b, j) { b.classList.toggle('on', j === self.ci); });
+    this._paintWidth();
+    return this;
+  };
+
+  P.setWidth = function (i) {
+    this.wi = i ? 1 : 0;
+    this._paintWidth();
+    return this;
+  };
+
+  P._paintWidth = function () {
+    var h = this.wi ? 6 : 3;
+    this.wBtn.firstChild.style.height = h + 'px';
+    this.wBtn.style.color = COLORS[this.ci].ink;
+  };
+
+  P.setStep = function (i) {
+    var n = this.steps;
+    i = Math.max(0, Math.min(n - 1, i));
+    if (i === this.step) return this;
+    this.step = i;
+    this._paintStep();
+    this._redraw();
+    if (this.o.onStep) this.o.onStep(i);
+    return this;
+  };
+
+  P._paintStep = function () {
+    if (this.stLbl) this.stLbl.textContent = (this.step + 1) + '/' + this.steps;
+  };
+
+  P.togglePlay = function () {
+    this.playing = !this.playing;
+    if (this.tb.play) {
+      this.tb.play.innerHTML = this.playing ? ICON.pause : ICON.play;
+      this.tb.play.classList.toggle('on', this.playing);
+    }
+    if (this.o.onPlay) this.o.onPlay(this.playing);
+    return this;
+  };
+
+  P.cycleSpeed = function () {
+    this.speedIdx = (this.speedIdx + 1) % this.speeds.length;
+    var s = this.speeds[this.speedIdx];
+    if (this.spBtn) this.spBtn.textContent = (s === 0.5 ? '0,5' : s) + '×';
+    if (this.o.onSpeed) this.o.onSpeed(s);
+    return this;
+  };
+
+  P.toggleLabels = function () {
+    if (!this.o.onLabels) return this;
+    this.labelsHidden = !this.labelsHidden;
+    if (this.tb.labels) {
+      this.tb.labels.innerHTML = this.labelsHidden ? ICON.eyeoff : ICON.eye;
+      this.tb.labels.classList.toggle('on', this.labelsHidden);
+    }
+    this.o.onLabels(this.labelsHidden);
+    this._flash(this.labelsHidden ? 'label disembunyikan' : 'label ditampilkan');
+    return this;
+  };
+
+  P.toggleBoard = function () {
+    this.board = !this.board;
+    if (this.tb.board) this.tb.board.classList.toggle('on', this.board);
+    if (this.board && !this.tool) this.setTool('pen');
+    this._redraw();
+    return this;
+  };
+
+  P.undo = function () {
+    this._page().pop();
+    this._redraw();
+    return this;
+  };
+
+  P.clear = function () {
+    this.pages[this.step] = [];
+    this._redraw();
+    return this;
+  };
+
+  P.clearAll = function () {
+    this.pages = {};
+    this._redraw();
+    return this;
+  };
+
+  // ------------------------------------------------------------ input gambar
+  P._pt = function (e) {
+    var r = this.target.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+
+  P._down = function (e) {
+    var t = this.tool;
+    if (['pen', 'hl', 'rect', 'ellipse', 'arrow', 'line', 'dline', 'text'].indexOf(t) < 0) return;
+    e.preventDefault();
+    var p = this._pt(e);
+    if (t === 'text') { this._textInput(p); return; }
+    var o = { type: t, ci: this.ci, w: WIDTHS[this.wi] };
+    if (t === 'pen' || t === 'hl') { o.pts = [p]; if (t === 'hl') o.w = WIDTHS[this.wi] * 3.6; }
+    else { o.x1 = p.x; o.y1 = p.y; o.x2 = p.x; o.y2 = p.y; }
+    this.cur = o;
+    try { this.annoCv.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+
+  P._move = function (e) {
+    if (!this.cur) return;
+    var p = this._pt(e);
+    if (this.cur.pts) {
+      var last = this.cur.pts[this.cur.pts.length - 1];
+      if ((p.x - last.x) * (p.x - last.x) + (p.y - last.y) * (p.y - last.y) > 2.2) this.cur.pts.push(p);
+    } else { this.cur.x2 = p.x; this.cur.y2 = p.y; }
+  };
+
+  P._up = function () {
+    if (!this.cur) return;
+    var o = this.cur;
+    this.cur = null;
+    var tiny = o.pts ? o.pts.length < 2
+      : (Math.abs(o.x2 - o.x1) < 4 && Math.abs(o.y2 - o.y1) < 4);
+    if (!tiny) { this._page().push(o); this._redraw(); }
+  };
+
+  P._textInput = function (p) {
+    var self = this, size = TEXT_SIZES[this.wi];
+    var inp = document.createElement('input');
+    inp.className = 'al-in';
+    inp.style.left = p.x + 'px';
+    inp.style.top = (p.y - size * 0.9) + 'px';
+    inp.style.font = '600 ' + size + 'px ' + FONT;
+    inp.style.color = COLORS[this.ci].ink;
+    inp.style.minWidth = '120px';
+    this.root.appendChild(inp);
+    inp.focus();
+    var done = false;
+    function commit() {
+      if (done) return;
+      done = true;
+      var v = inp.value.trim();
+      if (v) {
+        self._page().push({ type: 'text', x: p.x, y: p.y, str: v, size: size, ci: self.ci });
+        self._redraw();
+      }
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+    }
+    inp.addEventListener('keydown', function (e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { commit(); self.annoCv.focus(); }
+      else if (e.key === 'Escape') { done = true; if (inp.parentNode) inp.parentNode.removeChild(inp); }
+    });
+    inp.addEventListener('blur', commit);
+  };
+
+  // -------------------------------------------------------------- menggambar
+  P._redraw = function () {
+    var c = this.actx;
+    c.clearRect(0, 0, this.W, this.H);
+    if (this.board) {
+      c.fillStyle = '#0d1420';
+      c.fillRect(0, 0, this.W, this.H);
+      c.strokeStyle = 'rgba(255,255,255,.055)';
+      c.lineWidth = 1;
+      for (var gy = 34; gy < this.H; gy += 34) {
+        c.beginPath(); c.moveTo(0, gy); c.lineTo(this.W, gy); c.stroke();
+      }
+    }
+    var page = this.pages[this.step] || [];
+    for (var i = 0; i < page.length; i++) this._drawObj(c, page[i]);
+  };
+
+  P._drawObj = function (c, o) {
+    var col = COLORS[o.ci] || COLORS[0];
+    c.save();
+    c.lineCap = 'round';
+    c.lineJoin = 'round';
+    c.shadowBlur = 0;
+    c.setLineDash([]);
+
+    if (o.type === 'text') {
+      c.font = '600 ' + o.size + 'px ' + FONT;
+      c.textBaseline = 'alphabetic';
+      c.fillStyle = 'rgba(0,0,0,.55)';
+      c.fillText(o.str, o.x + 1.2, o.y + 1.2);
+      c.fillStyle = col.ink;
+      c.fillText(o.str, o.x, o.y);
+      c.restore();
+      return;
+    }
+
+    c.strokeStyle = (o.type === 'hl') ? col.hl : col.ink;
+    c.lineWidth = o.w;
+    if (o.type === 'hl') { c.lineCap = 'butt'; }
+
+    if (o.pts) {
+      c.beginPath();
+      c.moveTo(o.pts[0].x, o.pts[0].y);
+      for (var i = 1; i < o.pts.length - 1; i++) {
+        var a = o.pts[i], b = o.pts[i + 1];
+        c.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      }
+      var L = o.pts[o.pts.length - 1];
+      c.lineTo(L.x, L.y);
+      c.stroke();
+    } else if (o.type === 'rect') {
+      var x = Math.min(o.x1, o.x2), y = Math.min(o.y1, o.y2);
+      var w = Math.abs(o.x2 - o.x1), h = Math.abs(o.y2 - o.y1);
+      var rr = Math.min(7, w / 2, h / 2);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(x, y, w, h, rr); else c.rect(x, y, w, h);
+      c.stroke();
+    } else if (o.type === 'ellipse') {
+      c.beginPath();
+      c.ellipse((o.x1 + o.x2) / 2, (o.y1 + o.y2) / 2,
+        Math.abs(o.x2 - o.x1) / 2, Math.abs(o.y2 - o.y1) / 2, 0, 0, Math.PI * 2);
+      c.stroke();
+    } else if (o.type === 'line' || o.type === 'dline') {
+      if (o.type === 'dline') c.setLineDash([o.w * 3, o.w * 2.6]);
+      c.beginPath(); c.moveTo(o.x1, o.y1); c.lineTo(o.x2, o.y2); c.stroke();
+    } else if (o.type === 'arrow') {
+      var ang = Math.atan2(o.y2 - o.y1, o.x2 - o.x1);
+      var hl = Math.max(11, o.w * 3.6);
+      c.beginPath();
+      c.moveTo(o.x1, o.y1);
+      c.lineTo(o.x2 - Math.cos(ang) * hl * 0.72, o.y2 - Math.sin(ang) * hl * 0.72);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(o.x2, o.y2);
+      c.lineTo(o.x2 - Math.cos(ang - 0.42) * hl, o.y2 - Math.sin(ang - 0.42) * hl);
+      c.lineTo(o.x2 - Math.cos(ang + 0.42) * hl, o.y2 - Math.sin(ang + 0.42) * hl);
+      c.closePath();
+      c.fillStyle = col.ink;
+      c.fill();
+    }
+    c.restore();
+  };
+
+  // --------------------------------------------------------- loop efek (fx)
+  P._loop = function () {
+    var self = this;
+    function frame(now) {
+      self.raf = requestAnimationFrame(frame);
+      var c = self.fctx, W = self.W, H = self.H;
+      c.clearRect(0, 0, W, H);
+
+      // kerai
+      if (self.tool === 'shutter') {
+        var sy = self.shutterY * H;
+        c.fillStyle = 'rgba(8,11,17,.97)';
+        c.fillRect(0, sy, W, H - sy);
+        c.fillStyle = 'rgba(255,255,255,.16)';
+        c.fillRect(0, sy - 2, W, 3);
+        c.shadowBlur = 0;
+        c.fillStyle = 'rgba(255,255,255,.5)';
+        c.font = '600 10px ' + FONT;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText('tarik untuk membuka', W / 2, sy + 13);
+        c.textAlign = 'left';
+      }
+
+      // spotlight
+      if (self.tool === 'spot') {
+        c.save();
+        c.beginPath();
+        c.rect(0, 0, W, H);
+        c.moveTo(self.mouse.x + self.spotR, self.mouse.y);
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2, true);
+        c.fillStyle = 'rgba(6,9,14,.74)';
+        c.fill('evenodd');
+        c.restore();
+        var g = c.createRadialGradient(self.mouse.x, self.mouse.y, self.spotR * 0.86, self.mouse.x, self.mouse.y, self.spotR);
+        g.addColorStop(0, 'rgba(6,9,14,0)');
+        g.addColorStop(1, 'rgba(6,9,14,.74)');
+        c.fillStyle = g;
+        c.beginPath();
+        c.arc(self.mouse.x, self.mouse.y, self.spotR, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      // lensa zoom
+      if (self.tool === 'lens') self._drawLens(c);
+
+      // laser
+      if (self.tool === 'laser') self._drawLaser(c, now);
+
+      // preview objek yang sedang digambar
+      if (self.cur) self._drawObj(c, self.cur);
+
+      // timer
+      if (self.timer.run) self._paintTimer();
+    }
+    this.raf = requestAnimationFrame(frame);
+  };
+
+  P._drawLaser = function (c, now) {
+    var tr = this.trail, LIFE = 620;
+    while (tr.length && now - tr[0].t > LIFE) tr.shift();
+    if (tr.length > 1) {
+      for (var i = 1; i < tr.length; i++) {
+        var a = tr[i - 1], b = tr[i];
+        var age = (now - b.t) / LIFE;
+        c.strokeStyle = 'rgba(255,60,52,' + (0.75 * (1 - age)).toFixed(3) + ')';
+        c.lineWidth = 3.4 * (1 - age) + 1;
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
+      }
+    }
+    var m = this.mouse;
+    if (m.x < -1000) return;
+    c.save();
+    c.shadowColor = 'rgba(255,60,52,.95)';
+    c.shadowBlur = 16;
+    c.fillStyle = '#ff3b30';
+    c.beginPath(); c.arc(m.x, m.y, 5.2, 0, Math.PI * 2); c.fill();
+    c.restore();
+    c.shadowBlur = 0;
+    c.fillStyle = 'rgba(255,255,255,.9)';
+    c.beginPath(); c.arc(m.x, m.y, 1.9, 0, Math.PI * 2); c.fill();
+  };
+
+  P._hostCanvases = function () {
+    var out = [], all = (this.page ? document : this.target).querySelectorAll('canvas');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] !== this.annoCv && all[i] !== this.fxCv) out.push(all[i]);
+    }
+    return out;
+  };
+
+  P._drawLens = function (c) {
+    var m = this.mouse, R = this.lens.r, M = this.lens.m;
+    if (m.x < -1000) return;
+    var tr = this.target.getBoundingClientRect();
+    c.save();
+    c.beginPath();
+    c.arc(m.x, m.y, R, 0, Math.PI * 2);
+    c.clip();
+    c.fillStyle = '#0b0f17';
+    c.fillRect(m.x - R, m.y - R, R * 2, R * 2);
+    c.translate(m.x, m.y);
+    c.scale(M, M);
+    c.translate(-m.x, -m.y);
+    var srcs = this._hostCanvases().concat([this.annoCv]);
+    for (var i = 0; i < srcs.length; i++) {
+      var cv = srcs[i], b = cv.getBoundingClientRect();
+      try { c.drawImage(cv, b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.restore();
+    c.shadowBlur = 0;
+    c.strokeStyle = 'rgba(255,255,255,.75)';
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(m.x, m.y, R, 0, Math.PI * 2); c.stroke();
+    c.strokeStyle = 'rgba(0,0,0,.45)';
+    c.lineWidth = 4;
+    c.beginPath(); c.arc(m.x, m.y, R + 3, 0, Math.PI * 2); c.stroke();
+  };
+
+  // ------------------------------------------------------------------ timer
+  P.toggleTimer = function () {
+    var t = this.timer;
+    if (t.run) { t.acc += performance.now() - t.t0; t.run = false; }
+    else { t.t0 = performance.now(); t.run = true; }
+    this.tmEl.classList.toggle('run', t.run);
+    this._paintTimer();
+    return this;
+  };
+  P.resetTimer = function () {
+    this.timer = { t0: performance.now(), acc: 0, run: this.timer.run };
+    this._paintTimer();
+    return this;
+  };
+  P._paintTimer = function () {
+    var t = this.timer;
+    var ms = t.acc + (t.run ? performance.now() - t.t0 : 0);
+    var s = Math.floor(ms / 1000);
+    this.tmEl.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  };
+
+  // ----------------------------------------------------------------- ekspor
+  P.exportPNG = function () {
+    var dpr = this.dpr, tr = this.target.getBoundingClientRect();
+    var out = document.createElement('canvas');
+    out.width = Math.round(this.W * dpr);
+    out.height = Math.round(this.H * dpr);
+    var c = out.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var bg = getComputedStyle(this.target).backgroundColor;
+    c.fillStyle = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0e1320' : bg;
+    c.fillRect(0, 0, this.W, this.H);
+
+    var hosts = this._hostCanvases();
+    for (var i = 0; i < hosts.length; i++) {
+      var b = hosts[i].getBoundingClientRect();
+      try { c.drawImage(hosts[i], b.left - tr.left, b.top - tr.top, b.width, b.height); } catch (e) {}
+    }
+    c.drawImage(this.annoCv, 0, 0, this.W, this.H);
+
+    var a = document.createElement('a');
+    a.download = 'anotasi-tahap-' + (this.step + 1) + '.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+    this._flash('PNG disimpan');
+    return this;
+  };
+
+  P.fullscreen = function () {
+    var el = this.page ? document.documentElement : this.target;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+    return this;
+  };
+
+  // ------------------------------------------------------------ bantuan/toast
+  P._flash = function (msg) {
+    var self = this;
+    this.toast.textContent = msg;
+    this.toast.classList.add('on');
+    clearTimeout(this._ft);
+    this._ft = setTimeout(function () { self.toast.classList.remove('on'); }, 1100);
+  };
+
+  P._closeHelp = function () {
+    if (this._helpEl && this._helpEl.parentNode) this._helpEl.parentNode.removeChild(this._helpEl);
+    this._helpEl = null;
+  };
+
+  P.help = function () {
+    if (this._helpEl) { this._closeHelp(); return this; }
+    var rows = [
+      ['Spasi / →', 'tahap berikut'],
+      ['←', 'tahap sebelumnya'],
+      ['L / P / H / T', 'laser · pen · stabilo · teks'],
+      ['R / O / A / G / D', 'kotak · bulat · panah · garis · garis putus'],
+      ['S / K / B / Z', 'spotlight · kerai · papan kosong · lensa zoom'],
+      ['1 – 4', 'warna'],
+      ['X', 'ganti ketebalan'],
+      ['U / C', 'undo · bersihkan tahap ini'],
+      ['N', 'sembunyikan / tampilkan label'],
+      ['E / F', 'ekspor PNG · fullscreen'],
+      ['Roda mouse', 'ubah radius spotlight / lensa'],
+      ['Esc', 'lepas alat']
+    ];
+    var d = document.createElement('div');
+    d.className = 'al-help';
+    d.innerHTML = '<button class="x" title="Tutup">&times;</button><h4>Shortcut presenter</h4><table>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
+      '</table>';
+    var self = this;
+    d.querySelector('.x').addEventListener('click', function () { self._closeHelp(); });
+    this.root.appendChild(d);
+    this._helpEl = d;
+    return this;
+  };
+
+  // ---------------------------------------------------------------- destroy
+  P.destroy = function () {
+    cancelAnimationFrame(this.raf);
+    this._on.forEach(function (a) { a[0].removeEventListener(a[1], a[2], a[3]); });
+    if (this._ro) this._ro.disconnect();
+    if (this.ctl && this.ctl.parentNode) this.ctl.parentNode.removeChild(this.ctl);
+    if (this.root.parentNode) this.root.parentNode.removeChild(this.root);
+  };
+
+  global.AnnotationLayer = AnnotationLayer;
+  if (typeof module !== 'undefined' && module.exports) module.exports = AnnotationLayer;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>window.anno=new AnnotationLayer({target:'#anno-screen',page:true,dock:'right'});</script>
+<script>(function(){
+  var TEXT='Unverified', SIZE=70;
+  var st=document.createElement('style');
+  st.textContent='#wm-diag{position:fixed;left:0;top:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;z-index:8000;user-select:none}'
+   +'#wm-diag span{position:absolute;left:50%;top:50%;white-space:nowrap;font:300 '+SIZE+'px/1 "Segoe UI Light","Segoe UI",system-ui,Arial,sans-serif;'
+   +'letter-spacing:.14em;color:rgb(115,132,165);opacity:.62;transform-origin:50% 50%}'
+   +'@media print{#wm-diag{position:fixed}}';
+  document.head.appendChild(st);
+  var box=document.createElement('div');box.id='wm-diag';box.setAttribute('aria-hidden','true');
+  var sp=document.createElement('span');sp.textContent=TEXT;box.appendChild(sp);
+  document.body.appendChild(box);
+  function fit(){
+    var vv=window.visualViewport,w=vv?vv.width:window.innerWidth,h=vv?vv.height:window.innerHeight;
+    var ang=-Math.atan2(h,w)*180/Math.PI;          /* mengikuti diagonal layar */
+    var diag=Math.sqrt(w*w+h*h),fs=SIZE;
+    sp.style.fontSize=fs+'px';
+    var tw=sp.getBoundingClientRect().width; /* lebar sebelum rotasi */
+    sp.style.transform='translate(-50%,-50%)';
+    tw=sp.offsetWidth;
+    if(tw>diag*0.8){fs=Math.max(24,Math.floor(fs*diag*0.8/tw));sp.style.fontSize=fs+'px';}
+    sp.style.transform='translate(-50%,-50%) rotate('+ang.toFixed(3)+'deg)';
+  }
+  fit();
+  ['resize','orientationchange','fullscreenchange'].forEach(function(e){window.addEventListener(e,fit);});
+  document.addEventListener('fullscreenchange',fit);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',fit);
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(document.documentElement);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body></html>
