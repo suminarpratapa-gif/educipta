@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Penyunting Visual Modul Ajar</title>
+<style>
+:root{
+  --ink:#14202b; --ink2:#47566a; --line:#c3cdd8; --paper:#eef2f6; --white:#fff;
+  --accent:#5a3ea8; --accent2:#7d63c9; --ok:#13795b; --bad:#c0392b; --amber:#8a5a00; --amberbg:#fff6df;
+  --sans:'Segoe UI',system-ui,Arial,sans-serif; --mono:Consolas,'Cascadia Mono',Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);display:flex;flex-direction:column}
+header.top{background:var(--white);border-bottom:1.5px solid var(--ink);padding:8px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;position:relative;z-index:40}
+.brand b{display:block;font-size:16px;line-height:1.2}
+.brand span{font-size:12.5px;color:var(--ink2)}
+.tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1}
+.tools .sep{width:1px;height:26px;background:var(--line);margin:0 4px}
+.fname{font-size:13px;font-weight:600;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+button{font:inherit;font-size:14px;padding:5px 12px;border:1.5px solid var(--ink);background:var(--white);color:var(--ink);cursor:pointer;min-height:32px}
+button:hover:not(:disabled){background:var(--ink);color:#fff}
+button:disabled{opacity:.35;cursor:not-allowed}
+button.prime{background:var(--accent);border-color:var(--accent);color:#fff}
+button.prime:hover:not(:disabled){background:#46308a}
+button.glow:not(:disabled){animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(90,62,168,.55)}50%{box-shadow:0 0 0 8px rgba(90,62,168,0)}}
+@media (prefers-reduced-motion:reduce){button.glow:not(:disabled){animation:none;outline:3px solid var(--accent2)}}
+.status{flex:1 1 100%;font-size:13px;color:var(--ok);min-height:1.3em}
+.status.err{color:var(--bad)}
+.status .dirty{color:var(--amber);font-weight:600}
+
+#start{flex:1;overflow:auto;padding:28px 18px}
+.card{max-width:860px;margin:0 auto 18px;background:var(--white);border:1.5px solid var(--ink);padding:20px 22px}
+.card h1{margin:0 0 4px;font-size:24px}
+.card h2{margin:0 0 8px;font-size:17px}
+.card p{margin:0 0 10px;color:var(--ink2)}
+.drop{border:2px dashed var(--accent2);background:#f7f5fd;padding:26px;text-align:center;cursor:pointer;margin-top:10px}
+.drop.over{background:#ebe5fb}
+.drop b{display:block;font-size:17px}
+.drop small{color:var(--ink2)}
+ol.how{margin:6px 0 0;padding-left:1.3em}
+ol.how li{margin:.3em 0}
+.warn{background:var(--amberbg);border-left:5px solid #c98a00;padding:12px 16px;font-size:14px}
+.warn h2{color:var(--amber);font-size:15.5px;margin:0 0 6px}
+.warn ul{margin:0;padding-left:1.2em}
+.warn li{margin:.3em 0}
+code{font-family:var(--mono);font-size:.9em;background:#f0ecd9;padding:0 4px}
+
+#work{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 290px}
+#work[hidden]{display:none}
+#fr{width:100%;height:100%;border:0;background:#fff;display:block}
+#side{background:var(--white);border-left:1.5px solid var(--ink);overflow:auto;padding:12px 14px;font-size:13.5px}
+#side h2{font-size:14.5px;margin:4px 0 6px}
+#side ol{margin:0;padding-left:1.4em}
+#side ol li{margin:.35em 0;line-height:1.35}
+#side ol li:last-child{font-weight:600}
+#side .empty{color:var(--ink2)}
+#side .tip{background:#f3f0fb;border-left:3px solid var(--accent2);padding:6px 10px;margin:0 0 12px;color:var(--ink2)}
+
+.ftb{position:fixed;z-index:50;background:var(--ink);color:#fff;padding:5px;box-shadow:0 6px 18px rgba(0,0,0,.28);max-width:min(780px,96vw)}
+.ftb .r1{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ftb button{background:#24323f;color:#fff;border:1px solid #3d4f61;min-height:30px;padding:3px 10px;font-size:13.5px}
+.ftb button:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
+.ftb button.on{background:var(--accent2);border-color:#fff}
+.ftb button[data-f]{min-width:34px;font-size:14.5px}
+.ftb .sep{width:1px;height:22px;background:#4d5f72;margin:0 3px}
+.ftb .rep{margin-top:6px}
+.ftb textarea{width:100%;min-width:300px;font:inherit;font-size:14.5px;padding:6px 8px;border:0;color:var(--ink)}
+.ftb .rep div{display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap}
+.ftb small{color:#c9d3dd;font-size:12px}
+.ftb .hint{font-size:12.5px;padding:3px 6px;color:#ffe6a6}
+.ftb .fm{margin-top:6px;background:#fff;color:var(--ink);padding:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;min-width:min(560px,90vw)}
+.ftb .fm h4{grid-column:1/-1;margin:4px 2px 0;font:600 11.5px/1.3 var(--sans);color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+.ftb .fm button{display:block;width:100%;text-align:left;background:#f4f6f9;color:var(--ink);border:1px solid var(--line);padding:5px 9px;min-height:0;font-size:15px;line-height:1.25}
+.ftb .fm button small{display:block;font:11.5px/1.3 var(--sans);color:var(--ink2);margin-top:1px}
+.ftb .fm button:hover:not(:disabled){background:#ebe5fb;color:var(--ink);border-color:var(--accent2)}
+.ftb .fm button.on{border:2px solid var(--accent);background:#f0ebff}
+.ftb .fm[data-kind=size],.ftb .fm[data-kind=para]{grid-template-columns:repeat(4,1fr);gap:4px 6px}
+.ftb .fm[data-kind=para] button{font-size:13.5px}
+.ftb .fm[data-kind=para] button b{font-size:15px;margin-right:4px}
+.ftb[hidden],[hidden]{display:none!important}
+
+dialog{width:min(760px,94vw);border:2px solid var(--ink);padding:0}
+dialog::backdrop{background:rgba(20,32,43,.5)}
+dialog .db{padding:16px 20px;max-height:76vh;overflow:auto}
+dialog .df{padding:10px 20px;border-top:1.5px solid var(--ink);text-align:right}
+@media (max-width:900px){#work{grid-template-columns:1fr;grid-template-rows:1fr 180px}#side{border-left:0;border-top:1.5px solid var(--ink)}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><b>Penyunting Visual Modul Ajar</b><span>Sorot teks, pilih aksi, simpan.</span></div>
+  <div class="tools">
+    <button id="bOpen" title="Buka file HTML modul">Buka file&hellip;</button>
+    <span class="fname" id="fname"></span>
+    <button id="bYes" class="prime glow" disabled>Mau sunting?</button>
+    <button id="bNo" disabled>Tidak sunting</button>
+    <span class="sep"></span>
+    <button id="bUndo" disabled title="Batalkan langkah terakhir (Ctrl+Z)">&#8630; Batalkan langkah</button>
+    <button id="bRedo" disabled title="Ulangi langkah (Ctrl+Y)">&#8631; Ulangi</button>
+    <button id="bSave" class="prime" disabled title="Simpan (Ctrl+S)">Simpan</button>
+    <button id="bDl" disabled title="Unduh salinan file hasil">Unduh</button>
+    <button id="bView" disabled title="Buka hasil sebagai halaman web di tab baru">Pratinjau Hasil</button>
+    <button id="bNote">Catatan</button>
+  </div>
+  <div class="status" id="status"></div>
+</header>
+<input type="file" id="file" accept=".html,.htm,text/html" hidden>
+
+<div id="start">
+  <div class="card">
+    <h1>Penyunting Visual Modul Ajar</h1>
+    <p>Modul tampil seperti di web. Sorot teks yang ingin diubah, lalu pilih aksi pada toolbar yang muncul di dekat sorotan. Semua proses berjalan di peramban Anda; file tidak dikirim ke mana pun.</p>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Pilih file HTML">
+      <b>Klik untuk memilih file .html, atau seret file ke sini</b>
+      <small>File asli tidak diubah. Suntingan disimpan ke file baru: nama asli + _sunting_ + tanggal.</small>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Cara pakai</h2>
+    <ol class="how">
+      <li>Buka file modul. Setelah modul tampil, klik <b>Mau sunting?</b> (atau <b>Tidak sunting</b> bila hanya ingin melihat).</li>
+      <li>Sorot (blok) teks pada modul dengan tetikus. Toolbar muncul di dekat sorotan.</li>
+      <li>Pilih aksi: <b>B</b> tebal, <i>I</i> miring, <u>U</u> garis bawah, x<sub>2</sub> subskrip, x<sup>2</sup> superskrip, <b>Ganti teks</b>, <b>Hapus teks</b>, <b>Hapus poin/paragraf</b>, atau <b>Hapus format</b>. Klik tombol format lagi untuk melepasnya. Menu <b>Font</b>, <b>Ukuran</b>, dan <b>Paragraf</b> berisi pilihan huruf, ukuran huruf, posisi teks (rata kiri, tengah, rata kanan, rata kiri-kanan), inden, tab, baris baru, serta bullet dan nomor.</li>
+      <li>Klik <b>Simpan</b> (Ctrl+S) kapan saja. Salah langkah? <b>Batalkan langkah</b> (Ctrl+Z).</li>
+      <li><b>Pratinjau Hasil</b> membuka hasil di tab baru, lengkap dengan animasi dan kuisnya.</li>
+    </ol>
+  </div>
+  <div class="card warn" id="noteCard"></div>
+</div>
+
+<div id="work" hidden>
+  <iframe id="fr" title="Modul yang sedang disunting"></iframe>
+  <aside id="side">
+    <div class="tip" id="tip">Klik <b>Mau sunting?</b> untuk mulai. Sebelum itu modul hanya bisa dilihat.</div>
+    <h2>Riwayat perubahan</h2>
+    <ol id="log"></ol>
+    <p class="empty" id="logEmpty">Belum ada perubahan.</p>
+  </aside>
+</div>
+
+<div class="ftb" id="ftb" hidden role="toolbar" aria-label="Aksi untuk teks terpilih">
+  <div class="r1">
+    <button data-f="b" title="Tebal (Ctrl+B)"><b>B</b></button>
+    <button data-f="i" title="Miring (Ctrl+I)"><i>I</i></button>
+    <button data-f="u" title="Garis bawah (Ctrl+U)"><u>U</u></button>
+    <button data-f="sub" title="Subskrip">x<sub>2</sub></button>
+    <button data-f="sup" title="Superskrip">x<sup>2</sup></button>
+    <button data-a="font" title="Ganti font, atau jadikan rumus TeX/LaTeX/KaTeX">Font &#9662;</button>
+    <button data-a="size" title="Ubah ukuran huruf">Ukuran &#9662;</button>
+    <button data-a="para" title="Posisi teks, inden, tab, baris baru, bullet dan nomor">Paragraf &#9662;</button>
+    <span class="sep"></span>
+    <button data-a="rep" title="Ganti teks yang disorot">Ganti teks</button>
+    <button data-a="del" title="Hapus teks yang disorot (Delete)">Hapus teks</button>
+    <button data-a="blk" title="Hapus seluruh poin/paragraf tempat sorotan berada, beserta penandanya">Hapus poin/paragraf</button>
+    <button data-a="clr" title="Lepas tebal, miring, garis bawah, subskrip, superskrip">Hapus format</button>
+  </div>
+  <div class="fm" hidden role="menu" aria-label="Pilihan font"></div>
+  <div class="rep" hidden>
+    <textarea rows="2" aria-label="Teks pengganti"></textarea>
+    <div><button class="prime" data-a="repok">Terapkan</button><button data-a="repno">Batal</button><small class="rh">Enter = terapkan, Esc = batal. Format teks awal ikut terbawa.</small></div>
+  </div>
+</div>
+
+<dialog id="dNote"><div class="db warn" id="noteDlg" style="border-left:0"></div><div class="df"><button id="bNoteClose">Tutup</button></div></dialog>
+
+<template id="noteTpl">
+  <h2>Catatan penting</h2>
+  <ul>
+    <li><b>Mode sunting menampilkan modul tanpa menjalankan skripnya.</b> Animasi, peta konsep interaktif, kuis, dan bagian lain yang dibuat skrip tampil sebagai kotak bergaris dan teksnya tidak bisa disunting di sini. Untuk teks seperti itu gunakan <b>Penyunting Modul Ajar</b> versi kotak (Penyunting_Modul_Ajar.html). Hasil lengkapnya tetap bisa dilihat lewat <b>Pratinjau Hasil</b>.</li>
+    <li><b>Persamaan berbasis HTML</b> (pecahan, subskrip, variabel miring) tampil seperti di web karena gaya modul dipakai. Hati-hati menyorot sebagian rumus: format yang diterapkan hanya mengenai teks yang tersorot.</li>
+    <li><b>Kode LaTeX</b> (misalnya <code>$E=\frac{F}{q}$</code> atau <code>\( ... \)</code>) <b>tidak dirender</b> di sini karena MathJax/KaTeX butuh skrip; kodenya tampil mentah, berbeda dari tampilan di web. Jangan memberi format pada sebagian kode LaTeX; ubah seluruh ekspresi dengan <b>Ganti teks</b>, lalu periksa dengan <b>Pratinjau Hasil</b>.</li>
+    <li><b>Menu Font</b>: <b>Bawaan</b> mengembalikan font yang dipakai modul (namanya ditampilkan). Empat font lain adalah font sistem (Segoe UI, Arial, Georgia, Cambria, Consolas; yang sama dengan font bawaan tidak ditawarkan), tanpa unduhan dari internet. Bila font itu tidak terpasang di perangkat pembaca, peramban memakai font pengganti yang mirip.</li>
+    <li><b>TeX</b> mengganti huruf teks terpilih menjadi Computer Modern, huruf khas TeX (dimuat dari CDN KaTeX; tanpa internet tampil sebagai Cambria).</li>
+    <li><b>LaTeX</b> dan <b>KaTeX</b> menganggap teks terpilih sebagai <b>kode LaTeX</b>, misalnya <code>E = \frac{F}{q_0}</code>. Tulis kodenya dulu dengan <b>Ganti teks</b>, sorot, lalu pilih:
+      <b>LaTeX</b> menandai kode dengan <code>\( \)</code> dan menambahkan MathJax ke modul. Di penyunting kodenya tetap tampil mentah (kotak biru), dan baru menjadi rumus saat modul dibuka daring atau di Pratinjau Hasil.
+      <b>KaTeX</b> langsung merender kode menjadi rumus sekarang juga (perlu internet) dan menautkan gaya KaTeX ke modul.
+      Bawaan pada rumus mengembalikannya menjadi kode. Kode <code>$...$</code>, <code>\(...\)</code>, atau <code>\[...\]</code> (rumus terpisah) dikenali otomatis.</li>
+    <li><b>Menu Ukuran</b>: <b>Bawaan</b> menampilkan dan mengembalikan ukuran huruf modul; <b>A&minus;</b>/<b>A+</b> mengubah 2 px per klik (menu tetap terbuka agar bisa diklik berulang); atau pilih 12 sampai 32 px.</li>
+    <li><b>Menu Paragraf</b> bekerja pada seluruh paragraf/poin tempat sorotan berada (cukup sorot satu kata):
+      <b>posisi teks</b> rata kiri, tengah, rata kanan, rata kiri-kanan;
+      <b>Inden</b>/<b>Kurangi inden</b> menggeser 2 em per klik (juga tombol Tab dan Shift+Tab);
+      <b>Tab baris pertama</b> menjorokkan awal paragraf; <b>Sisipkan tab</b> memberi jarak tab tepat sebelum teks yang disorot;
+      <b>Baris baru di bawah/di atas</b> menambah paragraf baru (atau poin baru bila sorotan ada di daftar, atau baris tabel baru bila di tabel); <b>Pindah baris di sini</b> memutus baris sebelum teks yang disorot;
+      <b>Poin baru</b>, <b>Jadikan bullet</b>, <b>Jadikan nomor</b>, dan <b>Lepas bullet/nomor</b> untuk daftar. Paragraf yang dijadikan bullet tepat di bawah daftar yang sejenis akan bergabung ke daftar itu.</li>
+    <li>Pengaturan posisi, inden, dan ukuran disimpan sebagai gaya langsung pada elemen (<code>style="..."</code>), sehingga tampil sama di peramban mana pun tanpa mengubah CSS modul.</li>
+    <li><b>Tebal pada judul</b> yang sudah tebal karena gaya modul tidak tampak berbeda, meskipun tag <code>&lt;b&gt;</code> tetap ditambahkan.</li>
+    <li><b>Menghapus</b>: bila sebuah poin, paragraf, atau judul menjadi kosong, elemennya ikut dihapus beserta penandanya (titik poin atau nomor). Bila semua poin dalam daftar terhapus, daftarnya ikut hilang. Elemen yang memiliki <code>id</code> tidak dihapus karena mungkin dipakai skrip modul.</li>
+    <li><b>Ganti teks</b> mengikuti format awal teks yang disorot. Bila sorotan melintasi beberapa poin, teks pengganti masuk ke poin pertama dan poin lain yang menjadi kosong ikut dihapus.</li>
+    <li><b>Modul dengan perlindungan anti-salin</b> (teks tidak bisa disorot, klik kanan dimatikan) tetap bisa disunting: selama menyunting, penyunting membuka sementara izin menyorot teks. Perlindungan itu tidak diubah dan tetap berlaku di file hasil.</li>
+    <li>Gambar yang dipanggil dengan alamat relatif mungkin tidak tampil di penyunting dan di pratinjau, tetapi tetap benar pada file hasil bila file itu ditaruh di folder yang sama dengan file asli.</li>
+    <li>Penyimpanan langsung ke file pilihan penulis bekerja di Chrome dan Edge. Di peramban lain, Simpan mengunduh file hasil.</li>
+  </ul>
+</template>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s);};
+var MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+var BLOCK=/^(ADDRESS|ARTICLE|ASIDE|BLOCKQUOTE|BODY|DD|DETAILS|DIALOG|DIV|DL|DT|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H[1-6]|HEADER|HGROUP|HR|LI|MAIN|NAV|OL|P|PRE|SECTION|SUMMARY|TABLE|TBODY|TD|TFOOT|TH|THEAD|TR|UL|CAPTION)$/;
+var FMT={b:['B','STRONG'],i:['I','EM'],u:['U','INS'],sub:['SUB'],sup:['SUP']};
+var ALLFMT=['B','STRONG','I','EM','U','INS','SUB','SUP'];
+var FNAME={b:'Tebal',i:'Miring',u:'Garis bawah',sub:'Subskrip',sup:'Superskrip'};
+var CLEAN='li,p,h1,h2,h3,h4,h5,h6,dt,dd,blockquote,figcaption,ul,ol,dl,b,strong,i,em,u,ins,sub,sup,span,a,small,mark,s';
+var RB='li,p,h1,h2,h3,h4,h5,h6,blockquote,dt,dd,figcaption,pre,tr,caption';
+var MEDIA='img,svg,canvas,video,audio,iframe,input,textarea,select,button,object,embed,math,hr';
+/* Gaya khusus penyunting (dibuang saat menyimpan). Baris pertama membuka kembali sorotan teks
+   pada modul yang dilindungi "user-select:none" (anti-salin); perlindungan di file hasil tetap utuh. */
+var EDCSS='html,body,body *{-webkit-user-select:text!important;-moz-user-select:text!important;-ms-user-select:text!important;user-select:text!important;-webkit-touch-callout:default!important}'
+ +'html,body{pointer-events:auto!important}'
+ +'::selection{background:#cdbcff}'
+ +'[data-ed-ubah]{background-color:rgba(19,121,91,.10)!important;outline:2px solid rgba(19,121,91,.40);outline-offset:2px}'
+ +'[data-font=latex]{font-family:Consolas,"Cascadia Mono",monospace!important;font-style:normal;background:#e8f0ff;outline:1px dashed #5b7fd0;outline-offset:1px}'
+ +'[data-font=latex]::after{content:" LaTeX";font:600 10px/1 "Segoe UI",sans-serif;color:#5b7fd0;vertical-align:super}'
+ +'[data-font=katex]{outline:1px dashed rgba(90,62,168,.45);outline-offset:2px}'
+ +'[id]:empty:not(textarea):not(canvas):not(input):not(iframe)::before{content:"Area interaktif dibuat skrip (#" attr(id) "), tampil di Pratinjau Hasil";display:block;padding:10px 12px;border:1px dashed #8a97a6;color:#5a6876;font:13px/1.4 "Segoe UI",system-ui,sans-serif;background:repeating-linear-gradient(45deg,#f7f8fa 0 10px,#eef1f4 10px 20px)}';
+
+/* Font sistem (tanpa unduhan, aman dipakai luring); 4 di antaranya ditawarkan, selain font bawaan teks terpilih */
+var FONTS=[
+  {k:'segoe',n:'Segoe UI',d:'sans-serif, tegas dan bersih',css:"'Segoe UI',system-ui,Arial,sans-serif"},
+  {k:'arial',n:'Arial',d:'sans-serif, tersedia hampir di semua perangkat',css:"Arial,Helvetica,sans-serif"},
+  {k:'georgia',n:'Georgia',d:'serif, nyaman untuk bacaan panjang',css:"Georgia,'Times New Roman',serif"},
+  {k:'cambria',n:'Cambria',d:'serif, serasi dengan rumus Cambria Math',css:"Cambria,'Cambria Math','Times New Roman',serif"},
+  {k:'consolas',n:'Consolas',d:'monospace, untuk kode dan data',css:"Consolas,'Cascadia Mono',Menlo,'Courier New',monospace"}
+];
+var TEXF={k:'tex',n:'TeX',d:'huruf Computer Modern khas TeX (dimuat dari CDN; luring: Cambria)',css:"KaTeX_Main,'Latin Modern Roman','CMU Serif','Computer Modern',Cambria,'Times New Roman',serif"};
+var KV='0.16.11',KCSS='https://cdn.jsdelivr.net/npm/katex@'+KV+'/dist/katex.min.css',KJS='https://cdn.jsdelivr.net/npm/katex@'+KV+'/dist/katex.min.js';
+var MJS='<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"><\/script>';
+var MATHSEL='[data-font=katex],[data-font=latex]';
+var F=$('#fr'),D=null,W=null;
+var S={name:'',base:'',orig:'',handle:null,outName:'',editing:false,undo:[],redo:[],log:[],savedBody:null,range:null,busy:false,fsa:typeof window.showSaveFilePicker==='function'};
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function shortDate(){var d=new Date();return ('0'+d.getDate()).slice(-2)+MON[d.getMonth()]+String(d.getFullYear()).slice(-2);}
+function hms(){var d=new Date();return [d.getHours(),d.getMinutes(),d.getSeconds()].map(function(v){return ('0'+v).slice(-2);}).join(':');}
+function clip(s,n){s=String(s).replace(/\s+/g,' ').trim();return s.length>n?s.slice(0,n-1)+'…':s;}
+function status(t,err){var st=$('#status');st.innerHTML=t||'';st.classList.toggle('err',!!err);}
+$('#noteCard').innerHTML=$('#noteTpl').innerHTML;$('#noteDlg').innerHTML=$('#noteTpl').innerHTML;
+
+/* ================= Membuka file ================= */
+var fileIn=$('#file'),drop=$('#drop');
+$('#bOpen').addEventListener('click',function(){fileIn.click();});
+drop.addEventListener('click',function(){fileIn.click();});
+drop.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();fileIn.click();}});
+['dragenter','dragover'].forEach(function(ev){document.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('over');});});
+['dragleave','drop'].forEach(function(ev){document.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over');});});
+document.addEventListener('drop',function(e){if(e.dataTransfer&&e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
+fileIn.addEventListener('change',function(){if(fileIn.files[0])loadFile(fileIn.files[0]);fileIn.value='';});
+
+function isDirty(){return S.editing&&D&&S.savedBody!==null&&D.body.innerHTML!==S.savedBody;}
+async function loadFile(file){
+  if(isDirty()&&!confirm('Ada perubahan yang belum disimpan. Buka file lain dan buang perubahan itu?'))return;
+  var text;try{text=await file.text();}catch(e){status('File tidak dapat dibaca: '+esc(e.message),true);return;}
+  if(!/<\s*(html|body|div|p|h1)\b/i.test(text)){status('Isi file tidak tampak seperti HTML. Coba file lain.',true);return;}
+  resetState();
+  S.orig=text;S.name=file.name;S.base=file.name.replace(/\.(html?|xhtml)$/i,'');
+  $('#fname').textContent=S.name;$('#fname').title=S.name;
+  var shown;try{shown=prepare(text);}catch(e){status('Gagal mengurai file: '+esc(e.message),true);return;}
+  F.srcdoc=shown;
+}
+/* Skrip, meta refresh, dan atribut on* disimpan lalu diganti penanda agar tidak berjalan di penyunting;
+   semuanya dipasang kembali utuh saat menyimpan. */
+var PFX='ED-LINDUNG-',ONP='data-edon-';
+function prepare(text){
+  var doc=new DOMParser().parseFromString(text,'text/html');S.prot=[];
+  [].forEach.call(doc.querySelectorAll('script,meta[http-equiv]'),function(el){
+    var i=S.prot.length;S.prot.push(el.outerHTML);el.parentNode.replaceChild(doc.createComment(PFX+i),el);});
+  [].forEach.call(doc.querySelectorAll('*'),function(el){
+    [].slice.call(el.attributes).forEach(function(a){if(/^on/i.test(a.name)){el.setAttribute(ONP+a.name.slice(2),a.value);el.removeAttribute(a.name);}});});
+  var dt=doc.doctype?'<!DOCTYPE '+(doc.doctype.name||'html')+'>\n':'';
+  return dt+doc.documentElement.outerHTML;
+}
+function resetState(){
+  S.editing=false;S.undo=[];S.redo=[];S.log=[];S.handle=null;S.savedBody=null;S.range=null;hideTb();
+  $('#tip').hidden=false;['#bUndo','#bRedo','#bSave','#bDl','#bView'].forEach(function(s){$(s).disabled=true;});renderLog();
+}
+F.addEventListener('load',function(){
+  if(!S.orig){return;}
+  D=F.contentDocument;W=F.contentWindow;
+  var st=D.createElement('style');st.id='__ed_css';st.textContent=EDCSS;(D.head||D.documentElement).appendChild(st);
+  D.addEventListener('selectionchange',onSel);
+  D.addEventListener('mouseup',function(){setTimeout(onSel,0);});
+  D.addEventListener('keydown',onKey);
+  D.addEventListener('click',onClickLink,true);
+  D.addEventListener('submit',function(e){e.preventDefault();},true);
+  W.addEventListener('scroll',function(){if(!$('#ftb').hidden&&S.range)placeTb(S.range);});
+  $('#start').hidden=true;$('#work').hidden=false;
+  $('#bYes').disabled=false;$('#bNo').disabled=false;
+  status('Terbaca: <b>'+esc(S.name)+'</b> ('+Math.round(S.orig.length/1024)+' KB). Klik <b>Mau sunting?</b> untuk mulai menyunting.');
+});
+function onClickLink(e){
+  var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
+  e.preventDefault();var h=a.getAttribute('href');
+  if(h.charAt(0)==='#'&&h.length>1){var t=D.getElementById(decodeURIComponent(h.slice(1)));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
+  else status('Tautan ke luar ('+esc(clip(h,60))+') tidak dibuka di mode sunting.');
+}
+
+$('#bNo').addEventListener('click',function(){
+  resetState();S.orig='';F.removeAttribute('srcdoc');F.src='about:blank';D=null;
+  $('#work').hidden=true;$('#start').hidden=false;$('#bYes').disabled=true;$('#bNo').disabled=true;$('#fname').textContent='';
+  status('Baik, tidak disunting. Tidak ada file baru yang dibuat dan file asli tidak berubah.');
+});
+$('#bYes').addEventListener('click',async function(){
+  S.outName=S.base+'_sunting_'+shortDate()+'.html';S.handle=null;var note;
+  if(S.fsa){
+    try{S.handle=await window.showSaveFilePicker({suggestedName:S.outName,types:[{description:'Dokumen HTML',accept:{'text/html':['.html']}}]});
+      S.outName=S.handle.name;var w=await S.handle.createWritable();await w.write(S.orig);await w.close();
+      note='File baru dibuat: <b>'+esc(S.outName)+'</b>. Setiap Simpan memperbarui file ini.';}
+    catch(e){if(e&&e.name==='AbortError'){status('Pemilihan lokasi dibatalkan. Klik <b>Mau sunting?</b> lagi untuk mencoba.');return;}
+      S.handle=null;note='Penyimpanan langsung tidak tersedia; Simpan akan mengunduh <b>'+esc(S.outName)+'</b>.';}
+  }else note='Nama file hasil: <b>'+esc(S.outName)+'</b>. Peramban ini tidak menulis file langsung, jadi Simpan mengunduh file (pakai Chrome/Edge untuk penyimpanan langsung).';
+  S.editing=true;S.savedBody=D.body.innerHTML;
+  $('#bYes').disabled=true;$('#bNo').disabled=true;$('#bSave').disabled=false;$('#bDl').disabled=false;$('#bView').disabled=false;
+  $('#tip').innerHTML='Sorot teks pada modul, lalu pilih aksi pada toolbar yang muncul. Bagian yang diubah diberi latar hijau tipis (hanya di penyunting).';
+  $('#fname').textContent=S.outName;$('#fname').title=S.outName;
+  status(note);updUi();
+});
+
+/* ================= Toolbar mengambang ================= */
+var tb=$('#ftb'),rep=$('.rep',tb),repTa=$('textarea',rep),fm=$('.fm',tb);
+function hideTb(){tb.hidden=true;rep.hidden=true;fm.hidden=true;S.busy=false;}
+function onSel(){
+  if(!D||S.busy)return;
+  var sel=W.getSelection();
+  if(!sel||!sel.rangeCount||sel.isCollapsed){hideTb();return;}
+  var r=sel.getRangeAt(0);
+  if(!D.body.contains(r.commonAncestorContainer)){hideTb();return;}
+  if(!S.editing){hideTb();status('Klik <b>Mau sunting?</b> terlebih dahulu untuk menyunting teks yang disorot.');return;}
+  if(!selTexts(r,false).length){hideTb();return;}
+  S.range=r.cloneRange();
+  var pn=plain(selTexts(r,false));
+  ['b','i','u','sub','sup'].forEach(function(k){$('[data-f="'+k+'"]',tb).classList.toggle('on',isOn(pn,FMT[k]));});
+  if(!fm.hidden)openMenu(S.menu);
+  tb.hidden=false;placeTb(r);
+}
+function placeTb(r){
+  var fr=F.getBoundingClientRect(),rc=r.getBoundingClientRect(),w=tb.offsetWidth,h=tb.offsetHeight;
+  if(rc.bottom<0||rc.top>fr.height){tb.style.visibility='hidden';return;}tb.style.visibility='visible';
+  var top=fr.top+rc.top-h-8;if(top<fr.top+4)top=fr.top+Math.min(rc.bottom,fr.height-h-8)+8;
+  var left=fr.left+rc.left+rc.width/2-w/2;left=Math.max(fr.left+4,Math.min(left,fr.right-w-4));
+  tb.style.top=Math.round(top)+'px';tb.style.left=Math.round(left)+'px';
+}
+tb.addEventListener('mousedown',function(e){if(e.target!==repTa)e.preventDefault();});
+tb.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.fk){fm.hidden=true;doFont(b.dataset.fk);return;}
+  if(b.dataset.sz){doSize(b.dataset.sz);return;}
+  if(b.dataset.pa){doPara(b.dataset.pa);return;}
+  if(b.dataset.f)doFmt(b.dataset.f);
+  else if(b.dataset.a==='font'||b.dataset.a==='size'||b.dataset.a==='para')toggleMenu(b.dataset.a);
+  else if(b.dataset.a==='rep'){fm.hidden=true;openRep('rep');}
+  else if(b.dataset.a==='repok')applyRep();
+  else if(b.dataset.a==='repno'){rep.hidden=true;S.busy=false;}
+  else if(b.dataset.a==='del')doDelete();
+  else if(b.dataset.a==='blk')doBlock();
+  else if(b.dataset.a==='clr')doClear();
+});
+var REPH={rep:'Enter = terapkan, Esc = batal. Format teks awal ikut terbawa.','nl-below':'Isi baris baru di BAWAH paragraf/poin ini. Enter = tambahkan, Esc = batal.','nl-above':'Isi baris baru di ATAS paragraf/poin ini. Enter = tambahkan, Esc = batal.','li-new':'Isi poin (bullet) baru di bawah poin ini. Enter = tambahkan, Esc = batal.'};
+function openRep(mode){if(!S.range)return;S.repMode=mode||'rep';S.busy=true;fm.hidden=true;rep.hidden=false;
+  repTa.value=S.repMode==='rep'?S.range.toString().replace(/\s+/g,' '):'';repTa.placeholder=S.repMode==='rep'?'':'Ketik isi baris baru di sini';
+  $('.rh',rep).textContent=REPH[S.repMode];placeTb(S.range);repTa.focus();repTa.select();}
+repTa.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();applyRep();}else if(e.key==='Escape'){rep.hidden=true;S.busy=false;}});
+function applyRep(){var v=repTa.value.replace(/\s*\n\s*/g,' '),m=S.repMode||'rep';
+  if(m!=='rep'){if(!v.trim()){repTa.focus();return;}rep.hidden=true;S.busy=false;doNewLine(m,v.trim());return;}
+  rep.hidden=true;S.busy=false;if(v.trim()==='')doDelete();else doReplace(v);}
+
+/* ================= Inti operasi pada DOM ================= */
+/* ================= Font, TeX, LaTeX, KaTeX ================= */
+function mathOf(n){var el=n&&(n.nodeType===1?n:n.parentNode);return el&&el.closest?el.closest(MATHSEL):null;}
+function plain(nodes){return nodes.filter(function(n){return !mathOf(n);});}
+function expandMath(r){var a=mathOf(r.startContainer),b=mathOf(r.endContainer);if(a)r.setStartBefore(a);if(b)r.setEndAfter(b);}
+function fontAnc(n){var el=n.parentNode;while(el&&el!==D.body&&el.nodeType===1){if(BLOCK.test(el.tagName))return null;if(el.tagName==='SPAN'&&el.hasAttribute('data-font')&&!el.matches(MATHSEL))return el;el=el.parentNode;}return null;}
+function baseFont(n){
+  var el=n.nodeType===1?n:n.parentNode;while(el&&el.tagName==='SPAN'&&el.hasAttribute('data-font'))el=el.parentNode;
+  var ff=W.getComputedStyle(el).fontFamily||'';return ff.split(',')[0].replace(/["']/g,'').trim()||'bawaan peramban';
+}
+function curFontKey(nodes){var k=null;for(var i=0;i<nodes.length;i++){var a=fontAnc(nodes[i]),v=a?a.getAttribute('data-font'):'';if(i===0)k=v;else if(k!==v)return '?';}return k;}
+function openFontMenu(){
+  if(!S.range)return;rep.hidden=true;
+  var nodes=selTexts(S.range,false),pn=plain(nodes),cur=curFontKey(pn),base=pn.length?baseFont(pn[0]):(nodes.length?baseFont(mathOf(nodes[0]).parentNode):'');
+  var others=FONTS.filter(function(f){return f.n.toLowerCase()!==base.toLowerCase();}).slice(0,4);
+  var inMath=nodes.some(function(n){return !!mathOf(n);});
+  function item(k,name,desc,css,on){return '<button type="button" data-fk="'+k+'"'+(on?' class="on"':'')+(css?' style="font-family:'+css.replace(/"/g,'&quot;')+'"':'')+'>'+esc(name)+'<small>'+esc(desc)+'</small></button>';}
+  var h='<h4>Font teks</h4>'+item('default','Bawaan: '+base,inMath?'hapus perubahan font, dan kembalikan rumus ke kode':'font yang dipakai modul saat ini','',cur==='')
+   +others.map(function(f){return item(f.k,f.n,f.d,f.css,cur===f.k);}).join('')
+   +'<h4>Huruf dan rumus matematika</h4>'+item('tex',TEXF.n,TEXF.d,TEXF.css,cur==='tex')
+   +item('latex','LaTeX','teks terpilih dianggap kode LaTeX; dirender MathJax saat modul dibuka daring','',false)
+   +item('katex','KaTeX','teks terpilih dianggap kode LaTeX; langsung dirender KaTeX sekarang (perlu internet)','',false);
+  fm.innerHTML=h;fm.dataset.kind='font';S.menu='font';fm.hidden=false;placeTb(S.range);
+}
+function headAdd(node,test){var h=D.head||D.documentElement;if(test&&test())return;h.appendChild(node);}
+function ensureKatexCss(){if(D.getElementById('katex-css')||D.querySelector('link[href*="katex"]'))return;var l=D.createElement('link');l.id='katex-css';l.rel='stylesheet';l.href=KCSS;l.setAttribute('crossorigin','anonymous');headAdd(l);}
+function ensureMathJax(){
+  if(S.prot.some(function(s){return /mathjax/i.test(s);}))return false;
+  var i=S.prot.length;S.prot.push(MJS);headAdd(D.createComment(PFX+i));return true;
+}
+var katexP=null;
+function loadKatex(){
+  if(window.katex)return Promise.resolve();if(katexP)return katexP;
+  katexP=new Promise(function(res,rej){var s=document.createElement('script');s.src=KJS;s.onload=function(){res();};
+    s.onerror=function(){katexP=null;s.remove();rej(new Error('pustaka KaTeX tidak dapat dimuat; periksa koneksi internet'));};document.head.appendChild(s);});
+  return katexP;
+}
+function texSrc(s){
+  s=s.trim();var m,disp=false;
+  if((m=s.match(/^\$\$([\s\S]*)\$\$$/))||(m=s.match(/^\\\[([\s\S]*)\\\]$/))){disp=true;s=m[1];}
+  else if((m=s.match(/^\$([\s\S]*)\$$/))||(m=s.match(/^\\\(([\s\S]*)\\\)$/)))s=m[1];
+  return {src:s.trim(),disp:disp};
+}
+function mathToCode(el){var src=el.getAttribute('data-tex');if(src===null)src=texSrc(el.textContent).src;var t=D.createTextNode(src);el.parentNode.replaceChild(t,el);return t;}
+function doFont(k){
+  var r0=S.range;if(!r0)return;
+  var txt=clip(r0.toString(),36),wh=where(r0.startContainer);
+  if(k==='latex'||k==='katex'){doMath(k);return;}
+  var f=k==='tex'?TEXF:FONTS.filter(function(x){return x.k===k;})[0];
+  op((k==='default'?'Font bawaan':'Font '+f.n)+': “'+txt+'”'+wh,function(r){
+    var reverted=[];
+    if(k==='default'){
+      [].slice.call(D.body.querySelectorAll(MATHSEL)).forEach(function(m){if(r.intersectsNode(m))reverted.push(mathToCode(m));});
+    }
+    var nodes=plain(selTexts(r,true)).concat(reverted);if(!nodes.length)return false;
+    nodes.forEach(function(n){var a,g=0;while((a=fontAnc(n))&&g++<20)liftOut(n,a);});
+    if(k!=='default'){
+      if(k==='tex')ensureKatexCss();
+      nodes.forEach(function(n){var sp=D.createElement('span');sp.setAttribute('data-font',k);sp.style.fontFamily=f.css;n.parentNode.insertBefore(sp,n);sp.appendChild(n);});
+    }
+    var blocks=[];nodes.forEach(function(n){var b=blockOf(n);if(blocks.indexOf(b)<0)blocks.push(b);});
+    tidy(blocks);mark(nodes);
+    if(!reverted.length)selectNodes(nodes[0],nodes[nodes.length-1]);else W.getSelection().removeAllRanges();
+    return true;
+  });
+  afterOp();
+}
+async function doMath(k){
+  var r0=S.range;if(!r0)return;
+  var code=texSrc(r0.toString());
+  if(!code.src){status('Sorot kode LaTeX terlebih dahulu, misalnya E = \\frac{F}{q}.',true);return;}
+  if(k==='katex'){
+    status('Memuat KaTeX&hellip;');
+    try{await loadKatex();}catch(e){status('KaTeX gagal: '+esc(e.message)+'. Pilih <b>LaTeX</b> bila ingin rumus dirender saat modul dibuka.',true);return;}
+    try{window.katex.renderToString(code.src,{throwOnError:true,displayMode:code.disp});}
+    catch(e){status('Kode LaTeX belum valid: '+esc(e.message.replace(/^KaTeX parse error:\s*/,'')),true);return;}
+  }
+  var added=false;
+  op((k==='katex'?'KaTeX':'LaTeX')+': '+clip(code.src,40)+where(r0.startContainer),function(r){
+    expandMath(r);
+    var nodes=selTexts(r,true),list=nonEmptyList(),sp=D.createElement('span');
+    sp.setAttribute('data-font',k);sp.setAttribute('data-tex',code.src);
+    if(k==='katex'){ensureKatexCss();sp.className='ed-katex';sp.innerHTML=window.katex.renderToString(code.src,{throwOnError:false,displayMode:code.disp,output:'htmlAndMathml'});}
+    else{sp.className='ed-latex';sp.textContent=code.disp?'\\['+code.src+'\\]':'\\('+code.src+'\\)';added=ensureMathJax();}
+    if(nodes.length){var anc=mathOf(nodes[0])||nodes[0];anc.parentNode.insertBefore(sp,anc);r.setStartAfter(sp);}
+    else{r.insertNode(sp);r.setStartAfter(sp);}
+    r.deleteContents();cleanup(list);mark([sp]);W.getSelection().removeAllRanges();return true;
+  });
+  afterOp(true);
+  if(k==='latex')status('Kode ditandai sebagai LaTeX'+(added?' dan pemuat MathJax ditambahkan ke modul':'')+'. Rumus dirender saat modul dibuka daring; lihat dengan <b>Pratinjau Hasil</b>.');
+  else status('Rumus dirender dengan KaTeX. Gaya KaTeX ditautkan ke modul agar tampil sama saat dibuka daring.');
+}
+
+/* ================= Ukuran huruf ================= */
+var SIZES=[12,14,16,18,20,24,28,32];
+function toggleMenu(k){if(!fm.hidden&&S.menu===k){fm.hidden=true;placeTb(S.range);return;}rep.hidden=true;S.busy=false;openMenu(k);}
+function openMenu(k){if(!S.range)return;if(k==='size')openSizeMenu();else if(k==='para')openParaMenu();else openFontMenu();}
+function mi(attr,val,name,desc,on,style){return '<button type="button" data-'+attr+'="'+val+'"'+(on?' class="on"':'')+(style?' style="'+style+'"':'')+'>'+name+(desc?'<small>'+esc(desc)+'</small>':'')+'</button>';}
+function showMenu(kind,h){fm.innerHTML=h;fm.dataset.kind=kind;S.menu=kind;fm.hidden=false;placeTb(S.range);}
+function sizeAnc(n){var el=n.parentNode;while(el&&el!==D.body&&el.nodeType===1){if(BLOCK.test(el.tagName))return null;if(el.tagName==='SPAN'&&el.hasAttribute('data-size'))return el;el=el.parentNode;}return null;}
+function pxOf(el){return Math.round(parseFloat(W.getComputedStyle(el).fontSize)||16);}
+function baseSize(n){var el=n.parentNode;while(el&&el.tagName==='SPAN'&&el.hasAttribute('data-size'))el=el.parentNode;return pxOf(el);}
+function openSizeMenu(){
+  var nodes=plain(selTexts(S.range,false));if(!nodes.length){fm.hidden=true;return;}
+  var base=baseSize(nodes[0]),now=pxOf(nodes[0].parentNode),cur=null;
+  nodes.forEach(function(n,i){var a=sizeAnc(n),v=a?a.getAttribute('data-size'):'';if(i===0)cur=v;else if(cur!==v)cur='?';});
+  showMenu('size','<h4>Ukuran huruf teks terpilih: '+now+' px</h4>'
+   +mi('sz','default','Bawaan: '+base+' px','ukuran modul',cur==='')
+   +mi('sz','minus','A&minus; Perkecil','kurangi 2 px',false)
+   +mi('sz','plus','A+ Perbesar','tambah 2 px',false)
+   +'<h4>Pilih ukuran</h4>'
+   +SIZES.map(function(z){return mi('sz',z,z+' px','',cur===String(z),'font-size:'+Math.min(z,22)+'px');}).join(''));
+}
+function doSize(v){
+  var r0=S.range;if(!r0)return;var n0=plain(selTexts(r0,false));if(!n0.length){status('Sorot teks biasa (bukan rumus) untuk mengubah ukurannya.',true);return;}
+  var px=null;
+  if(v==='plus'||v==='minus')px=Math.max(8,Math.min(72,pxOf(n0[0].parentNode)+(v==='plus'?2:-2)));
+  else if(v!=='default')px=+v;
+  op((px?'Ukuran '+px+' px':'Ukuran bawaan')+': “'+clip(r0.toString(),36)+'”'+where(r0.startContainer),function(r){
+    var nodes=plain(selTexts(r,true));if(!nodes.length)return false;
+    nodes.forEach(function(n){var a,g=0;while((a=sizeAnc(n))&&g++<20)liftOut(n,a);});
+    if(px)nodes.forEach(function(n){var sp=D.createElement('span');sp.setAttribute('data-size',String(px));sp.style.fontSize=px+'px';n.parentNode.insertBefore(sp,n);sp.appendChild(n);});
+    var blocks=[];nodes.forEach(function(n){var b=blockOf(n);if(blocks.indexOf(b)<0)blocks.push(b);});
+    tidy(blocks);mark(nodes);selectNodes(nodes[0],nodes[nodes.length-1]);return true;
+  });
+  afterOp();
+}
+
+/* ================= Paragraf: posisi, inden, tab, baris, bullet ================= */
+var PB='p,li,h1,h2,h3,h4,h5,h6,blockquote,dt,dd,figcaption,td,th,pre,caption';
+function selBlocks(r){var out=[];selTexts(r,false).forEach(function(n){var el=n.parentNode.closest(PB)||blockOf(n);if(el&&el!==D.body&&out.indexOf(el)<0)out.push(el);});return out;}
+function emOf(v){var m=/^(-?[\d.]+)em$/.exec(v||'');return m?+m[1]:0;}
+function tidyStyle(el){if(el.getAttribute('style')!==null&&!el.getAttribute('style').trim())el.removeAttribute('style');}
+var ALIGN={'al-left':['left','Rata kiri'],'al-center':['center','Tengah'],'al-right':['right','Rata kanan'],'al-justify':['justify','Rata kiri-kanan']};
+function openParaMenu(){
+  var bl=selBlocks(S.range);if(!bl.length){fm.hidden=true;return;}
+  var cs=W.getComputedStyle(bl[0]),ta=cs.textAlign;ta=ta==='start'?'left':(ta==='end'?'right':ta);
+  var ti=parseFloat(cs.textIndent)>0,ml=emOf(bl[0].style.marginLeft);
+  var li=bl[0].closest('li'),lt=li?li.parentNode.tagName:'';
+  showMenu('para','<h4>Posisi teks</h4>'
+   +mi('pa','al-left','<b>&#8676;</b>Rata kiri','',ta==='left')
+   +mi('pa','al-center','<b>&#8596;</b>Tengah','',ta==='center')
+   +mi('pa','al-right','<b>&#8677;</b>Rata kanan','',ta==='right')
+   +mi('pa','al-justify','<b>&#8801;</b>Rata kiri-kanan','',ta==='justify')
+   +'<h4>Inden dan tab'+(ml?' (inden sekarang '+ml+' em)':'')+'</h4>'
+   +mi('pa','ind-plus','<b>&#8677;</b>Inden','geser ke kanan (Tab)',false)
+   +mi('pa','ind-minus','<b>&#8676;</b>Kurangi inden','geser ke kiri (Shift+Tab)',false)
+   +mi('pa','tab1','<b>&#8614;</b>Tab baris pertama','menjorok di awal paragraf',ti)
+   +mi('pa','tabins','<b>&#8594;|</b>Sisipkan tab','jarak tab sebelum sorotan',false)
+   +'<h4>Tambah baris</h4>'
+   +mi('pa','nl-below','<b>&#8615;</b>Baris baru di bawah','paragraf/poin baru',false)
+   +mi('pa','nl-above','<b>&#8613;</b>Baris baru di atas','paragraf/poin baru',false)
+   +mi('pa','br','<b>&#8629;</b>Pindah baris di sini','ganti baris sebelum sorotan',false)
+   +'<span></span>'
+   +'<h4>Bullet dan nomor</h4>'
+   +mi('pa','li-new','<b>+&bull;</b>Poin baru','di bawah poin ini',false)
+   +mi('pa','ul','<b>&bull;</b>Jadikan bullet','',lt==='UL')
+   +mi('pa','ol','<b>1.</b>Jadikan nomor','',lt==='OL')
+   +mi('pa','unl','<b>&times;</b>Lepas bullet/nomor','jadi paragraf biasa',false));
+}
+function doPara(a){
+  var r0=S.range;if(!r0)return;
+  if(a==='nl-below'||a==='nl-above'||a==='li-new'){openRep(a);return;}
+  var bl=selBlocks(r0);if(!bl.length){status('Sorot teks di dalam paragraf atau poin terlebih dahulu.',true);return;}
+  var first=clip(bl[0].textContent,32),wh=where(bl[0]),keep=true;
+  if(ALIGN[a]){op(ALIGN[a][1]+': “'+first+'”'+(bl.length>1?' (+'+(bl.length-1)+')':'')+wh,function(){bl.forEach(function(b){b.style.textAlign=ALIGN[a][0];b.setAttribute('data-ed-ubah','');});return true;});}
+  else if(a==='ind-plus'||a==='ind-minus'){
+    op((a==='ind-plus'?'Inden':'Kurangi inden')+': “'+first+'”'+wh,function(){
+      bl.forEach(function(b){var c=emOf(b.style.marginLeft)+(a==='ind-plus'?2:-2);if(c<=0)b.style.removeProperty('margin-left');else b.style.marginLeft=Math.min(c,16)+'em';tidyStyle(b);b.setAttribute('data-ed-ubah','');});return true;});}
+  else if(a==='tab1'){
+    var on=parseFloat(W.getComputedStyle(bl[0]).textIndent)>0;
+    op((on?'Tab baris pertama dilepas':'Tab baris pertama')+': “'+first+'”'+wh,function(){
+      bl.forEach(function(b){if(!on)b.style.textIndent='2em';else{b.style.removeProperty('text-indent');if(parseFloat(W.getComputedStyle(b).textIndent)>0)b.style.textIndent='0';}tidyStyle(b);b.setAttribute('data-ed-ubah','');});return true;});}
+  else if(a==='tabins'||a==='br'){
+    keep=false;
+    op((a==='br'?'Pindah baris':'Sisipkan tab')+' sebelum “'+clip(r0.toString(),30)+'”'+wh,function(r){
+      var nodes=selTexts(r,true);if(!nodes.length)return false;var at=mathOf(nodes[0])||nodes[0];
+      var x=a==='br'?D.createElement('br'):D.createTextNode('  ');at.parentNode.insertBefore(x,at);mark([at]);return true;});}
+  else if(a==='ul'||a==='ol'){keep=false;doList(a,bl);}
+  else if(a==='unl'){keep=false;doUnlist(bl);}
+  afterOp(!keep);
+}
+function doNewLine(m,v){
+  var r0=S.range;if(!r0)return;var bl=selBlocks(r0);if(!bl.length){status('Sorot teks di dalam paragraf atau poin terlebih dahulu.',true);return;}
+  var base=m==='nl-above'?bl[0]:bl[bl.length-1];
+  op((m==='li-new'?'Poin baru':(m==='nl-above'?'Baris baru di atas':'Baris baru di bawah'))+': “'+clip(v,40)+'”'+where(base),function(){
+    var el;
+    if(m==='li-new'){
+      var li=base.closest('li');el=D.createElement('li');el.textContent=v;
+      if(li){if(li.className)el.className=li.className;li.parentNode.insertBefore(el,li.nextSibling);}
+      else{var ul=D.createElement('ul');ul.appendChild(el);base.parentNode.insertBefore(ul,base.nextSibling);}
+    }else if(/^(TD|TH)$/.test(base.tagName)){
+      var tr=base.parentNode;el=tr.cloneNode(false);
+      [].forEach.call(tr.children,function(c){var nc=c.cloneNode(false);if(c===base)nc.textContent=v;el.appendChild(nc);});
+      tr.parentNode.insertBefore(el,m==='nl-above'?tr:tr.nextSibling);
+    }else{
+      var host=base;
+      el=D.createElement(host.tagName==='LI'?'li':'p');el.textContent=v;
+      if(host.tagName==='LI'&&host.className)el.className=host.className;
+      if(host.tagName==='P'&&host.className)el.className=host.className;
+      host.parentNode.insertBefore(el,m==='nl-above'?host:host.nextSibling);
+    }
+    el.setAttribute('data-ed-ubah','');W.getSelection().removeAllRanges();return true;
+  });
+  afterOp(true);
+  status('Baris baru ditambahkan. Sorot teksnya bila ingin diberi format.');
+}
+function doList(tag,bl){
+  op('Jadikan '+(tag==='ul'?'bullet':'nomor')+': “'+clip(bl[0].textContent,32)+'”'+(bl.length>1?' (+'+(bl.length-1)+')':'')+where(bl[0]),function(){
+    var T=tag.toUpperCase(),n=0,done=[];
+    bl.forEach(function(b){
+      var li=b.closest('li');
+      if(li){var L=li.parentNode;if(L.tagName!==T&&done.indexOf(L)<0){var N=D.createElement(tag);[].forEach.call(L.attributes,function(at){if(at.name!=='start'&&at.name!=='type')N.setAttribute(at.name,at.value);});while(L.firstChild)N.appendChild(L.firstChild);L.parentNode.replaceChild(N,L);done.push(N);}
+        li.setAttribute('data-ed-ubah','');n++;return;}
+      if(/^(TD|TH|CAPTION|DT|DD)$/.test(b.tagName))return;
+      var prev=b.previousElementSibling,L2;
+      if(prev&&prev.tagName===T)L2=prev;else{L2=D.createElement(tag);b.parentNode.insertBefore(L2,b);}
+      var nl=D.createElement('li');while(b.firstChild)nl.appendChild(b.firstChild);L2.appendChild(nl);b.remove();nl.setAttribute('data-ed-ubah','');n++;
+    });
+    return n>0;
+  });
+}
+function doUnlist(bl){
+  var lis=[];bl.forEach(function(b){var li=b.closest('li');if(li&&lis.indexOf(li)<0)lis.push(li);});
+  if(!lis.length){status('Sorotan tidak berada di dalam poin bullet atau nomor.',true);return;}
+  op('Lepas bullet/nomor: “'+clip(lis[0].textContent,32)+'”'+(lis.length>1?' (+'+(lis.length-1)+')':'')+where(lis[0]),function(){
+    lis.forEach(function(li){
+      var L=li.parentNode,after=[],x=li.nextSibling;while(x){after.push(x);x=x.nextSibling;}
+      if(after.some(function(a){return a.nodeType===1;})){var L2=L.cloneNode(false);after.forEach(function(a){L2.appendChild(a);});L.parentNode.insertBefore(L2,L.nextSibling);}
+      var anchor=L.nextSibling,par=L.parentNode,hasBlock=!!li.querySelector('p,div,ul,ol,h1,h2,h3,h4,h5,h6,blockquote,table');
+      if(hasBlock){while(li.firstChild){var c=li.firstChild;if(c.nodeType===1)c.setAttribute('data-ed-ubah','');par.insertBefore(c,anchor);}}
+      else{var p=D.createElement('p');while(li.firstChild)p.appendChild(li.firstChild);p.setAttribute('data-ed-ubah','');par.insertBefore(p,anchor);}
+      li.remove();if(!L.querySelector('li'))L.remove();
+    });
+    return true;
+  });
+}
+
+function skipT(t){var p=t.parentNode;return !p||!p.closest||!!p.closest('script,style,textarea,noscript,title,select');}
+function selTexts(r,split){
+  if(split){
+    var ec=r.endContainer,eo=r.endOffset;if(ec.nodeType===3&&eo>0&&eo<ec.length)ec.splitText(eo);
+    var sc=r.startContainer,so=r.startOffset;if(sc.nodeType===3&&so>0&&so<sc.length){var n=sc.splitText(so);r.setStart(n,0);}
+  }
+  var root=r.commonAncestorContainer;if(root.nodeType!==1)root=root.parentNode;
+  var w=D.createTreeWalker(root,4),out=[],t;
+  if(r.commonAncestorContainer.nodeType===3){t=r.commonAncestorContainer;var s0=r.startOffset,e0=r.endOffset;if(!skipT(t)&&e0>s0&&t.nodeValue.slice(s0,e0).trim())out.push(t);return out;}
+  while((t=w.nextNode())){
+    if(!r.intersectsNode(t)||skipT(t))continue;
+    var s=t===r.startContainer?r.startOffset:0,e=t===r.endContainer?r.endOffset:t.length;
+    if(e<=s||!t.nodeValue.slice(s,e).trim())continue;
+    out.push(t);
+  }
+  return out;
+}
+function fmtAnc(n,tags){var el=n.parentNode;while(el&&el!==D.body&&el.nodeType===1){if(BLOCK.test(el.tagName))return null;if(tags.indexOf(el.tagName)>=0)return el;el=el.parentNode;}return null;}
+function isOn(nodes,tags){return nodes.length>0&&nodes.every(function(n){return !!fmtAnc(n,tags);});}
+function blockOf(n){var el=n.nodeType===1?n:n.parentNode;while(el&&el!==D.body){if(BLOCK.test(el.tagName))return el;el=el.parentNode;}return D.body;}
+function hasContent(x){return x.textContent.length>0||!!(x.querySelector&&x.querySelector(MEDIA+',br'));}
+function liftOut(node,anc){
+  var p=anc.parentNode;
+  var r1=D.createRange();r1.setStart(anc,0);r1.setEndBefore(node);var f1=r1.extractContents();
+  var r2=D.createRange();r2.setStartAfter(node);r2.setEnd(anc,anc.childNodes.length);var f2=r2.extractContents();
+  if(hasContent(f1)){var a1=anc.cloneNode(false);a1.appendChild(f1);p.insertBefore(a1,anc);}
+  while(anc.firstChild)p.insertBefore(anc.firstChild,anc);
+  if(hasContent(f2)){var a2=anc.cloneNode(false);a2.appendChild(f2);p.insertBefore(a2,anc.nextSibling);}
+  p.removeChild(anc);
+}
+function liftAll(n,tags){var a,guard=0;while((a=fmtAnc(n,tags))&&guard++<20)liftOut(n,a);}
+function tidy(blocks){
+  blocks.forEach(function(bl){
+    if(!bl.isConnected)return;
+    [].slice.call(bl.querySelectorAll(ALLFMT.join(','))).forEach(function(el){
+      if(!el.isConnected||el.closest('.katex'))return;
+      if(!hasContent(el)){el.remove();return;}
+      var pv=el.previousSibling;
+      if(pv&&pv.nodeType===1&&pv.tagName===el.tagName&&!pv.attributes.length&&!el.attributes.length){while(el.firstChild)pv.appendChild(el.firstChild);el.remove();}
+    });
+  });
+}
+function nonEmptyList(){return [].filter.call(D.body.querySelectorAll(CLEAN),function(el){return !isEmpty(el);});}
+function isEmpty(el){return !el.textContent.trim()&&!el.querySelector(MEDIA);}
+function cleanup(list){var n=0;list.forEach(function(el){if(el.isConnected&&isEmpty(el)&&!el.id){el.remove();n++;}});return n;}
+function mark(nodes){nodes.forEach(function(n){var b=n.isConnected?blockOf(n):null;if(b&&b!==D.body)b.setAttribute('data-ed-ubah','');});}
+function selectNodes(a,b){var r=D.createRange();r.setStart(a,0);r.setEnd(b,b.nodeType===3?b.length:b.childNodes.length);var s=W.getSelection();s.removeAllRanges();s.addRange(r);}
+function where(n){var el=n&&(n.nodeType===1?n:n.parentNode);var sec=el&&el.closest?el.closest('section'):null;if(!sec)return '';var h=sec.querySelector('h2,h1,h3');return ' · '+(sec.id?sec.id+' ':'')+(h?clip(h.textContent,28):'');}
+
+function op(label,fn){
+  if(!S.editing||!S.range)return;
+  var before=D.body.innerHTML,y=W.scrollY,res;
+  try{res=fn(S.range);}catch(e){D.body.innerHTML=before;W.scrollTo(0,y);status('Aksi gagal: '+esc(e.message),true);hideTb();return;}
+  if(res===false){status('Tidak ada teks yang bisa diproses pada sorotan ini.',true);return;}
+  S.undo.push({body:before,label:label,y:y});if(S.undo.length>200)S.undo.shift();S.redo=[];S.log.push(label);
+  updUi();
+}
+function doFmt(k){
+  var r0=S.range;if(!r0)return;var txt=clip(r0.toString(),40),wh=where(r0.startContainer);
+  var nodesNow=plain(selTexts(r0,false)),on=isOn(nodesNow,FMT[k]);
+  op(FNAME[k]+(on?' dilepas':'')+': “'+txt+'”'+wh,function(r){
+    var nodes=plain(selTexts(r,true));if(!nodes.length)return false;
+    if(k==='sub'||k==='sup')nodes.forEach(function(n){liftAll(n,FMT[k==='sub'?'sup':'sub']);});
+    if(on)nodes.forEach(function(n){liftAll(n,FMT[k]);});
+    else nodes.forEach(function(n){if(!fmtAnc(n,FMT[k])){var el=D.createElement(k);n.parentNode.insertBefore(el,n);el.appendChild(n);}});
+    var blocks=[];nodes.forEach(function(n){var b=blockOf(n);if(blocks.indexOf(b)<0)blocks.push(b);});
+    tidy(blocks);mark(nodes);selectNodes(nodes[0],nodes[nodes.length-1]);
+    return true;
+  });
+  afterOp();
+}
+function doClear(){
+  var r0=S.range;if(!r0)return;
+  op('Format dilepas: “'+clip(r0.toString(),40)+'”'+where(r0.startContainer),function(r){
+    var nodes=plain(selTexts(r,true));if(!nodes.length)return false;
+    nodes.forEach(function(n){liftAll(n,ALLFMT);});
+    var blocks=[];nodes.forEach(function(n){var b=blockOf(n);if(blocks.indexOf(b)<0)blocks.push(b);});
+    tidy(blocks);mark(nodes);selectNodes(nodes[0],nodes[nodes.length-1]);return true;
+  });
+  afterOp();
+}
+function doDelete(){
+  var r0=S.range;if(!r0)return;
+  var removed=0;
+  op('Hapus teks: “'+clip(r0.toString(),40)+'”'+where(r0.startContainer),function(r){
+    expandMath(r);var nodes=selTexts(r,true);if(!nodes.length)return false;
+    var list=nonEmptyList(),blocks=nodes.map(blockOf);
+    r.deleteContents();removed=cleanup(list);
+    blocks.forEach(function(b){if(b.isConnected&&b!==D.body)b.setAttribute('data-ed-ubah','');});
+    W.getSelection().removeAllRanges();return true;
+  });
+  afterOp(true);
+  if(removed)status('Teks dihapus. '+removed+' elemen yang menjadi kosong (misalnya poin beserta penandanya) ikut dihapus.');
+}
+function doReplace(v){
+  var r0=S.range;if(!r0)return;
+  op('Ganti “'+clip(r0.toString(),30)+'” → “'+clip(v,30)+'”'+where(r0.startContainer),function(r){
+    expandMath(r);var nodes=selTexts(r,true),list=nonEmptyList(),t=D.createTextNode(v);
+    if(nodes.length){var anc=mathOf(nodes[0])||nodes[0];anc.parentNode.insertBefore(t,anc);r.setStartAfter(t);}
+    else{r.insertNode(t);r.setStartAfter(t);}
+    r.deleteContents();cleanup(list);mark([t]);selectNodes(t,t);return true;
+  });
+  afterOp();
+}
+function blockToRemove(n){
+  var el=n.parentNode,cand=null;
+  while(el&&el!==D.body){
+    if(el.matches(RB))return el;
+    if(!cand&&el.tagName==='DIV'&&!el.querySelector('section,main,nav,header,footer,div div')&&el.textContent.length<3000)cand=el;
+    el=el.parentNode;}
+  return cand;
+}
+function doBlock(){
+  var r0=S.range;if(!r0)return;
+  var blocks=[],skipped=0;
+  selTexts(r0,false).forEach(function(n){var b=blockToRemove(n);if(b&&blocks.indexOf(b)<0)blocks.push(b);});
+  blocks=blocks.filter(function(b){return !blocks.some(function(o){return o!==b&&o.contains(b);});});
+  blocks=blocks.filter(function(b){if(b.id||b.querySelector('[id]')){skipped++;return false;}return true;});
+  if(!blocks.length){status(skipped?'Bagian ini memiliki id yang mungkin dipakai skrip modul, jadi tidak dihapus. Gunakan <b>Hapus teks</b> untuk menghapus isinya saja.':'Tidak ditemukan poin atau paragraf pada sorotan ini.',true);return;}
+  var names=blocks.map(function(b){return b.tagName==='LI'?'poin':(/^H\d$/.test(b.tagName)?'judul':(b.tagName==='TR'?'baris tabel':'paragraf'));});
+  op('Hapus '+(blocks.length>1?blocks.length+' bagian':names[0])+': “'+clip(blocks[0].textContent,40)+'”'+where(blocks[0]),function(){
+    var list=nonEmptyList();blocks.forEach(function(b){var p=b.parentNode;b.remove();if(p&&p!==D.body&&p.nodeType===1)p.setAttribute('data-ed-ubah','');});
+    cleanup(list);W.getSelection().removeAllRanges();return true;
+  });
+  afterOp(true);
+  if(skipped)status('Sebagian bagian tidak dihapus karena memiliki id yang mungkin dipakai skrip.',true);
+}
+function afterOp(hide){
+  var s=W.getSelection();
+  if(hide||!s.rangeCount||s.isCollapsed){hideTb();S.range=null;return;}
+  S.range=s.getRangeAt(0).cloneRange();onSel();
+}
+
+/* ================= Batalkan / ulangi / riwayat ================= */
+function undo(){var u=S.undo.pop();if(!u)return;S.redo.push({body:D.body.innerHTML,label:u.label,y:W.scrollY});D.body.innerHTML=u.body;W.scrollTo(0,u.y);S.log.pop();hideTb();updUi();status('Dibatalkan: '+esc(u.label));}
+function redo(){var u=S.redo.pop();if(!u)return;S.undo.push({body:D.body.innerHTML,label:u.label,y:W.scrollY});D.body.innerHTML=u.body;W.scrollTo(0,u.y);S.log.push(u.label);hideTb();updUi();status('Diulangi: '+esc(u.label));}
+$('#bUndo').addEventListener('click',undo);$('#bRedo').addEventListener('click',redo);
+function renderLog(){var ol=$('#log');ol.innerHTML=S.log.map(function(l){return '<li>'+esc(l)+'</li>';}).join('');$('#logEmpty').hidden=S.log.length>0;ol.scrollTop=ol.scrollHeight;}
+function updUi(){
+  $('#bUndo').disabled=!S.editing||!S.undo.length;$('#bRedo').disabled=!S.editing||!S.redo.length;renderLog();
+  if(S.editing){var d=isDirty();$('#bSave').classList.toggle('glow',d);
+    if(d)status('<span class="dirty">Ada perubahan yang belum disimpan.</span> '+S.log.length+' langkah suntingan. Klik <b>Simpan</b> (Ctrl+S).');}
+}
+
+/* ================= Keyboard ================= */
+function onKey(e){
+  if(!S.editing)return;
+  var k=e.key.toLowerCase(),c=e.ctrlKey||e.metaKey;
+  if(c&&k==='z'&&!e.shiftKey){e.preventDefault();undo();return;}
+  if(c&&(k==='y'||(k==='z'&&e.shiftKey))){e.preventDefault();redo();return;}
+  if(c&&k==='s'){e.preventDefault();save();return;}
+  if(e.target&&e.target.closest&&e.target.closest('input,textarea,select'))return;
+  var sel=W&&W.getSelection();if(!sel||sel.isCollapsed)return;
+  if(c&&(k==='b'||k==='i'||k==='u')){e.preventDefault();S.range=sel.getRangeAt(0).cloneRange();doFmt(k);}
+  else if(k==='tab'){e.preventDefault();S.range=sel.getRangeAt(0).cloneRange();doPara(e.shiftKey?'ind-minus':'ind-plus');}
+  else if(k==='delete'||k==='backspace'){e.preventDefault();S.range=sel.getRangeAt(0).cloneRange();doDelete();}
+}
+document.addEventListener('keydown',function(e){
+  if(!S.editing||e.target===repTa)return;var k=e.key.toLowerCase(),c=e.ctrlKey||e.metaKey;
+  if(c&&k==='z'&&!e.shiftKey){e.preventDefault();undo();}
+  else if(c&&(k==='y'||(k==='z'&&e.shiftKey))){e.preventDefault();redo();}
+  else if(c&&k==='s'){e.preventDefault();save();}
+});
+
+/* ================= Simpan, unduh, pratinjau ================= */
+function buildHTML(){
+  var root=D.documentElement.cloneNode(true);
+  var st=root.querySelector('#__ed_css');if(st)st.remove();
+  [].forEach.call(root.querySelectorAll('[data-ed-ubah]'),function(e){e.removeAttribute('data-ed-ubah');});
+  [].forEach.call(root.querySelectorAll('*'),function(el){
+    [].slice.call(el.attributes).forEach(function(a){if(a.name.indexOf(ONP)===0){el.setAttribute('on'+a.name.slice(ONP.length),a.value);el.removeAttribute(a.name);}});});
+  var dt=D.doctype?'<!DOCTYPE '+(D.doctype.name||'html')+'>\n':'<!DOCTYPE html>\n';
+  var hasLatex=!!root.querySelector('[data-font=latex]');
+  if(!root.querySelector('[data-font=katex],[data-font=tex]')){var kl=root.querySelector('#katex-css');if(kl)kl.remove();}
+  var used={},html=root.outerHTML.replace(new RegExp('<!--'+PFX+'(\\d+)-->','g'),function(m,i){used[i]=1;if(S.prot[+i]===MJS&&!hasLatex)return '';return S.prot[+i]||'';});
+  var lost=S.prot.filter(function(s,i){return !used[i];});
+  if(lost.length){html=html.replace(/<\/body>(?![\s\S]*<\/body>)/i,lost.join('\n')+'\n</body>');S.lost=lost.length;}else S.lost=0;
+  return dt+html+'\n';
+}
+function download(){
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buildHTML()],{type:'text/html;charset=utf-8'}));a.download=S.outName;document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);
+}
+async function save(){
+  if(!S.editing)return;
+  var body=D.body.innerHTML;
+  if(S.handle){
+    try{var w=await S.handle.createWritable();await w.write(buildHTML());await w.close();S.savedBody=body;updUi();status('Tersimpan ke <b>'+esc(S.handle.name)+'</b> pukul '+hms()+'.'+lostNote());}
+    catch(e){status('Gagal menyimpan: '+esc(e.message)+'. Gunakan tombol <b>Unduh</b>.',true);}
+  }else{download();S.savedBody=body;updUi();status('File <b>'+esc(S.outName)+'</b> diunduh pukul '+hms()+'.'+lostNote());}
+}
+function lostNote(){return S.lost?' <span class="dirty">Catatan: '+S.lost+' skrip ikut terhapus bersama bagian yang dihapus, jadi dipasang kembali di akhir halaman. Periksa dengan Pratinjau Hasil.</span>':'';}
+$('#bSave').addEventListener('click',save);
+$('#bDl').addEventListener('click',function(){download();status('Salinan <b>'+esc(S.outName)+'</b> diunduh pukul '+hms()+'.');});
+$('#bView').addEventListener('click',function(){
+  var url=URL.createObjectURL(new Blob([buildHTML()],{type:'text/html;charset=utf-8'}));
+  var w=window.open(url,'_blank');
+  status(w?'Pratinjau dibuka di tab baru (alamat sementara <code>blob:</code>), dengan animasi dan kuis berjalan.':'Peramban memblokir tab baru. Izinkan pop-up untuk halaman ini lalu klik lagi.',!w);
+});
+var dN=$('#dNote');
+$('#bNote').addEventListener('click',function(){if(dN.showModal)dN.showModal();});
+$('#bNoteClose').addEventListener('click',function(){dN.close();});
+window.addEventListener('resize',function(){if(!tb.hidden&&S.range)placeTb(S.range);});
+window.addEventListener('beforeunload',function(e){if(isDirty()){e.preventDefault();e.returnValue='';}});
+})();
+</script>
+</body>
+</html>
